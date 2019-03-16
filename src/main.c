@@ -6,12 +6,36 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/16 16:54:54 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/16 18:51:30 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
+int 	FNcross(double x1, double y1,
+				double x2, double y2)
+{
+	return (x1 * y2 - y1 * x2);
+}
+
+void	intersect(double x1, double y1,
+					double x2, double y2,
+					double x3, double y3,
+					double x4, double y4,
+					double *x, double *y)
+{
+	int det;
+	*x = FNcross(x1, y1, x2, y2);
+	*y = FNcross(x3, y3, x4, y4);
+	det = FNcross(x1 - x2, y1 - y2, x3 - x4, y3 - y4);
+	*x = FNcross(*x, x1 - x2, *y, x3 - x4) / det;
+	*y = FNcross(*x, y1 - y2, *y, y3 - y4) / det;
+}
+
+void check(int i)
+{
+	i = 50;
+}
 int main(void)
 {
 	SDL_Window	*window; //окно
@@ -44,7 +68,10 @@ int main(void)
 	double for_swap;
 	double yb;
 	double yt;
+	static int z = 10;
 
+	check(z);
+	ft_putnbr(z);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		put_sdl_error(0);
 	window = SDL_CreateWindow("SDL2. Lessons 02",
@@ -115,6 +142,7 @@ int main(void)
 		ty2 = (x2 - x_p) * cos(angle) - (y2 - y_p) * sin(angle);
 		tx1 = (x1 - x_p) * sin(angle) + (y1 - y_p) * cos(angle);
 		tx2 = (x2 - x_p) * sin(angle) + (y2 - y_p) * cos(angle);
+		
 		x1a = tx1 * 300 / ty1 + 500;
 		y1t = -500 / ty1 + 500;
 		y1b = +500 / ty1 + 500;
@@ -125,6 +153,40 @@ int main(void)
 		ft_putnbrln(x_p);
 		ft_putnbrln(y_p);
 		SDL_FillRect(screen, 0, 0);
+		/*
+		double ix1;
+		double ix2;
+		double iz1;
+		double iz2;
+		intersect(tx1, ty1, tx2, ty2, -0.0001, 0.0001, -20, 5, &ix1, &iz1);
+		intersect(tx1, ty1, tx2, ty2, -0.0001, 0.0001, -20, 5, &ix2, &iz2);
+		if (ty1 <= 0)
+		{
+			if (iz1 > 0)
+			{
+				tx1 = ix1;
+				ty1 = iz1;
+			}
+			else
+			{
+				tx1 = ix2;
+				ty1 = iz2;
+			}	
+		}
+		if (ty2 <= 0)
+		{
+			if (iz1 > 0)
+			{
+				tx2 = ix1;
+				ty2 = iz1;
+			}
+			else
+			{
+				tx2 = ix2;
+				ty2 = iz2;
+			}	
+		}
+		*/
 		if (x1a > x2a)
 		{
 			for_swap = x1a;
