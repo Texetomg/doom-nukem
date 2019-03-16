@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/16 16:49:01 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/16 16:54:54 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ int main(void)
 	{
 		while (SDL_PollEvent( &e))
 		{
-			if (e.type == SDL_QUIT)
-				loop = 0;
 			if (e.type == SDL_KEYDOWN)
 			{
 				x = step * cos(angle);
 				y = step * sin(angle);
+				if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
+					loop = 0;
 				if (e.key.keysym.sym == SDLK_e)
 					angle -= 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_q)
