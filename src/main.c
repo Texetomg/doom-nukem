@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/16 17:01:47 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/16 17:02:33 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,28 +62,31 @@ int main(void)
 	angle = 0;
 	x_p = 0;
 	y_p = 0;
-	x1 = 5;
-	y1 = 5;
-	x2 = 7;
-	y2 = 10;
+	x1 = 2;
+	y1 = 2;
+	x2 = 4;
+	y2 = 7;
 	while (loop)
 	{
 		while (SDL_PollEvent( &e))
 		{
-			if (e.type == SDL_QUIT)
-				loop = 0;
 			if (e.type == SDL_KEYDOWN)
 			{
 				x = step * cos(angle);
 				y = step * sin(angle);
+				if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
+					loop = 0;
 				if (e.key.keysym.sym == SDLK_e)
 					angle -= 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_q)
 					angle += 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_w)
 				{
-					x_p += x;
-					y_p -= y;
+					if ((x1 * y_p - x_p * y1) >= 0)
+					{
+						x_p += x;
+						y_p -= y;
+					}
 				}			
 				if (e.key.keysym.sym == SDLK_s)
 				{
@@ -92,13 +95,19 @@ int main(void)
 				}
 				if (e.key.keysym.sym == SDLK_d)
 				{
-					x_p += y;
-					y_p += x;
+					if ((x1 * y_p - x_p * y1) >= 0)
+					{
+						x_p += y;
+						y_p += x;
+					}
 				}
 				if (e.key.keysym.sym == SDLK_a)
 				{
-					x_p -= y;
-					y_p -= x;
+					if ((x1 * y_p - x_p * y1) >= 0)
+					{
+						x_p -= y;
+						y_p -= x;
+					}
 				}
 			}
 		}
