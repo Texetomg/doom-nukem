@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/16 17:02:33 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/16 17:04:44 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int main(void)
 					angle += 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_w)
 				{
-					if ((x1 * y_p - x_p * y1) >= 0)
+					if ((x1 * y_p - x_p * y1) > 0)
 					{
 						x_p += x;
 						y_p -= y;
@@ -95,7 +95,7 @@ int main(void)
 				}
 				if (e.key.keysym.sym == SDLK_d)
 				{
-					if ((x1 * y_p - x_p * y1) >= 0)
+					if ((x1 * y_p - x_p * y1) > 0)
 					{
 						x_p += y;
 						y_p += x;
