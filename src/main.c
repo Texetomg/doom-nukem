@@ -6,72 +6,114 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/19 17:18:01 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/21 18:38:37 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-int 	FNcross(double x1, double y1,
-				double x2, double y2)
+
+double	cross_product(double x1, double y1, double x2, double y2)
 {
-	return (x1 * y2 - y1 * x2);
+	return (x1 * y2 - x2 * y1);
 }
 
-void	intersect(double x1, double y1,
-					double x2, double y2,
-					double x3, double y3,
-					double x4, double y4,
-					double *x, double *y)
+void	cross(double *x1, double *y1, double x2, double y2, double x_fov, double y_fov)
 {
-	int det;
-	*x = FNcross(x1, y1, x2, y2);
-	*y = FNcross(x3, y3, x4, y4);
-	det = FNcross(x1 - x2, y1 - y2, x3 - x4, y3 - y4);
-	*x = FNcross(*x, x1 - x2, *y, x3 - x4) / det;
-	*y = FNcross(*x, y1 - y2, *y, y3 - y4) / det;
+	double new_x;
+	double new_y;
+	double det;
+
+	det = cross_product(*x1, *y1, x2, y2) / ((-x_fov) * (*y1 - y2) + y_fov * (*x1 - x2));
+	new_x = x_fov * det;
+	new_y = y_fov * det;
+	*x1 = new_x;
+	*y1 = new_y;
 }
 
-void check(int i)
+int	intersection(double *x1, double *y1, double *x2, double *y2)
 {
-	i = 50;
+	double x_fov;
+	double y1_fov;
+	double y2_fov;
+	double x;
+	double y;
+
+	x_fov = 8.66;
+	y1_fov = 5;
+	y2_fov = -5;
+	x = cross_product(x_fov, y1_fov, *x1, *y1);
+	y = cross_product(x_fov, y1_fov, *x2, *y2);
+	if (x > 0 && y > 0)
+	{
+		ft_putendl("lol");
+		return (0);
+	}
+	if (x > 0 || y > 0)
+	{
+		if (x > 0)
+			cross(x1, y1, *x2, *y2, x_fov, y1_fov);
+		else
+			cross(x2, y2, *x1, *y1, x_fov, y1_fov);
+	}
+	x = cross_product(x_fov, y2_fov, *x1, *y1);
+	y = cross_product(x_fov, y2_fov, *x2, *y2);
+	if (x < 0 && y < 0)
+	{
+		ft_putstr("lol2");
+		return (0);
+	}
+	if (x < 0 || y < 0)
+	{
+		if (x < 0)
+			cross(x1, y1, *x2, *y2, x_fov, y2_fov);
+		else
+			cross(x2, y2, *x1, *y1, x_fov, y2_fov);
+	}
+	return (1);
 }
+
 int main(void)
 {
 	SDL_Window	*window; //окно
 	SDL_Surface	*screen; //поверхность
-	int i;
 	int loop;
 	SDL_Event e;
-	int color;
-	double x;
-	double y;
-	double step;
-	double x_p;
-	double y_p;
 	double x1;
 	double x2;
 	double y1;
 	double y2;
+	double x_p;
+	double y_p;
 	double angle;
 	double tx1;
 	double tx2;
 	double ty1;
 	double ty2;
 	double x1a;
-	double y1b;
-	double y1t;
 	double x2a;
-	double y2b;
+	double y1t;
 	double y2t;
+	double y1b;
+	double y2b;
+	double x;
+	double y;
 	int k;
-	double for_swap;
-	double yb;
+	int i;
 	double yt;
-	static int z = 10;
+	double yb;
+	double step;
+	int color;
+	step = 0.1;
+	x_p = 0.0;
+	y_p = 0;
+	x1 = 2;
+	y1 = 2;
+	x2 = 2;
+	y2 = -2;
+	angle = 0;
+	double for_swap;
 
-	check(z);
-	ft_putnbr(z);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		put_sdl_error(0);
 	window = SDL_CreateWindow("SDL2. Lessons 02",
@@ -84,15 +126,6 @@ int main(void)
 		put_sdl_error(0);
 	screen = SDL_GetWindowSurface(window);
 	loop = 1;
-	color = 0;
-	step = 0.1;
-	angle = 0;
-	x_p = 0;
-	y_p = 0;
-	x1 = 2;
-	y1 = 2;
-	x2 = 4;
-	y2 = 7;
 	while (loop)
 	{
 		while (SDL_PollEvent( &e))
@@ -109,12 +142,9 @@ int main(void)
 					angle += 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_w)
 				{
-					if ((x1 * y_p - x_p * y1) > 0)
-					{
-						x_p += x;
-						y_p -= y;
-					}
-				}			
+					x_p += x;
+					y_p -= y;
+				}
 				if (e.key.keysym.sym == SDLK_s)
 				{
 					x_p -= x;
@@ -122,96 +152,69 @@ int main(void)
 				}
 				if (e.key.keysym.sym == SDLK_d)
 				{
-					if ((x1 * y_p - x_p * y1) > 0)
-					{
 						x_p += y;
 						y_p += x;
-					}
 				}
 				if (e.key.keysym.sym == SDLK_a)
 				{
-					if ((x1 * y_p - x_p * y1) >= 0)
-					{
 						x_p -= y;
 						y_p -= x;
-					}
 				}
 			}
 		}
-		ty1 = (x1 - x_p) * cos(angle) - (y1 - y_p) * sin(angle);
-		ty2 = (x2 - x_p) * cos(angle) - (y2 - y_p) * sin(angle);
-		tx1 = (x1 - x_p) * sin(angle) + (y1 - y_p) * cos(angle);
-		tx2 = (x2 - x_p) * sin(angle) + (y2 - y_p) * cos(angle);
-		
-		x1a = tx1 * 300 / ty1 + 500;
-		y1t = -500 / ty1 + 500;
-		y1b = +500 / ty1 + 500;
-		x2a = tx2 * 300 / ty2 + 500;
-		y2t = -500 / ty2 + 500;
-		y2b = +500 / ty2 + 500;
-		ft_putnbrln(angle * 1000);
-		ft_putnbrln(x_p);
-		ft_putnbrln(y_p);
 		SDL_FillRect(screen, 0, 0);
-		/*
-		double ix1;
-		double ix2;
-		double iz1;
-		double iz2;
-		intersect(tx1, ty1, tx2, ty2, -0.0001, 0.0001, -20, 5, &ix1, &iz1);
-		intersect(tx1, ty1, tx2, ty2, -0.0001, 0.0001, -20, 5, &ix2, &iz2);
-		if (ty1 <= 0)
+		tx1 = -(y1 - y_p) * sin(angle) + (x1 - x_p) * cos(angle);
+		tx2 = -(y2 - y_p) * sin(angle) + (x2 - x_p) * cos(angle);
+		ty1 = (y1 - y_p) * cos(angle) + (x1 - x_p) * sin(angle);
+		ty2 = (y2 - y_p) * cos(angle) + (x2 - x_p) * sin(angle);
+		if (ty1 > 0 || ty2 > 0)
 		{
-			if (iz1 > 0)
+			ft_putnbrln(tx1);
+			ft_putnbrln(ty1);
+			ft_putnbrln(tx2);
+			ft_putnbrln(ty2);
+			if (intersection(&tx1, &ty1, &tx2, &ty2) != 0)
 			{
-				tx1 = ix1;
-				ty1 = iz1;
+				ft_putnbrln(tx1);
+				ft_putnbrln(ty1);
+				ft_putnbrln(tx2);
+				ft_putnbrln(ty2);
+				x1a = ty1 * 700 / tx1 + 500;
+				y1t = -500 / tx1 + 500;
+				y1b = 500 / tx1 + 500;
+				x2a = ty2 * 700 / tx2 + 500;
+                y2t = -500 / tx2 + 500;
+                y2b = 500 / tx2 + 500;
+				if (x1a > x2a)
+				{
+					for_swap = x1a;
+					x1a = x2a;
+					x2a = for_swap;
+					for_swap = y1b;
+					y1b = y2b;
+					y2b = for_swap;
+					for_swap = y1t;
+					y1t = y2t;
+					y2t = for_swap;
+					color = 0xAA0000;
+				}
+				else
+					color = 0x00AA00;
+				k = (int)x1a;
+				while (k < (int)x2a)
+				{
+					yt = y1t + (y2t - y1t) * (k - x1a) / (x2a - x1a);
+					yb = y1b + (y2b - y1b) * (k - x1a) / (x2a - x1a);
+					i = (int)yt;
+					while (i < yb)
+					{
+						if (i >= 0 && i < 1000 && k >= 0 && k < 1000)
+							((int*)screen->pixels)[i * 1000 + k] = color;
+						i++;
+					}
+					k++;
+				}
 			}
-			else
-			{
-				tx1 = ix2;
-				ty1 = iz2;
-			}	
-		}
-		if (ty2 <= 0)
-		{
-			if (iz1 > 0)
-			{
-				tx2 = ix1;
-				ty2 = iz1;
-			}
-			else
-			{
-				tx2 = ix2;
-				ty2 = iz2;
-			}	
-		}
-		*/
-		if (x1a > x2a)
-		{
-			for_swap = x1a;
-			x1a = x2a;
-			x2a = for_swap;
-			for_swap = y1b;
-			y1b = y2b;
-			y2b = for_swap;
-			for_swap = y1t;
-			y1t = y2t;
-			y2t = for_swap;
-		}
-		k = (int)x1a;
-		while (k < (int)x2a)
-		{
-			yt = y1t + (y2t - y1t) * (k - x1a) / (x2a - x1a);
-			yb = y1b + (y2b - y1b) * (k - x1a) / (x2a - x1a);
-			i = (int)yt;
-			while (i < yb)
-			{
-				if (i >= 0 && i < 1000 && k >= 0 && k < 1000)
-					((int*)screen->pixels)[i * 1000 + k] = 0xAA0000;
-				i++;
-			}
-			k++;
 		}
 		SDL_UpdateWindowSurface(window);
 	}
