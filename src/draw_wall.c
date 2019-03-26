@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/26 19:53:01 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/26 21:23:05 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,19 @@ void	draw_wall(SDL_Surface *screen, t_wall world_wall)
 void	draw_minimap(SDL_Surface *screen, t_wall *world_wall)
 {
 	int i;
+	t_wall	fov1_wall;
+	t_wall	fov2_wall;
+
+	fov1_wall.pos1.x = 100;
+	fov1_wall.pos1.y = 100;
+	fov2_wall.pos1.x = 100;
+	fov2_wall.pos1.y = 100;
+	fov1_wall.pos2.x = 200;
+	fov2_wall.pos2.x = 200;
+	fov1_wall.pos2.y = 8.53 * 20;
+	fov2_wall.pos2.y = (5 - 3.53) * 20;
+	fov2_wall.color = 0xAAAAAA;
+	fov1_wall.color = 0xAAAAAA;
 
 	i = 0;
 	while (i < 3)
@@ -110,4 +123,6 @@ void	draw_minimap(SDL_Surface *screen, t_wall *world_wall)
 		draw_wall(screen, *(world_wall + i));
 		i++;
 	}
+	draw_wall(screen, fov1_wall);
+	draw_wall(screen, fov2_wall);
 }
