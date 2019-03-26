@@ -6,13 +6,13 @@
 #    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/03/25 17:12:27 by thorker          ###   ########.fr        #
+#    Updated: 2019/03/26 18:01:09 by thorker          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = doom-nukem
 FLAG = -Wall -Wextra -Werror -g
-SRC = main.c SDL_utils.c
+SRC = main.c SDL_utils.c draw_wall.c
 INC = -I libft/ -I ./includes -I ./framework/SDL2.framework/Versions/A/Headers
 LIB = -L libft/ -lft 
 FRWR = -framework SDL2 -F framework/

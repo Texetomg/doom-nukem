@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/26 16:40:43 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/26 19:56:41 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,23 @@ int	intersection(double *x1, double *y1, double *x2, double *y2)
 	}
 	return (1);
 }
+void	change_wall(t_wall *cam_wall)
+{
+	cam_wall->pos1.x = (5 + cam_wall->pos1.x) * 20;
+	cam_wall->pos2.x = (5 + cam_wall->pos2.x) * 20;
+	cam_wall->pos1.y = (5 - cam_wall->pos1.y) * 20;
+	cam_wall->pos2.y = (5 - cam_wall->pos2.y) * 20;
+	ft_putnbrln(cam_wall->pos1.x);
+}
+
+void	change_world_in_cam(t_wall *world_wall, t_wall *cam_wall, t_player player)
+{
+	cam_wall->pos1.x = -(world_wall->pos1.y - player.pos.y) * sin(player.angle) + (world_wall->pos1.x - player.pos.x) * cos(player.angle);
+	cam_wall->pos2.x = -(world_wall->pos2.y - player.pos.y) * sin(player.angle) + (world_wall->pos2.x - player.pos.x) * cos(player.angle);
+	cam_wall->pos1.y = (world_wall->pos1.y - player.pos.y) * cos(player.angle) + (world_wall->pos1.x - player.pos.x) * sin(player.angle);
+	cam_wall->pos2.y = (world_wall->pos2.y - player.pos.y) * cos(player.angle) + (world_wall->pos2.x - player.pos.x) * sin(player.angle);
+	cam_wall->color = world_wall->color;
+}
 
 int main(void)
 {
@@ -83,9 +100,7 @@ int main(void)
 	double x2;
 	double y1;
 	double y2;
-	double x_p;
-	double y_p;
-	double angle;
+	t_player	player;
 	double tx1;
 	double tx2;
 	double ty1;
@@ -105,19 +120,19 @@ int main(void)
 	double step;
 	int color;
 	step = 0.1;
-	x_p = 0.0;
-	y_p = 0;
-	x1 = 2;
+	x1 = 0;
 	y1 = 2;
 	x2 = 2;
-	y2 = -2;
-	angle = 0;
+	y2 = -1;
 	double for_swap;
 	t_wall	*world_wall;
 	t_wall	*cam_wall;
 
 	world_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
 	cam_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
+	player.pos.x = 0;
+	player.pos.y = 0;
+	player.angle = 0;
 	world_wall->pos1.y = 2;
 	world_wall->pos1.x = 0;
 	world_wall->pos2.y = -1;
@@ -130,18 +145,18 @@ int main(void)
 	(world_wall + 1)->pos2.x = -2;
 	(world_wall + 1)->color = 0xAA00;
 
-	(world_wall + 1)->pos1.y = -1;
-	(world_wall + 1)->pos1.x = 2;
-	(world_wall + 1)->pos2.y = -3;
-	(world_wall + 1)->pos2.x = -2;
-	(world_wall + 1)->color = 0xAA00;
+	(world_wall + 2)->pos1.y = -3;
+	(world_wall + 2)->pos1.x = -2;
+	(world_wall + 2)->pos2.y = 2;
+	(world_wall + 2)->pos2.x = 0;
+	(world_wall + 2)->color = 0xAA;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		put_sdl_error(0);
 	window = SDL_CreateWindow("SDL2. Lessons 02",
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
-			1600,
+			1000,
 			1000,
 			SDL_WINDOW_SHOWN);
 	if (window == 0)
@@ -154,49 +169,51 @@ int main(void)
 		{
 			if (e.type == SDL_KEYDOWN)
 			{
-				x = step * cos(angle);
-				y = step * sin(angle);
+				x = step * cos(player.angle);
+				y = step * sin(player.angle);
 				if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 					loop = 0;
 				if (e.key.keysym.sym == SDLK_e)
-					angle -= 3.14 / 60;
+					player.angle -= 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_q)
-					angle += 3.14 / 60;
+					player.angle += 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_w)
 				{
-					x_p += x;
-					y_p -= y;
+					player.pos.x += x;
+					player.pos.y -= y;
 				}
 				if (e.key.keysym.sym == SDLK_s)
 				{
-					x_p -= x;
-					y_p += y;
+					player.pos.x -= x;
+					player.pos.y += y;
 				}
 				if (e.key.keysym.sym == SDLK_d)
 				{
-						x_p += y;
-						y_p += x;
+						player.pos.x += y;
+						player.pos.y += x;
 				}
 				if (e.key.keysym.sym == SDLK_a)
 				{
-						x_p -= y;
-						y_p -= x;
+						player.pos.x -= y;
+						player.pos.y -= x;
 				}
 			}
 		}
 		SDL_FillRect(screen, 0, 0);
-		tx1 = -(y1 - y_p) * sin(angle) + (x1 - x_p) * cos(angle);
-		tx2 = -(y2 - y_p) * sin(angle) + (x2 - x_p) * cos(angle);
-		ty1 = (y1 - y_p) * cos(angle) + (x1 - x_p) * sin(angle);
-		ty2 = (y2 - y_p) * cos(angle) + (x2 - x_p) * sin(angle);
+		i = 0;
+		while (i < 3)
+		{
+			change_world_in_cam(world_wall + i, cam_wall + i, player);
+			i++;
+		}
+		tx1 = -(y1 - player.pos.y) * sin(player.angle) + (x1 - player.pos.x) * cos(player.angle);
+		tx2 = -(y2 - player.pos.y) * sin(player.angle) + (x2 - player.pos.x) * cos(player.angle);
+		ty1 = (y1 - player.pos.y) * cos(player.angle) + (x1 - player.pos.x) * sin(player.angle);
+		ty2 = (y2 - player.pos.y) * cos(player.angle) + (x2 - player.pos.x) * sin(player.angle);
 		if (ty1 > 0 || ty2 > 0)
 		{
 			if (intersection(&tx1, &ty1, &tx2, &ty2) != 0)
 			{
-				ft_putnbrln(tx1);
-				ft_putnbrln(ty1);
-				ft_putnbrln(tx2);
-				ft_putnbrln(ty2);
 				x1a = ty1 * 700 / tx1 + 500;
 				y1t = -500 / tx1 + 500;
 				y1b = 500 / tx1 + 500;
@@ -226,15 +243,22 @@ int main(void)
 					i = (int)yt;
 					while (i < yb)
 					{
-						if (i >= 0 && i < 1000 && k >= 0 && k < 1600)
-							((int*)screen->pixels)[i * 1600 + k] = color;
+						if (i >= 0 && i < 1000 && k >= 0 && k < 1000)
+							((int*)screen->pixels)[i * 1000 + k] = color;
 						i++;
 					}
 					k++;
 				}
 			}
 		}
-		put_fps(screen);
+		//put_fps(screen);
+		i = 0;
+		while (i < 3)
+		{
+			change_wall(cam_wall + i);
+			i++;
+		}
+		draw_minimap(screen, cam_wall);
 		SDL_UpdateWindowSurface(window);
 	}
 	SDL_DestroyWindow(window);
