@@ -6,7 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/03/26 17:36:33 by bfalmer-         ###   ########.fr       */
+=======
+/*   Updated: 2019/03/26 19:45:16 by thorker          ###   ########.fr       */
+>>>>>>> 2530515fc59f7e93c72191183fcc8e7cab67bc95
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +53,12 @@ typedef struct	s_wall
 	int			color;
 }				t_wall;
 
-typedef struct	t_game
+typedef struct	s_game
 {
 	t_player	player;
 }				t_game;
 
+void    draw_minimap(SDL_Surface *screen, t_wall *world_wall);
 SDL_Texture*    load_image(char *file, SDL_Renderer *ren);
 void            apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
 void			put_sdl_error(char *str);
