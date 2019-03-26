@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/21 18:38:37 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/26 16:01:46 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int main(void)
 	window = SDL_CreateWindow("SDL2. Lessons 02",
 			SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED,
-			1000,
+			1600,
 			1000,
 			SDL_WINDOW_SHOWN);
 	if (window == 0)
@@ -208,8 +208,8 @@ int main(void)
 					i = (int)yt;
 					while (i < yb)
 					{
-						if (i >= 0 && i < 1000 && k >= 0 && k < 1000)
-							((int*)screen->pixels)[i * 1000 + k] = color;
+						if (i >= 0 && i < 1000 && k >= 0 && k < 1600)
+							((int*)screen->pixels)[i * 1600 + k] = color;
 						i++;
 					}
 					k++;
