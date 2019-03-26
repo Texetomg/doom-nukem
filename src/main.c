@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/26 22:13:13 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/26 22:18:05 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,14 +201,7 @@ int main(void)
 			SDL_GetMouseState(&mouse->curr_x, &mouse->curr_y);
 		SDL_WarpMouseInWindow(window, MOUSE_POS_X, MOUSE_POS_Y); //перемещать курсор в одну и ту же точку
 		
-		if (mouse->curr_y > MOUSE_POS_Y)
-		{
-			player.angle -= 3.14 / 60;
-		}
-		if (mouse->curr_y < MOUSE_POS_Y)
-		{
-			player.angle += 3.14 / 60;
-		}
+			player.angle -= 3.14 / 600 * (mouse->curr_x - MOUSE_POS_X);
 		
 			if (e.type == SDL_KEYDOWN)
 			{
