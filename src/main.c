@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/26 16:40:43 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/26 19:51:27 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ int	intersection(double *x1, double *y1, double *x2, double *y2)
 
 int main(void)
 {
-	SDL_Window	*window; //окно
-	SDL_Surface	*screen; //поверхность
+	SDL_Window	*window; 			//окно
+	SDL_Surface	*screen; 			//поверхность
+	SDL_DisplayMode	display_mode;	//параметры дисплея
+	int request;					//обработка возвращаемых значений
 	int loop;
 	SDL_Event e;
 	double x1;
@@ -115,7 +117,8 @@ int main(void)
 	double for_swap;
 	t_wall	*world_wall;
 	t_wall	*cam_wall;
-
+	t_fps	*fps;
+	fps = (t_fps*)malloc(sizeof(t_fps));
 	world_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
 	cam_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
 	world_wall->pos1.y = 2;
@@ -138,10 +141,12 @@ int main(void)
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		put_sdl_error(0);
+	request = SDL_GetDesktopDisplayMode(0, &display_mode);
+	SDL_ShowCursor(SDL_DISABLE); //спрятать курсор в пределах окна
 	window = SDL_CreateWindow("SDL2. Lessons 02",
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
-			1600,
+			0,
+			0,
+			1000,
 			1000,
 			SDL_WINDOW_SHOWN);
 	if (window == 0)
@@ -150,6 +155,7 @@ int main(void)
 	loop = 1;
 	while (loop)
 	{
+		SDL_WarpMouseInWindow(window, display_mode.w / 2, display_mode.h / 2);
 		while (SDL_PollEvent( &e))
 		{
 			if (e.type == SDL_KEYDOWN)
@@ -234,7 +240,7 @@ int main(void)
 				}
 			}
 		}
-		put_fps(screen);
+		put_fps(fps);
 		SDL_UpdateWindowSurface(window);
 	}
 	SDL_DestroyWindow(window);
