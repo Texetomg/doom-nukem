@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/26 20:00:24 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/26 22:12:18 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ int main(void)
 	t_wall	*world_wall;
 	t_wall	*cam_wall;
 	t_fps	*fps;
+	t_mouse	*mouse;
+	mouse = (t_mouse*)malloc(sizeof(t_mouse));
 	fps = (t_fps*)malloc(sizeof(t_fps));
 	world_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
 	cam_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
@@ -170,9 +172,21 @@ int main(void)
 	loop = 1;
 	while (loop)
 	{
-		SDL_WarpMouseInWindow(window, display_mode.w / 2, display_mode.h / 2);
+		
 		while (SDL_PollEvent( &e))
 		{
+			SDL_GetMouseState(&mouse->curr_x, &mouse->curr_y);
+		SDL_WarpMouseInWindow(window, MOUSE_POS_X, MOUSE_POS_Y); //перемещать курсор в одну и ту же точку
+		
+		if (mouse->curr_y > MOUSE_POS_Y)
+		{
+			player.angle -= 3.14 / 60;
+		}
+		if (mouse->curr_y < MOUSE_POS_Y)
+		{
+			player.angle += 3.14 / 60;
+		}
+		
 			if (e.type == SDL_KEYDOWN)
 			{
 				x = step * cos(player.angle);

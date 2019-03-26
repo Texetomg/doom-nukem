@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/26 20:00:56 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/26 22:09:34 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@
 # include <SDL.h>
 # define SCREEN_WIDTH 1000
 # define SCREEN_HEIGHT 500
+# define MOUSE_POS_X display_mode.w / 4
+# define MOUSE_POS_Y display_mode.h / 4
+
+typedef	struct	s_mouse
+{
+	int			prev_x;
+	int			prev_y;
+	int			curr_x;
+	int			curr_y;
+}				t_mouse;
+
 
 typedef	struct	s_fps
 {
