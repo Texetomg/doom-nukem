@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/26 16:01:46 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/26 16:40:43 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,28 @@ int main(void)
 	y2 = -2;
 	angle = 0;
 	double for_swap;
+	t_wall	*world_wall;
+	t_wall	*cam_wall;
+
+	world_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
+	cam_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
+	world_wall->pos1.y = 2;
+	world_wall->pos1.x = 0;
+	world_wall->pos2.y = -1;
+	world_wall->pos2.x = 2;
+	world_wall->color = 0xAA0000;
+
+	(world_wall + 1)->pos1.y = -1;
+	(world_wall + 1)->pos1.x = 2;
+	(world_wall + 1)->pos2.y = -3;
+	(world_wall + 1)->pos2.x = -2;
+	(world_wall + 1)->color = 0xAA00;
+
+	(world_wall + 1)->pos1.y = -1;
+	(world_wall + 1)->pos1.x = 2;
+	(world_wall + 1)->pos2.y = -3;
+	(world_wall + 1)->pos2.x = -2;
+	(world_wall + 1)->color = 0xAA00;
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		put_sdl_error(0);
@@ -169,10 +191,6 @@ int main(void)
 		ty2 = (y2 - y_p) * cos(angle) + (x2 - x_p) * sin(angle);
 		if (ty1 > 0 || ty2 > 0)
 		{
-			ft_putnbrln(tx1);
-			ft_putnbrln(ty1);
-			ft_putnbrln(tx2);
-			ft_putnbrln(ty2);
 			if (intersection(&tx1, &ty1, &tx2, &ty2) != 0)
 			{
 				ft_putnbrln(tx1);
@@ -216,6 +234,7 @@ int main(void)
 				}
 			}
 		}
+		put_fps(screen);
 		SDL_UpdateWindowSurface(window);
 	}
 	SDL_DestroyWindow(window);
