@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/27 19:27:28 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/27 20:06:48 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	draw_3d_wall(SDL_Surface *screen, t_wall wall)
 			y2t = for_swap;
 		}
 		k = (int)x1a;
-		while (k < (int)x2a)
+
 		{
 			yt = y1t + (y2t - y1t) * (k - x1a) / (x2a - x1a);
 			yb = y1b + (y2b - y1b) * (k - x1a) / (x2a - x1a);
@@ -138,6 +138,7 @@ void	draw_3d_wall(SDL_Surface *screen, t_wall wall)
 }
 int main(void)
 {
+	t_game		*game;
 	SDL_Window	*window; 			//окно
 	SDL_Surface	*screen; 			//поверхность
 	SDL_DisplayMode	display_mode;	//параметры дисплея
@@ -178,6 +179,7 @@ int main(void)
 	(world_wall + 2)->pos2.y = 2;
 	(world_wall + 2)->pos2.x = 0;
 	(world_wall + 2)->color = 0xAA;
+	game = create_struct();
 	request = SDL_GetDesktopDisplayMode(0, &display_mode);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		put_sdl_error(0);

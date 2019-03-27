@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/27 19:27:30 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/27 20:06:50 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ typedef	struct	s_vec2
 	double		y;
 }				vec2;
 
+typedef struct	s_vec2int
+{
+	int			x;
+	int			y;
+}				vec2int;
 typedef struct	s_vec3
 {
 	double		x;
@@ -75,7 +80,9 @@ typedef struct	s_game
 	vec2		*points;
 	SDL_Window	*window;
 	SDL_Surface	*screen;
-
+	SDL_DisplayMode	display_mode;
+	struct timeval  time;
+	vec2int			mouse;
 }				t_game;
 
 void    draw_minimap(SDL_Surface *screen, t_wall *world_wall);
