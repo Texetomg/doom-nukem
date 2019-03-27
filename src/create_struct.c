@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/27 22:36:15 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/27 22:57:50 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		put_sdl_error(0);
-	if (SDL_ShowCursor(SDL_DISABLE) != 0)
-		//put_sdl_error(0);
+	if (SDL_ShowCursor(SDL_DISABLE) < 0)
+		put_sdl_error(0);
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
 		put_sdl_error(0);
 	game->window = SDL_CreateWindow(0, 0, 0, 0, 0,

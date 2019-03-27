@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/27 22:36:50 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/27 22:56:28 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,10 @@ void	draw_3d_wall(t_game *game, t_wall wall)
 		return ;
 	if (intersection(&wall.pos1.x, &wall.pos1.y, &wall.pos2.x, &wall.pos2.y) != 0)
 	{
-		x1a = -wall.pos1.y * 700 / wall.pos1.x + game->display_mode.w / 2;
+		x1a = -wall.pos1.y * 1400 / wall.pos1.x + game->display_mode.w / 2;
 		y1t = -500 / wall.pos1.x + game->display_mode.h / 2;
 		y1b = 500 / wall.pos1.x + game->display_mode.h / 2;
-		x2a = -wall.pos2.y * 700 / wall.pos2.x + game->display_mode.w / 2;
+		x2a = -wall.pos2.y * 1400 / wall.pos2.x + game->display_mode.w / 2;
 		y2t = -500 / wall.pos2.x + game->display_mode.h / 2;
 		y2b = 500 / wall.pos2.x + game->display_mode.h / 2;
 		if (x1a > x2a)
@@ -120,8 +120,9 @@ void	draw_3d_wall(t_game *game, t_wall wall)
 			y1t = y2t;
 			y2t = for_swap;
 		}
+		
 		k = (int)x1a;
-
+		while (k < x2a)
 		{
 			yt = y1t + (y2t - y1t) * (k - x1a) / (x2a - x1a);
 			yb = y1b + (y2b - y1b) * (k - x1a) / (x2a - x1a);
