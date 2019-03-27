@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/26 21:23:05 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/27 22:33:28 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		bright(int color, double bri)
 	return (color);
 }
 
-void	draw_wall_x(SDL_Surface *screen, t_wall world_wall)
+void	draw_wall_x(t_game *game, t_wall world_wall)
 {
 	int	x;
 	double y;
@@ -39,16 +39,16 @@ void	draw_wall_x(SDL_Surface *screen, t_wall world_wall)
 	y = world_wall.pos1.y + grad * (x - world_wall.pos1.x);
 	while (x < world_wall.pos2.x)
 	{
-		if (x >= 0 && x < 1000 && y >= 0 && y < 1000)
-			((int*)screen->pixels)[(int)y * 1000 + x] = bright(world_wall.color, y - (int)y);
-		if (x >= 0 && x < 1000 && y > -1 && y < 999)
-			((int*)screen->pixels)[((int)y + 1) * 1000 + x] = bright(world_wall.color, 1 - (y - (int)y));
+		if (x >= 0 && x < game->display_mode.w && y >= 0 && y < game->display_mode.h)
+			((int*)game->screen->pixels)[(int)y * game->display_mode.w + x] = bright(world_wall.color, y - (int)y);
+		if (x >= 0 && x < game->display_mode.w && y > -1 && y < game->display_mode.h - 1)
+			((int*)game->screen->pixels)[((int)y + 1) * game->display_mode.w + x] = bright(world_wall.color, 1 - (y - (int)y));
 		x++;
 		y += grad;
 	}
 }
 
-void	draw_wall_y(SDL_Surface *screen, t_wall world_wall)
+void	draw_wall_y(t_game *game, t_wall world_wall)
 {
 	int	y;
 	double x;
@@ -59,17 +59,17 @@ void	draw_wall_y(SDL_Surface *screen, t_wall world_wall)
 	x = world_wall.pos1.x + grad * (y - world_wall.pos1.y);
 	while (y < world_wall.pos2.y)
 	{
-		if (x >= 0 && x < 1000 && y >= 0 && y < 1000)
-			((int*)screen->pixels)[y * 1000 + (int)x] = bright(world_wall.color, x - (int)x);
-		if (x > -1 && x < 999 && y >= 0 && y < 1000)
-			((int*)screen->pixels)[ y * 1000 + (int)x + 1] = bright(world_wall.color, 1 - (x - (int)x));
+		if (x >= 0 && x < game->display_mode.w && y >= 0 && y < game->display_mode.h)
+			((int*)game->screen->pixels)[y * game->display_mode.w + (int)x] = bright(world_wall.color, x - (int)x);
+		if (x > -1 && x < game->display_mode.w - 1&& y >= 0 && y < game->display_mode.h)
+			((int*)game->screen->pixels)[ y * game->display_mode.w + (int)x + 1] = bright(world_wall.color, 1 - (x - (int)x));
 		y++;
 		x += grad;
 	}
 }
 
 
-void	draw_wall(SDL_Surface *screen, t_wall world_wall)
+void	draw_wall(t_game *game, t_wall world_wall)
 {
 	double for_swap;
 
@@ -84,7 +84,7 @@ void	draw_wall(SDL_Surface *screen, t_wall world_wall)
 			world_wall.pos1.y = world_wall.pos2.y;
 			world_wall.pos2.y = for_swap;
 		}
-		draw_wall_x(screen, world_wall);
+		draw_wall_x(game, world_wall);
 	}
 	else
 	{
@@ -97,10 +97,10 @@ void	draw_wall(SDL_Surface *screen, t_wall world_wall)
 			world_wall.pos1.y = world_wall.pos2.y;
 			world_wall.pos2.y = for_swap;
 		}
-		draw_wall_y(screen, world_wall);
+		draw_wall_y(game, world_wall);
 	}
 }
-void	draw_minimap(SDL_Surface *screen, t_wall *world_wall)
+void	draw_minimap(t_game *game, t_wall *world_wall)
 {
 	int i;
 	t_wall	fov1_wall;
@@ -120,9 +120,9 @@ void	draw_minimap(SDL_Surface *screen, t_wall *world_wall)
 	i = 0;
 	while (i < 3)
 	{
-		draw_wall(screen, *(world_wall + i));
+		draw_wall(game, *(world_wall + i));
 		i++;
 	}
-	draw_wall(screen, fov1_wall);
-	draw_wall(screen, fov2_wall);
+	draw_wall(game, fov1_wall);
+	draw_wall(game, fov2_wall);
 }
