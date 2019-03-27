@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/26 22:18:05 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/27 19:27:28 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,10 +178,9 @@ int main(void)
 	(world_wall + 2)->pos2.y = 2;
 	(world_wall + 2)->pos2.x = 0;
 	(world_wall + 2)->color = 0xAA;
-
+	request = SDL_GetDesktopDisplayMode(0, &display_mode);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		put_sdl_error(0);
-	request = SDL_GetDesktopDisplayMode(0, &display_mode);
 	SDL_ShowCursor(SDL_DISABLE); //спрятать курсор в пределах окна
 	window = SDL_CreateWindow("SDL2. Lessons 02",
 			0,
@@ -191,6 +190,7 @@ int main(void)
 			SDL_WINDOW_SHOWN);
 	if (window == 0)
 		put_sdl_error(0);
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	screen = SDL_GetWindowSurface(window);
 	loop = 1;
 	while (loop)
