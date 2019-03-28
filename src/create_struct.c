@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/27 22:57:50 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/28 16:15:38 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,13 @@ t_game	*create_struct(void)
 		put_sdl_error("Don't malloc t_game");
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
-	//read_map(game, "map");функция для чтения карты;
 	game->sectors = (t_sector*)malloc(sizeof(t_sector));
+	read_map("src/map", game->sectors->points);//функция для чтения карты;
 	game->sectors->count_wall = 3;
 	game->sectors->neighbors = (int*)malloc(sizeof(int) * 3);
 	*(game->sectors->neighbors) = 0xAA0000;
 	*(game->sectors->neighbors + 1) = 0xAA00;
 	*(game->sectors->neighbors + 2) = 0xAA;
-	game->sectors->points = (vec2*)malloc(sizeof(vec2) * 3);
-	game->sectors->points->y = 2;
-	game->sectors->points->x = 0;
-	(game->sectors->points + 1)->y = -1;
-	(game->sectors->points + 1)->x = 2;
-	(game->sectors->points + 2)->y = -3;
-	(game->sectors->points + 2)->x = -2;
 	game->player.pos.x = 0;
 	game->player.pos.y = 0;
 	game->player.angle = 0;

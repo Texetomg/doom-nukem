@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/27 22:26:32 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/28 16:05:23 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,5 @@ SDL_Texture*    load_image(char *file, SDL_Renderer *ren);
 void            apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
 void			put_sdl_error(char *str);
 int				put_fps(t_fps *fps);
+vec2			*read_map(char *name, vec2 *points);
 #endif
