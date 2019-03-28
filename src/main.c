@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/27 19:27:28 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/27 22:56:28 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	change_world_in_cam(t_wall *world_wall, t_wall *cam_wall, t_player player)
 	cam_wall->color = world_wall->color;
 }
 
-void	draw_3d_wall(SDL_Surface *screen, t_wall wall)
+void	draw_3d_wall(t_game *game, t_wall wall)
 {
 	double x1a;
 	double y1t;
@@ -102,12 +102,12 @@ void	draw_3d_wall(SDL_Surface *screen, t_wall wall)
 		return ;
 	if (intersection(&wall.pos1.x, &wall.pos1.y, &wall.pos2.x, &wall.pos2.y) != 0)
 	{
-		x1a = -wall.pos1.y * 700 / wall.pos1.x + 500;
-		y1t = -500 / wall.pos1.x + 500;
-		y1b = 500 / wall.pos1.x + 500;
-		x2a = -wall.pos2.y * 700 / wall.pos2.x + 500;
-		y2t = -500 / wall.pos2.x + 500;
-		y2b = 500 / wall.pos2.x + 500;
+		x1a = -wall.pos1.y * 1400 / wall.pos1.x + game->display_mode.w / 2;
+		y1t = -500 / wall.pos1.x + game->display_mode.h / 2;
+		y1b = 500 / wall.pos1.x + game->display_mode.h / 2;
+		x2a = -wall.pos2.y * 1400 / wall.pos2.x + game->display_mode.w / 2;
+		y2t = -500 / wall.pos2.x + game->display_mode.h / 2;
+		y2b = 500 / wall.pos2.x + game->display_mode.h / 2;
 		if (x1a > x2a)
 		{
 			for_swap = x1a;
@@ -120,31 +120,29 @@ void	draw_3d_wall(SDL_Surface *screen, t_wall wall)
 			y1t = y2t;
 			y2t = for_swap;
 		}
+		
 		k = (int)x1a;
-		while (k < (int)x2a)
+		while (k < x2a)
 		{
 			yt = y1t + (y2t - y1t) * (k - x1a) / (x2a - x1a);
 			yb = y1b + (y2b - y1b) * (k - x1a) / (x2a - x1a);
 			i = (int)yt;
 			while (i < yb)
 			{
-				if (i >= 0 && i < 1000 && k >= 0 && k < 1000)
-					((int*)screen->pixels)[i * 1000 + k] = wall.color;
+				if (i >= 0 && i < game->display_mode.h && k >= 0 && k < game->display_mode.w)
+					((int*)game->screen->pixels)[i * game->display_mode.w + k] = wall.color;
 				i++;
 			}
 			k++;
 		}
 	}
 }
+
 int main(void)
 {
-	SDL_Window	*window; 			//окно
-	SDL_Surface	*screen; 			//поверхность
-	SDL_DisplayMode	display_mode;	//параметры дисплея
-	int request;					//обработка возвращаемых значений
+	t_game		*game;
 	int loop;
 	SDL_Event e;
-	t_player	player;
 	double x;
 	double y;
 	int i;
@@ -158,9 +156,6 @@ int main(void)
 	fps = (t_fps*)malloc(sizeof(t_fps));
 	world_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
 	cam_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
-	player.pos.x = 0;
-	player.pos.y = 0;
-	player.angle = 0;
 	world_wall->pos1.y = 2;
 	world_wall->pos1.x = 0;
 	world_wall->pos2.y = -1;
@@ -178,20 +173,7 @@ int main(void)
 	(world_wall + 2)->pos2.y = 2;
 	(world_wall + 2)->pos2.x = 0;
 	(world_wall + 2)->color = 0xAA;
-	request = SDL_GetDesktopDisplayMode(0, &display_mode);
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-		put_sdl_error(0);
-	SDL_ShowCursor(SDL_DISABLE); //спрятать курсор в пределах окна
-	window = SDL_CreateWindow("SDL2. Lessons 02",
-			0,
-			0,
-			1000,
-			1000,
-			SDL_WINDOW_SHOWN);
-	if (window == 0)
-		put_sdl_error(0);
-	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-	screen = SDL_GetWindowSurface(window);
+	game = create_struct();
 	loop = 1;
 	while (loop)
 	{
@@ -199,49 +181,49 @@ int main(void)
 		while (SDL_PollEvent( &e))
 		{
 			SDL_GetMouseState(&mouse->curr_x, &mouse->curr_y);
-		SDL_WarpMouseInWindow(window, MOUSE_POS_X, MOUSE_POS_Y); //перемещать курсор в одну и ту же точку
+			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); //перемещать курсор в одну и ту же точку
 		
-			player.angle -= 3.14 / 600 * (mouse->curr_x - MOUSE_POS_X);
+			game->player.angle -= 3.14 / 600 * (mouse->curr_x - game->display_mode.w / 2);
 		
 			if (e.type == SDL_KEYDOWN)
 			{
-				x = step * cos(player.angle);
-				y = step * sin(player.angle);
+				x = step * cos(game->player.angle);
+				y = step * sin(game->player.angle);
 				if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 					loop = 0;
 				if (e.key.keysym.sym == SDLK_e)
-					player.angle -= 3.14 / 60;
+					game->player.angle -= 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_q)
-					player.angle += 3.14 / 60;
+					game->player.angle += 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_w)
 				{
-					player.pos.x += x;
-					player.pos.y += y;
+					game->player.pos.x += x;
+					game->player.pos.y += y;
 				}
 				if (e.key.keysym.sym == SDLK_s)
 				{
-					player.pos.x -= x;
-					player.pos.y -= y;
+					game->player.pos.x -= x;
+					game->player.pos.y -= y;
 				}
 				if (e.key.keysym.sym == SDLK_d)
 				{
-						player.pos.x +=  y;
-						player.pos.y -= x;
+						game->player.pos.x +=  y;
+						game->player.pos.y -= x;
 				}
 				if (e.key.keysym.sym == SDLK_a)
 				{
-						player.pos.x -= y;
-						player.pos.y += x;
+						game->player.pos.x -= y;
+						game->player.pos.y += x;
 				}
 			}
 		}
 
-		SDL_FillRect(screen, 0, 0);
+		SDL_FillRect(game->screen, 0, 0);
 		i = 0;
 		while (i < 3)
 		{
-			change_world_in_cam(world_wall + i, cam_wall + i, player);
-			draw_3d_wall(screen, *(cam_wall + i));
+			change_world_in_cam(world_wall + i, cam_wall + i, game->player);
+			draw_3d_wall(game, *(cam_wall + i));
 			i++;
 		}
 
@@ -252,10 +234,10 @@ int main(void)
 			change_wall(cam_wall + i);
 			i++;
 		}
-		draw_minimap(screen, cam_wall);
-		SDL_UpdateWindowSurface(window);
+		draw_minimap(game, cam_wall);
+		SDL_UpdateWindowSurface(game->window);
 	}
-	SDL_DestroyWindow(window);
+	SDL_DestroyWindow(game->window);
 	SDL_Quit();
 	return (0);
 }
