@@ -5,17 +5,17 @@
 #                                                     +:+ +:+         +:+      #
 #    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/03/29 10:23:23 by bfalmer-         ###   ########.fr        #
+#    Created: 2019/03/29 11:28:09 by bfalmer-          #+#    #+#              #
+#    Updated: 2019/03/29 11:47:49 by bfalmer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = doom-nukem
+NAME = map-editor
 FLAG = -Wall -Wextra -Werror -g -O
-SRC = main.c SDL_utils.c draw_wall.c fps.c create_struct.c read_map.c vectors_utils.c
-INC = -I libft/ -I ./includes -I ./framework/SDL2.framework/Versions/A/Headers
-LIB = -L libft/ -lft 
-FRWR = -framework SDL2 -F framework/
+SRC = main.c
+INC = -I ../libft/ -I ./includes -I ../framework/SDL2.framework/Versions/A/Headers
+LIB = -L ../libft/ -lft 
+FRWR = -framework SDL2 -F ../framework/
 OBJS = $(addprefix objects/, $(SRC:.c=.o))
 OBJDIR = objects
 SRCDIR = src
@@ -32,15 +32,15 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@$(CC) $(FLAG) $(INC) -c $^ -o $@
 
 lib_ft:
-	make -C libft
+	make -C ../libft
 
 clean:
-	make -C libft/ clean
+	make -C ../libft/ clean
 	rm -f $(OBJS)
 
 fclean:
 	rm -f $(OBJS)
-	make -C libft/ fclean
+	make -C ../libft/ fclean
 	rm -f $(NAME)
 	
 re:

@@ -6,20 +6,20 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 10:21:17 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/29 11:17:44 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-void	change_wall(t_wall *cam_wall)
+void		change_wall(t_wall *cam_wall)
 {
 	cam_wall->pos1.x = (5 + cam_wall->pos1.x) * 20;
 	cam_wall->pos2.x = (5 + cam_wall->pos2.x) * 20;
 	cam_wall->pos1.y = (5 - cam_wall->pos1.y) * 20;
 	cam_wall->pos2.y = (5 - cam_wall->pos2.y) * 20;
 }
-void	change_world_in_cam(t_wall *world_wall, t_wall *cam_wall, t_player player)
+static void	change_world_in_cam(t_wall *world_wall, t_wall *cam_wall, t_player player)
 {
 	cam_wall->pos1.x = (world_wall->pos1.y - player.pos.y) * sin(player.angle) + (world_wall->pos1.x - player.pos.x) * cos(player.angle);
 	cam_wall->pos2.x = (world_wall->pos2.y - player.pos.y) * sin(player.angle) + (world_wall->pos2.x - player.pos.x) * cos(player.angle);
@@ -28,7 +28,7 @@ void	change_world_in_cam(t_wall *world_wall, t_wall *cam_wall, t_player player)
 	cam_wall->color = world_wall->color;
 }
 
-void	draw_3d_wall(t_game *game, t_wall wall)
+static void	draw_3d_wall(t_game *game, t_wall wall)
 {
 	double x1a;
 	double y1t;
@@ -82,7 +82,7 @@ void	draw_3d_wall(t_game *game, t_wall wall)
 	}
 }
 
-int main(void)
+int 		main(void)
 {
 	t_game		*game;
 	int loop;
