@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/28 16:15:38 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:47:08 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-		put_sdl_error(0);
+		check_error_n_exit(1,(char*)SDL_GetError());
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
-		put_sdl_error(0);
+		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
-		put_sdl_error(0);
+		check_error_n_exit(1,(char*)SDL_GetError());
 	game->window = SDL_CreateWindow(0, 0, 0, 0, 0,
 			SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if (game->window == 0)
-		put_sdl_error(0);
+		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
-		put_sdl_error(0);
+		check_error_n_exit(1,(char*)SDL_GetError());
 }
 //создание главной структуры
 t_game	*create_struct(void)
@@ -33,7 +33,7 @@ t_game	*create_struct(void)
 	t_game	*game;
 
 	if ((game = (t_game*)malloc(sizeof(t_game))) == 0)
-		put_sdl_error("Don't malloc t_game");
+		check_error_n_exit(1,"malloc error");
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
 	game->sectors = (t_sector*)malloc(sizeof(t_sector));

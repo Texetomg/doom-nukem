@@ -6,13 +6,13 @@
 #    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/29 11:28:09 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/03/29 11:47:49 by bfalmer-         ###   ########.fr        #
+#    Updated: 2019/03/29 13:54:32 by bfalmer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = map-editor
 FLAG = -Wall -Wextra -Werror -g -O
-SRC = main.c
+SRC = main.c SDL_utils.c
 INC = -I ../libft/ -I ./includes -I ../framework/SDL2.framework/Versions/A/Headers
 LIB = -L ../libft/ -lft 
 FRWR = -framework SDL2 -F ../framework/

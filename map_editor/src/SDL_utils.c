@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 16:23:55 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/27 18:21:46 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/29 13:56:30 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "map-editor.h"
 
 SDL_Texture* load_image(char *file, SDL_Renderer *ren)
 {
@@ -39,12 +39,3 @@ void        apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren)
     SDL_RenderCopy(ren, tex, NULL, &pos);
 }
 
-void		put_sdl_error(char *str)
-{
-	if (str == 0)
-		ft_putendl(SDL_GetError());
-	else
-		ft_putendl(str);
-	SDL_Quit();
-	exit(1);
-}

@@ -1,7 +1,8 @@
-libft/*
+libft/*.o
+libft/*.gch*
 .DS_Store
-.gitignore
 game/objects/*
 game/doom-nukem
 map-editor/objects/*
 map-editor/map-editor
+.vscode/

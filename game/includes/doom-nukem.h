@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 11:17:56 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:54:53 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,6 @@ typedef struct		s_game
 
 t_game  			*create_struct(void);
 void    			draw_minimap(t_game *game, t_wall *world_wall);
-SDL_Texture*    	load_image(char *file, SDL_Renderer *ren);
-void            	apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
-void				put_sdl_error(char *str);
 int					put_fps(t_fps *fps);
 vec2				*read_map(char *name, vec2 *points);
 void				player_move(t_game *game, int *loop);

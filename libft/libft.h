@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 18:25:21 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/12 14:35:09 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/29 13:38:15 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,5 @@ int						ft_atoi(const char *c);
 void					ft_putchar(char c);
 void					ft_putstr(char const *c);
 void					ft_putnbr(int c);
+void					put_sdl_error(char *str);
 #endif
