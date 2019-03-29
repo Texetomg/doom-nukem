@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 10:04:46 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/29 14:48:44 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,14 @@ static void	read_coord(char *line, vec2 *points)
 	}
 }
 
-vec2		*read_map(char *name, vec2 *points)
+vec2		*read_map(char *name)
 {
 	char	*line;
 	int		gnl;
 	int		fd;
 	int		position;
-
+	vec2	*points;
+	
 	position = 0;
 	if ((fd = open(name, O_RDONLY)) < 0)
 		check_error_n_exit(1, "file descriptor < 0");
@@ -62,7 +63,7 @@ vec2		*read_map(char *name, vec2 *points)
 		free(line);
 	}
 	close(fd);
-	return (points);
+	return(points);
 }
 
 void	player_move(t_game *game, int *loop)
@@ -73,14 +74,12 @@ void	player_move(t_game *game, int *loop)
 	double step;
 	step = 0.1;
 	
-	t_mouse	*mouse;
-	mouse = (t_mouse*)malloc(sizeof(t_mouse));
 	while (SDL_PollEvent( &e))
 		{
-			SDL_GetMouseState(&mouse->curr_x, &mouse->curr_y);
+			SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
 			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); //перемещать курсор в одну и ту же точку
 		
-			game->player.angle -= 3.14 / 600 * (mouse->curr_x - game->display_mode.w / 2);
+			game->player.angle -= 3.14 / 600 * (game->mouse.x - game->display_mode.w / 2);
 			if (e.type == SDL_KEYDOWN)
 			{
 				x = step * cos(game->player.angle);
