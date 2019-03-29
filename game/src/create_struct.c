@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/29 14:55:39 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:10:04 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,17 @@ t_game	*create_struct(void)
 	//game->sectors->points = read_map("src/map");//функция для чтения карты;
 	game->sectors->count_wall = 3;
 	game->sectors->neighbors = (int*)malloc(sizeof(int) * 3);
+	game->points = (vec2*)malloc(sizeof(vec2) * 3);
+	game->points->y = 2;
+	game->points->x = 0;
+	(game->points + 1)->y = -1;
+	(game->points + 1)->x = 2;
+	(game->points + 2)->y = -3;
+	(game->points + 2)->x = -2;
+	game->sectors->index_points = (int*)malloc(sizeof(int) * 3);
+	*(game->sectors->index_points) = 0;
+	*(game->sectors->index_points + 1) = 1;
+	*(game->sectors->index_points + 2) = 2;
 	*(game->sectors->neighbors) = 0xAA0000;
 	*(game->sectors->neighbors + 1) = 0xAA00;
 	*(game->sectors->neighbors + 2) = 0xAA;

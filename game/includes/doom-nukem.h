@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 14:41:03 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:06:58 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,17 @@ typedef struct		s_wall
 }					t_wall;
 typedef struct		s_sector
 {
-	vec2			*points;
 	double			floor;
 	double			ceil;
 	int				*neighbors;
+	int				*index_points;
 	int				count_wall;
 }					t_sector;
 
 typedef struct		s_game
 {
 	t_player		player;
+	vec2			*points;
 	t_sector		*sectors;
 	SDL_Window		*window;
 	SDL_Surface		*screen;
