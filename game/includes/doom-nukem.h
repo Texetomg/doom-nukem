@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 16:58:27 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/29 20:16:42 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct		s_game
 	vec2int			mouse;
 	int				count_points;
 	vec2   			*points_cam;
+	int				count_sectors;
 }					t_game;
 
 t_game  			*create_struct(void);
@@ -95,5 +96,4 @@ int					put_fps(t_fps *fps);
 vec2				*read_map(char *name);
 void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
-int					intersection(double *x1, double *y1, double *x2, double *y2);
 #endif

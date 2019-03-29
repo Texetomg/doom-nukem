@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/29 16:59:01 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/29 20:07:22 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_game	*create_struct(void)
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
 	game->sectors = (t_sector*)malloc(sizeof(t_sector));
+	game->count_sectors = 1;
 	game->points_cam = (vec2*)malloc(sizeof(vec2) * 3);
 	//game->sectors->points = read_map("src/map");//функция для чтения карты;
 	game->sectors->count_wall = 3;
