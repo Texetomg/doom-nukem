@@ -6,13 +6,13 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/28 16:36:59 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/29 10:04:46 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-void	read_coord(char *line, vec2 *points)
+static void	read_coord(char *line, vec2 *points)
 {
 	char	point[5];
 	int		i;
@@ -38,7 +38,7 @@ void	read_coord(char *line, vec2 *points)
 	}
 }
 
-vec2	*read_map(char *name, vec2 *points)
+vec2		*read_map(char *name, vec2 *points)
 {
 	char	*line;
 	int		gnl;
@@ -63,4 +63,55 @@ vec2	*read_map(char *name, vec2 *points)
 	}
 	close(fd);
 	return (points);
+}
+
+void	player_move(t_game *game, int *loop)
+{
+	SDL_Event e;
+	double x;
+	double y;
+	double step;
+	step = 0.1;
+	
+	t_mouse	*mouse;
+	mouse = (t_mouse*)malloc(sizeof(t_mouse));
+	while (SDL_PollEvent( &e))
+		{
+			SDL_GetMouseState(&mouse->curr_x, &mouse->curr_y);
+			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); //перемещать курсор в одну и ту же точку
+		
+			game->player.angle -= 3.14 / 600 * (mouse->curr_x - game->display_mode.w / 2);
+			if (e.type == SDL_KEYDOWN)
+			{
+				x = step * cos(game->player.angle);
+				y = step * sin(game->player.angle);
+				if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
+					*loop = 0;
+				if (e.key.keysym.sym == SDLK_e)
+					game->player.angle -= 3.14 / 60;
+				if (e.key.keysym.sym == SDLK_q)
+					game->player.angle += 3.14 / 60;
+				if (e.key.keysym.sym == SDLK_w)
+				{
+					game->player.pos.x += x;
+					game->player.pos.y += y;
+				}
+				if (e.key.keysym.sym == SDLK_s)
+				{
+					game->player.pos.x -= x;
+					game->player.pos.y -= y;
+				}
+				if (e.key.keysym.sym == SDLK_d)
+				{
+						game->player.pos.x +=  y;
+						game->player.pos.y -= x;
+				}
+				if (e.key.keysym.sym == SDLK_a)
+				{
+						game->player.pos.x -= y;
+						game->player.pos.y += x;
+				}
+			}
+		
+		}
 }

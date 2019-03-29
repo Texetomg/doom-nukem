@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_wall.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/27 22:39:35 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/29 10:09:47 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,12 @@ void	draw_minimap(t_game *game, t_wall *world_wall)
 	fov2_wall.color = 0xAAAAAA;
 	fov1_wall.color = 0xAAAAAA;
 
-	i = 0;
-	while (i < 3)
-	{
+	i = -1;
+	while (++i < 3)
+		change_wall(world_wall + i);
+	i = -1;
+	while (++i < 3)
 		draw_wall(game, *(world_wall + i));
-		i++;
-	}
 	draw_wall(game, fov1_wall);
 	draw_wall(game, fov2_wall);
 }
