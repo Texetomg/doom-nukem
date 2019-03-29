@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 16:04:05 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/29 16:58:59 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,30 @@ static void	change_world_in_cam(t_wall *world_wall, t_wall *cam_wall, t_player p
 	cam_wall->color = world_wall->color;
 }
 
-static void	draw_3d_wall(t_game *game, t_wall wall)
+vec2			*give_points_cam(game)
 {
+	vec		*point_cam;
+	int		i;
+
+	i = 0;
+	while (i < game->count_points)
+	{
+		(point_cam + i)->x = ((game->points + i)->y - game->player.pos.y) * sin(game->player.pos.angle) + ((game->points + i)->x - game->player.pos.x) * cos(game->player.pos.angle);
+		(point_cam + i)->y = ((game->points + i)->y - game->player.pos.y) * cos(game->player.pos.angle) - ((game->points + i)->x - game->player.pos.x) * sin(game->player.pos.angle);
+		i++;
+	}
+	return (point_cam);
+}
+
+void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
+{
+
+}
+
+static void	draw_3d_wall(t_game *game)
+{
+	vec2	fov_left;
+	vec2	fov_right;
 	double x1a;
 	double y1t;
 	double y1b;
@@ -41,7 +63,13 @@ static void	draw_3d_wall(t_game *game, t_wall wall)
 	double yt;
 	double yb;
 	double for_swap;
-
+	
+	fov_left.x = 8.66;
+	fov_left.y = 5;
+	fov_rigth.x = 8.66;
+	fov_right.y = -5;
+	give_point_cam(game);
+	draw_sector(game, game->player.curr_sector, fov_left, fov_right);
 	if (wall.pos1.x < 0 && wall.pos2.x < 0)
 		return ;
 	if (intersection(&wall.pos1.x, &wall.pos1.y, &wall.pos2.x, &wall.pos2.y) != 0)
@@ -91,37 +119,14 @@ int 		main(void)
 	t_wall	*cam_wall;
 	t_fps	*fps;
 	fps = (t_fps*)malloc(sizeof(t_fps));
-	world_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
-	cam_wall = (t_wall*)malloc(sizeof(t_wall) * 4);
-	world_wall->pos1.y = 2;
-	world_wall->pos1.x = 0;
-	world_wall->pos2.y = -1;
-	world_wall->pos2.x = 2;
-	world_wall->color = 0xAA0000;
-	(world_wall + 1)->pos1.y = -1;
-	(world_wall + 1)->pos1.x = 2;
-	(world_wall + 1)->pos2.y = -3;
-	(world_wall + 1)->pos2.x = -2;
-	(world_wall + 1)->color = 0xAA00;
-	(world_wall + 2)->pos1.y = -3;
-	(world_wall + 2)->pos1.x = -2;
-	(world_wall + 2)->pos2.y = 2;
-	(world_wall + 2)->pos2.x = 0;
-	(world_wall + 2)->color = 0xAA;
 	game = create_struct();
 	loop = 1;
 	while (loop)
 	{
 		player_move(game, &loop);
 		SDL_FillRect(game->screen, 0, 0);
-		i = -1;
-		while (++i < 3)
-		{
-			change_world_in_cam(world_wall + i, cam_wall + i, game->player);
-			draw_3d_wall(game, *(cam_wall + i));
-		}
+		draw_3d_wall(game, *(cam_wall + i));
 		//put_fps(fps);
-		i = 0;
 		draw_minimap(game, cam_wall);
 		SDL_UpdateWindowSurface(game->window);
 	}

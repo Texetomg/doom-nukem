@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 16:06:58 by thorker          ###   ########.fr       */
+/*   Updated: 2019/03/29 16:58:27 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ typedef struct		s_game
 	SDL_DisplayMode	display_mode;
 	struct timeval  time;
 	vec2int			mouse;
+	int				count_points;
+	vec2   			*points_cam;
 }					t_game;
 
 t_game  			*create_struct(void);
