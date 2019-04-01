@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/01 17:22:35 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/01 17:55:18 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,38 @@ static void	define_vertex(vec2 *points, char *line)
 static void	define_sector(t_sector *sector, char *line)
 {
 	int		i;
+	int		j;
+	int		vectors_count;
+	int		wall_count;
 
 	i = 2;
+	j = 0;
+	vectors_count = 0;
+	wall_count = 0;
 	sector->ceil = find_number(line, &i);
 	sector->floor = find_number(line, &i);
+	while (line[i] == ' ')
+	{
+		i++;
+		vectors_count++;
+	}
+	i -= vectors_count;
+	sector->index_points = (int*)malloc(sizeof(int) * vectors_count + 1);
+	while (vectors_count)
+	{
+		*(sector->index_points + j) = find_number(line, &i);
+		vectors_count--;
+		j++;
+	}
+	while (line[i] == ' ')
+	{
+		i++;
+		wall_count++;
+	}
+	i -= wall_count;
+	sector->count_wall = wall_count + 1;
+	ft_putnbr(sector->count_wall);
+	sector->neighbors = (int*)malloc(sizeof(int) * sector->count_wall);
 }
 
 //чтение карты
@@ -108,6 +136,7 @@ void		read_map(char *name, t_game *game)
 		{
 			define_sector(game->sectors + j, line);
 			j++;
+
 		}
 		free(line);
 	}	
