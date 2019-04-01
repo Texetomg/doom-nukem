@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/01 13:49:55 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/01 14:01:04 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ static void	define_coords(vec2 *points, char *line)
 	i = 2;
 	while (line[i] && line[i] != '\t')
 		buff[j++] = line[i++];
-	points->x = ft_atoi(buff);
+	points->y = ft_atoi(buff);
 	ft_strclr(buff);
 	i += 2;
 	j = 0;
 	while (line[i] && line[i] != '\t')
 		buff[j++] = line[i++];
-	points->y = ft_atoi(buff);
+	points->x = ft_atoi(buff);
 }
 //чтение карты
 vec2		*read_map(char *name)

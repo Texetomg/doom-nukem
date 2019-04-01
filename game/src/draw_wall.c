@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/29 10:09:47 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/03/29 20:17:39 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	draw_wall(t_game *game, t_wall world_wall)
 		draw_wall_y(game, world_wall);
 	}
 }
+// переделать минимапу
 void	draw_minimap(t_game *game, t_wall *world_wall)
 {
 	int i;
@@ -117,9 +118,7 @@ void	draw_minimap(t_game *game, t_wall *world_wall)
 	fov2_wall.color = 0xAAAAAA;
 	fov1_wall.color = 0xAAAAAA;
 
-	i = -1;
-	while (++i < 3)
-		change_wall(world_wall + i);
+
 	i = -1;
 	while (++i < 3)
 		draw_wall(game, *(world_wall + i));

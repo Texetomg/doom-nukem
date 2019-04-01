@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/01 13:54:53 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/01 14:01:19 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,26 @@ typedef struct		s_wall
 }					t_wall;
 typedef struct		s_sector
 {
-	vec2			*points;
 	double			floor;
 	double			ceil;
 	int				*neighbors;
+	int				*index_points;
 	int				count_wall;
 }					t_sector;
 
 typedef struct		s_game
 {
 	t_player		player;
+	vec2			*points;
 	t_sector		*sectors;
 	SDL_Window		*window;
 	SDL_Surface		*screen;
 	SDL_DisplayMode	display_mode;
 	struct timeval  time;
 	vec2int			mouse;
+	int				count_points;
+	vec2   			*points_cam;
+	int				count_sectors;
 }					t_game;
 
 t_game  			*create_struct(void);
@@ -92,5 +96,4 @@ int					put_fps(t_fps *fps);
 vec2				*read_map(char *name);
 void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
-int					intersection(double *x1, double *y1, double *x2, double *y2);
 #endif
