@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/01 14:01:19 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/01 16:16:18 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct		s_game
 t_game  			*create_struct(void);
 void    			draw_minimap(t_game *game, t_wall *world_wall);
 int					put_fps(t_fps *fps);
-vec2				*read_map(char *name);
+void				read_map(char *name, t_game *game);
 void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
 #endif
