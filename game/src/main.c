@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 20:20:02 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/01 14:29:04 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,8 @@ int 		main(void)
 	fps = (t_fps*)malloc(sizeof(t_fps));
 	game = create_struct();
 	loop = 1;
-	ft_putnbrln(game->display_mode.w);
-	ft_putnbrln(game->display_mode.h);
+	//ft_putnbrln(game->display_mode.w);
+	//ft_putnbrln(game->display_mode.h);
 	while (loop)
 	{
 		player_move(game, &loop);

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/01 14:01:04 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/01 14:28:43 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,6 @@ vec2		*read_map(char *name)
 		if (gnl == -1)
 			check_error_n_exit(1, "gnl return -1");
 		else if (line[0] == 'v')
-		{
-			define_coords(points + i, line);
-			i++;
-		}
-		else if (line[0] == 's')
 		{
 			define_coords(points + i, line);
 			i++;
