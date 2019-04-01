@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/29 14:55:39 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/01 13:54:55 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,21 @@ t_game	*create_struct(void)
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
 	game->sectors = (t_sector*)malloc(sizeof(t_sector));
-	//game->sectors->points = read_map("src/map");//функция для чтения карты;
+	game->sectors->points = read_map("src/map");
+	ft_putstr("x: ");
+	ft_putnbr(game->sectors->points->x);
+	ft_putstr("y: ");
+	ft_putnbr(game->sectors->points->y);
+	ft_putstr("\n");
+	ft_putstr("x: ");
+	ft_putnbr((game->sectors->points + 1)->x);
+	ft_putstr("y: ");
+	ft_putnbr((game->sectors->points + 1)->y);
+	ft_putstr("\n");
+	ft_putstr("x: ");
+	ft_putnbr((game->sectors->points + 2)->x);
+	ft_putstr("y: ");
+	ft_putnbr((game->sectors->points + 2)->y);
 	game->sectors->count_wall = 3;
 	game->sectors->neighbors = (int*)malloc(sizeof(int) * 3);
 	*(game->sectors->neighbors) = 0xAA0000;
