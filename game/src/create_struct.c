@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/01 17:53:40 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/02 16:55:31 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ t_game	*create_struct(void)
 	game->sectors = (t_sector*)malloc(sizeof(t_sector));
 	game->points_cam = (vec2*)malloc(sizeof(vec2) * 3);
 	read_map("src/map", game);
-	*(game->sectors->neighbors) = 0xAA0000;
-	*(game->sectors->neighbors + 1) = 0xAA00;
-	*(game->sectors->neighbors + 2) = 0xAA;
+	*(game->sectors->neighbors) = -1;
+	*(game->sectors->neighbors + 1) = 1;
+	*(game->sectors->neighbors + 2) = -1;
 	game->player.pos.x = 0;
 	game->player.pos.y = 0;
+	game->player.pos.z = 0;
 	game->player.angle = 0;
 	game->player.curr_sector = 0;
 	return (game);
