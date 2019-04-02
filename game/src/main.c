@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/02 16:56:11 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/02 17:40:16 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,10 +141,12 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 				while (m < game->display_mode.h)
 				{
 					if (m < yt)
-						color = 0;
+						color = 0x88;
 					else if (m < yb)
 					{
-						if (*((game->sectors + curr_sector)->neighbors + i) == -1)
+						if (k == (int)x1a || k == (int)x2a)
+							color = 0;
+						else if (*((game->sectors + curr_sector)->neighbors + i) == -1)
 							color = 0xAA00;
 						else
 							color = 0xAA0000;
@@ -173,7 +175,7 @@ static void	draw_3d_wall(t_game *game)
 	fov_right.y = -5;
 	give_points_cam(game);
 	draw_sector(game, game->player.curr_sector, fov_left, fov_right);
-	//draw_minimap(game); минимапа здесь
+	draw_minimap(game);
 }
 
 int 		main(void)

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/29 20:17:39 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/02 17:47:16 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,100 +28,104 @@ int		bright(int color, double bri)
 	return (color);
 }
 
-void	draw_wall_x(t_game *game, t_wall world_wall)
+void	draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
 	int	x;
 	double y;
 	double grad;
 
-	grad = (world_wall.pos2.y - world_wall.pos1.y) / (world_wall.pos2.x - world_wall.pos1.x);
-	x = round(world_wall.pos1.x);
-	y = world_wall.pos1.y + grad * (x - world_wall.pos1.x);
-	while (x < world_wall.pos2.x)
+	grad = (second_point.y - first_point.y) / (second_point.x - first_point.x);
+	x = round(first_point.x);
+	y = first_point.y + grad * (x - first_point.x);
+	while (x < second_point.x)
 	{
-		if (x >= 0 && x < game->display_mode.w && y >= 0 && y < game->display_mode.h)
-			((int*)game->screen->pixels)[(int)y * game->display_mode.w + x] = bright(world_wall.color, y - (int)y);
-		if (x >= 0 && x < game->display_mode.w && y > -1 && y < game->display_mode.h - 1)
-			((int*)game->screen->pixels)[((int)y + 1) * game->display_mode.w + x] = bright(world_wall.color, 1 - (y - (int)y));
+		if (x >= 0 && x < game->display_mode.w / 10 && y >= 0 && y < game->display_mode.h / 10)
+			((int*)game->screen->pixels)[(int)y * game->display_mode.w + x] = bright(color, y - (int)y);
+		if (x >= 0 && x < game->display_mode.w / 10 && y > -1 && y < game->display_mode.h / 10 - 1)
+			((int*)game->screen->pixels)[((int)y + 1) * game->display_mode.w + x] = bright(color, 1 - (y - (int)y));
 		x++;
 		y += grad;
 	}
 }
 
-void	draw_wall_y(t_game *game, t_wall world_wall)
+void	draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
 	int	y;
 	double x;
 	double grad;
 
-	grad = (world_wall.pos2.x - world_wall.pos1.x) / (world_wall.pos2.y - world_wall.pos1.y);
-	y = round(world_wall.pos1.y);
-	x = world_wall.pos1.x + grad * (y - world_wall.pos1.y);
-	while (y < world_wall.pos2.y)
+	grad = (second_point.x - first_point.x) / (second_point.y - first_point.y);
+	y = round(first_point.y);
+	x = first_point.x + grad * (y - first_point.y);
+	while (y < second_point.y)
 	{
-		if (x >= 0 && x < game->display_mode.w && y >= 0 && y < game->display_mode.h)
-			((int*)game->screen->pixels)[y * game->display_mode.w + (int)x] = bright(world_wall.color, x - (int)x);
-		if (x > -1 && x < game->display_mode.w - 1&& y >= 0 && y < game->display_mode.h)
-			((int*)game->screen->pixels)[ y * game->display_mode.w + (int)x + 1] = bright(world_wall.color, 1 - (x - (int)x));
+		if (x >= 0 && x < game->display_mode.w / 10 && y >= 0 && y < game->display_mode.h / 10)
+			((int*)game->screen->pixels)[y * game->display_mode.w + (int)x] = bright(color, x - (int)x);
+		if (x > -1 && x < game->display_mode.w / 10 - 1 && y >= 0 && y < game->display_mode.h / 10)
+			((int*)game->screen->pixels)[ y * game->display_mode.w + (int)x + 1] = bright(color, 1 - (x - (int)x));
 		y++;
 		x += grad;
 	}
 }
 
 
-void	draw_wall(t_game *game, t_wall world_wall)
+void	draw_2dsector(t_game *game, int curr_sector)
 {
 	double for_swap;
-
-	if (fabs(world_wall.pos1.x - world_wall.pos2.x) > fabs(world_wall.pos1.y - world_wall.pos2.y))
+	int i;
+	vec2	first_point;
+	vec2	second_point;
+	i = 0;
+	while (i < (game->sectors + curr_sector)->count_wall)
 	{
-		if (world_wall.pos1.x > world_wall.pos2.x)
+		first_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points + i));
+		if (i == (game->sectors + curr_sector)->count_wall - 1)
+			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points));
+		else
+			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points + i + 1));
+		first_point.x = first_point.x * 20  + game->display_mode.w / 20;
+		first_point.y = -first_point.y * 20 + game->display_mode.h / 20;
+		second_point.x = second_point.x * 20 + game->display_mode.w / 20;
+		second_point.y = -second_point.y * 20 +  game->display_mode.h / 20;
+		if (fabs(first_point.x - second_point.x) > fabs(first_point.y - second_point.y))
 		{
-			for_swap = world_wall.pos1.x;
-			world_wall.pos1.x = world_wall.pos2.x;
-			world_wall.pos2.x = for_swap;
-			for_swap = world_wall.pos1.y;
-			world_wall.pos1.y = world_wall.pos2.y;
-			world_wall.pos2.y = for_swap;
+			if (first_point.x > second_point.x)
+			{
+				for_swap = first_point.x;
+				first_point.x = second_point.x;
+				second_point.x = for_swap;
+				for_swap = first_point.y;
+				first_point.y = second_point.y;
+				second_point.y = for_swap;
+			}
+			draw_wall_x(game, first_point, second_point, 0);
 		}
-		draw_wall_x(game, world_wall);
-	}
-	else
-	{
-		if (world_wall.pos1.y > world_wall.pos2.y)
+		else
 		{
-			for_swap = world_wall.pos1.x;
-			world_wall.pos1.x = world_wall.pos2.x;
-			world_wall.pos2.x = for_swap;
-			for_swap = world_wall.pos1.y;
-			world_wall.pos1.y = world_wall.pos2.y;
-			world_wall.pos2.y = for_swap;
+			if (first_point.y > second_point.y)
+			{
+				for_swap = first_point.x;
+				first_point.x = second_point.x;
+				second_point.x = for_swap;
+				for_swap = first_point.y;
+				first_point.y = second_point.y;
+				second_point.y = for_swap;
+			}
+			draw_wall_y(game, first_point, second_point, 0);
 		}
-		draw_wall_y(game, world_wall);
+		i++;
 	}
 }
 // переделать минимапу
-void	draw_minimap(t_game *game, t_wall *world_wall)
+void	draw_minimap(t_game *game)
 {
 	int i;
-	t_wall	fov1_wall;
-	t_wall	fov2_wall;
 
-	fov1_wall.pos1.x = 100;
-	fov1_wall.pos1.y = 100;
-	fov2_wall.pos1.x = 100;
-	fov2_wall.pos1.y = 100;
-	fov1_wall.pos2.x = 200;
-	fov2_wall.pos2.x = 200;
-	fov1_wall.pos2.y = 8.53 * 20;
-	fov2_wall.pos2.y = (5 - 3.53) * 20;
-	fov2_wall.color = 0xAAAAAA;
-	fov1_wall.color = 0xAAAAAA;
-
-
-	i = -1;
-	while (++i < 3)
-		draw_wall(game, *(world_wall + i));
-	draw_wall(game, fov1_wall);
-	draw_wall(game, fov2_wall);
+	i = 0;
+	while (i < game->count_sectors)
+	{
+		draw_2dsector(game, i);
+		i++;
+	}
+	//добавить фов
 }
