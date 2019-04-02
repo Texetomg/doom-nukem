@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/02 17:59:46 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/02 19:45:39 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int		bright(int color, double bri)
 
 void	draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
+	ft_putendl("draw_wall_x");
 	int	x;
 	double y;
 	double grad;
@@ -50,6 +51,7 @@ void	draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int color)
 
 void	draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
+	ft_putendl("draw_wall_y");
 	int	y;
 	double x;
 	double grad;
@@ -71,6 +73,7 @@ void	draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int color)
 
 void	draw_2dsector(t_game *game, int curr_sector)
 {
+	ft_putendl("draw_2dsector");
 	double for_swap;
 	int i;
 	vec2	first_point;
@@ -119,6 +122,7 @@ void	draw_2dsector(t_game *game, int curr_sector)
 // переделать минимапу
 void	draw_minimap(t_game *game)
 {
+	ft_putendl("draw_minimap");
 	int i;
 	vec2 left_fov;
 	vec2 right_fov;
@@ -137,5 +141,4 @@ void	draw_minimap(t_game *game)
 	right_fov.y = game->display_mode.h / 20 + 5 * 20;
 	draw_wall_x(game, pos0, left_fov, 0xFFFFFF);
 	draw_wall_x(game, pos0, right_fov, 0xFFFFFF);
-	//добавить фов
 }

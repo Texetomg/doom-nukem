@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/02 17:54:01 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/02 19:36:34 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ static void	define_sector(t_sector *sector, char *line)
 		i++;
 	}
 	i = i - (i - z);
-	sector->index_points = (int*)malloc(sizeof(int) * vectors_count + 1);
+	//ft_putnbrln(vectors_count + 1);
+	sector->index_points = (int*)malloc(sizeof(int) * (vectors_count + 1));
 	while (vectors_count + 1)
 	{
 		*(sector->index_points + j) = find_number(line, &i);
@@ -98,7 +99,6 @@ static void	define_sector(t_sector *sector, char *line)
 		j++;
 	}
 	z = i;
-	//ft_putnbrln(i);
 	i += 2;
 	while (line[i] && line[i] != '\t')
 	{
@@ -106,10 +106,18 @@ static void	define_sector(t_sector *sector, char *line)
 			wall_count++;
 		i++;	
 	}
+	i += 2;
 	i = i - (i - z);
+	j = 0;
 	sector->count_wall = wall_count + 1;
-	ft_putnbrln(sector->count_wall);
+	//ft_putnbrln(sector->count_wall);
 	sector->neighbors = (int*)malloc(sizeof(int) * sector->count_wall);
+	while (wall_count + 1)
+	{
+		*(sector->neighbors + j) = find_number(line, &i);
+		wall_count--;
+		j++;
+	}
 }
 
 //чтение карты
@@ -146,7 +154,6 @@ void		read_map(char *name, t_game *game)
 		{
 			define_sector(game->sectors + j, line);
 			j++;
-
 		}
 		free(line);
 	}	

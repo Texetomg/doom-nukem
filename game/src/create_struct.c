@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/02 18:32:51 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/02 19:36:07 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,28 @@ t_game	*create_struct(void)
 	*((game->sectors + 1)->neighbors + 1) = 0xAA00;
 	*((game->sectors + 1)->neighbors + 2) = 0xAA;
 	*((game->sectors + 1)->neighbors + 3) = 0xAA;
+	
+	ft_putnbrln(*((game->sectors)->neighbors));
+	ft_putnbrln(*((game->sectors)->neighbors + 1));
+	ft_putnbrln(*((game->sectors)->neighbors + 2));
+	ft_putnbrln(*((game->sectors + 1)->neighbors));
+	ft_putnbrln(*((game->sectors + 1)->neighbors + 1));
+	ft_putnbrln(*((game->sectors + 1)->neighbors + 2));
+	ft_putnbrln(*((game->sectors + 1)->neighbors + 3));
 	*/
+	int i = 0;
+	while (i < game->count_points)
+	{
+		ft_putstr("y: ");
+		ft_putnbrln((game->points + i)->y);
+		ft_putstr("x: ");
+		ft_putnbrln((game->points + i)->x);
+		i++;
+	}
 	game->player.pos.x = 0;
-	*(game->sectors->neighbors) = -1;
-	*(game->sectors->neighbors + 1) = 1;
-	*(game->sectors->neighbors + 2) = -1;
-	game->player.pos.y = 0;
+	game->player.pos.y = -3;
 	game->player.pos.z = 0.1;
 	game->player.angle = 0;
-	game->player.curr_sector = 0;
+	game->player.curr_sector = 1;
 	return (game);
 }
