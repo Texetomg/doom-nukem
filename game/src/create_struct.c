@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/02 19:36:07 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/02 21:17:45 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_game	*create_struct(void)
 		check_error_n_exit(1,"malloc error");
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
-	game->points_cam = (vec2*)malloc(sizeof(vec2) * 3);
 	read_map("src/map", game);
 
 	/*
@@ -57,6 +56,7 @@ t_game	*create_struct(void)
 	ft_putnbrln(*((game->sectors + 1)->neighbors + 2));
 	ft_putnbrln(*((game->sectors + 1)->neighbors + 3));
 	*/
+	/*
 	int i = 0;
 	while (i < game->count_points)
 	{
@@ -66,10 +66,14 @@ t_game	*create_struct(void)
 		ft_putnbrln((game->points + i)->x);
 		i++;
 	}
+	*/
+
 	game->player.pos.x = 0;
 	game->player.pos.y = -3;
 	game->player.pos.z = 0.1;
 	game->player.angle = 0;
+	game->points_cam = (vec2*)malloc(sizeof(vec2) * game->count_points);
+	//ft_putnbrln(game->count_sectors);
 	game->player.curr_sector = 1;
 	return (game);
 }

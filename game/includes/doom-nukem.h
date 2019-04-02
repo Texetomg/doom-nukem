@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/02 17:35:08 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/02 21:25:28 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,6 @@
 # include <math.h>
 # include <SDL.h>
 #include <sys/time.h>
-# define SCREEN_WIDTH 1000
-# define SCREEN_HEIGHT 500
-# define MOUSE_POS_X display_mode.w / 4
-# define MOUSE_POS_Y display_mode.h / 4
-
-typedef	struct		s_mouse
-{
-	int				prev_x;
-	int				prev_y;
-	int				curr_x;
-	int				curr_y;
-}					t_mouse;
-
-
-typedef	struct		s_fps
-{
-	struct timeval	time;
-	struct timeval	old_time;
-}					t_fps;
 
 typedef	struct		s_vec2
 {
@@ -92,7 +73,7 @@ typedef struct		s_game
 
 t_game  			*create_struct(void);
 void    			draw_minimap(t_game *game);
-int					put_fps(t_fps *fps);
+int					put_fps(t_game *game);
 void				read_map(char *name, t_game *game);
 void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);

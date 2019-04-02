@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/02 20:10:29 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/02 21:12:52 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void			give_points_cam(t_game *game)
 {
 	int		i;
-	ft_putendl("give_point_cam");
+	//ft_putendl("give_point_cam");
 	i = 0;
 	while (i < game->count_points)
 	{
@@ -36,7 +36,7 @@ static void     cross(vec2 *first_point, vec2 second_point, vec2 fov)
 	double new_y;
 	double det;
 
-	ft_putendl("cross");
+	//ft_putendl("cross");
 	det = cross_product(*first_point, second_point) / ((-fov.x) * (first_point->y - second_point.y) + fov.y * (first_point->x - second_point.x));
 	new_x = fov.x * det;
 	new_y = fov.y * det;
@@ -49,7 +49,7 @@ int             intersection(vec2 *first_point, vec2 *second_point, vec2 left_fo
 	double x;
 	double y;
 
-	ft_putendl("intersection");
+	//ft_putendl("intersection");
 	x = cross_product(left_fov, *first_point);
 	y = cross_product(left_fov, *second_point);
 	if (x > 0 && y > 0)
@@ -77,7 +77,7 @@ int             intersection(vec2 *first_point, vec2 *second_point, vec2 left_fo
 //рекурсивная функиця(в будущем), которая отрисовывает сектор;
 void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 {
-	ft_putendl("draw_Sector");
+	//ft_putendl("draw_Sector");
 	int i;
 	vec2	first_point;
 	vec2	second_point;
@@ -106,6 +106,11 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points));
 		else
 			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points + i + 1));
+		/*ft_putstr("second_point x: ");
+		ft_putnbrln(second_point.x);
+		ft_putstr("second_point y: ");
+		ft_putnbrln(second_point.y);
+		*/
 		if (first_point.x < 0 && second_point.x < 0)
 		{
 			i++;
@@ -172,7 +177,7 @@ static void	draw_3d_wall(t_game *game)
 	vec2	fov_left;
 	vec2	fov_right;
 	
-	ft_putendl("draw_3d_wall");
+	//ft_putendl("draw_3d_wall");
 	fov_left.x = 8.66;
 	fov_left.y = 5;
 	fov_right.x = 8.66;
@@ -186,17 +191,14 @@ int 		main(void)
 {
 	t_game		*game;
 	int loop;
-	t_fps	*fps;
 
-	fps = (t_fps*)malloc(sizeof(t_fps));
 	game = create_struct();
 	loop = 1;
 	while (loop)
 	{
 		player_move(game, &loop);
-	//	SDL_FillRect(game->screen, 0, 0);
 		draw_3d_wall(game);
-		//put_fps(fps); переделать фпс без структры и мышь;
+		put_fps(game);
 		SDL_UpdateWindowSurface(game->window);
 	}
 	SDL_DestroyWindow(game->window);
