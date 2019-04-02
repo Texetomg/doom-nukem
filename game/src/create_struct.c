@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/02 17:48:48 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/02 17:56:08 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
+		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
@@ -48,8 +48,13 @@ t_game	*create_struct(void)
 	*((game->sectors + 1)->neighbors + 2) = 0xAA;
 	*((game->sectors + 1)->neighbors + 3) = 0xAA;
 	game->player.pos.x = -3;
+	*(game->sectors->neighbors) = -1;
+	*(game->sectors->neighbors + 1) = 1;
+	*(game->sectors->neighbors + 2) = -1;
 	game->player.pos.y = 0;
+	game->player.pos.z = 0.1;
 	game->player.angle = 0;
+	game->count_sectors = 1;
 	game->player.curr_sector = 0;
 	return (game);
 }

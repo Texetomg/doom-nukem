@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/01 14:29:04 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/02 17:40:16 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void			give_points_cam(t_game *game)
 // векторное проиведение
 static double   cross_product(vec2 first_point, vec2 second_point)
 {
-	    return (first_point.x * second_point.y - second_point.x * first_point.y);
+	return (first_point.x * second_point.y - second_point.x * first_point.y);
 }
 //пересечение прямой и фова
 static void     cross(vec2 *first_point, vec2 second_point, vec2 fov)
@@ -89,6 +89,11 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 	double yt;
 	double yb;
 	double for_swap;
+	double yscale1;
+	double yscale2;
+	double yceil;
+	double yfloor;
+	int color;
 
 	i = 0;
 	while (i < (game->sectors + curr_sector)->count_wall)
@@ -105,12 +110,16 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 		}
 		if (intersection(&first_point, &second_point, fov_left, fov_right) > 0)
 		{
+			yceil = (game->sectors + curr_sector)->ceil - game->player.pos.z;
+			yfloor = (game->sectors + curr_sector)->floor - game->player.pos.z;
+			yscale1 = 500 / first_point.x;
+			yscale2 = 500 / second_point.x;
 			x1a = -first_point.y * (game->display_mode.w / 2) / 5 * 8.66 / first_point.x + game->display_mode.w / 2;
-			y1t = -500 / first_point.x + game->display_mode.h / 2;
-			y1b = 500 / first_point.x + game->display_mode.h / 2;
+			y1t = -yscale1 * yceil + game->display_mode.h / 2;
+			y1b = -yscale1 * yfloor + game->display_mode.h / 2;
 			x2a = -second_point.y * (game->display_mode.w / 2) / 5 * 8.66 / second_point.x + game->display_mode.w / 2;
-			y2t = -500 / second_point.x + game->display_mode.h / 2;
-			y2b = 500 / second_point.x + game->display_mode.h / 2;
+			y2t = -yscale2 * yceil + game->display_mode.h / 2;
+			y2b = -yscale2 * yfloor + game->display_mode.h / 2;
 			if (x1a > x2a)
 			{
 				for_swap = x1a;
@@ -128,11 +137,24 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 			{
 				yt = y1t + (y2t - y1t) * (k - x1a) / (x2a - x1a);
 				yb = y1b + (y2b - y1b) * (k - x1a) / (x2a - x1a);
-				m = (int)yt;
-				while (m < yb)
+				m = 0;
+				while (m < game->display_mode.h)
 				{
+					if (m < yt)
+						color = 0x88;
+					else if (m < yb)
+					{
+						if (k == (int)x1a || k == (int)x2a)
+							color = 0;
+						else if (*((game->sectors + curr_sector)->neighbors + i) == -1)
+							color = 0xAA00;
+						else
+							color = 0xAA0000;
+					}
+					else
+						color = 0xAAAAAA;
 					if (m >= 0 && m < game->display_mode.h && k >= 0 && k < game->display_mode.w)
-						((int*)game->screen->pixels)[m * game->display_mode.w + k] = *((game->sectors + curr_sector)->neighbors + i);
+						((int*)game->screen->pixels)[m * game->display_mode.w + k] = color;
 					m++;
 				}
 				k++;
@@ -153,7 +175,7 @@ static void	draw_3d_wall(t_game *game)
 	fov_right.y = -5;
 	give_points_cam(game);
 	draw_sector(game, game->player.curr_sector, fov_left, fov_right);
-	//draw_minimap(game); минимапа здесь
+	draw_minimap(game);
 }
 
 int 		main(void)
@@ -165,8 +187,6 @@ int 		main(void)
 	fps = (t_fps*)malloc(sizeof(t_fps));
 	game = create_struct();
 	loop = 1;
-	//ft_putnbrln(game->display_mode.w);
-	//ft_putnbrln(game->display_mode.h);
 	while (loop)
 	{
 		player_move(game, &loop);
