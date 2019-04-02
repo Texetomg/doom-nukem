@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/02 17:47:16 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/02 17:59:46 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,22 @@ void	draw_2dsector(t_game *game, int curr_sector)
 void	draw_minimap(t_game *game)
 {
 	int i;
-
+	vec2 left_fov;
+	vec2 right_fov;
+	vec2 pos0;
 	i = 0;
 	while (i < game->count_sectors)
 	{
 		draw_2dsector(game, i);
 		i++;
 	}
+	pos0.x = game->display_mode.w / 20;
+	pos0.y = game->display_mode.h / 20;
+	left_fov.x = game->display_mode.w / 20 + 8.66 * 20;
+	right_fov.x = game->display_mode.w / 20 + 8.66 * 20;
+	left_fov.y = game->display_mode.h / 20 - 5 * 20;
+	right_fov.y = game->display_mode.h / 20 + 5 * 20;
+	draw_wall_x(game, pos0, left_fov, 0xFFFFFF);
+	draw_wall_x(game, pos0, right_fov, 0xFFFFFF);
 	//добавить фов
 }
