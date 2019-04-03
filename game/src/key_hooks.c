@@ -6,12 +6,12 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 18:08:17 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/03 18:43:08 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
-
+#include <stdio.h>
 static void    move(t_game *game, double x, double y)
 {
 	double	new_x;
@@ -48,8 +48,6 @@ static void    move(t_game *game, double x, double y)
 	}
 	game->player.pos.x = new_x;
 	game->player.pos.y = new_y;
-	get_pos_z(game);
-//	game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + 0.5;
 }
 
 void	        player_move(t_game *game, int *loop)
@@ -85,7 +83,10 @@ void	        player_move(t_game *game, int *loop)
 				if (e.key.keysym.sym == SDLK_a)
 					move(game, -y, x);
 				if (e.key.keysym.sym == SDLK_SPACE)
-					move(game, -y, x);
+				{
+					game->player.z_accel = 0.1;
+					move(game, 0, 0);
+				}
 			}
 		}
 }
