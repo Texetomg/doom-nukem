@@ -6,17 +6,15 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 18:44:01 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 19:08:41 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
 void    get_pos_z(t_game *game)
-{
-    double foots;
-
-    foots = game->player.pos.z - HIGH;
+{  
+    game->player.foots = game->player.pos.z - HIGH;
     if (game->player.z_accel > 0)
     {
         if (game->player.pos.z + game->player.z_accel  >= (game->sectors + game->player.curr_sector)->ceil)
@@ -30,13 +28,13 @@ void    get_pos_z(t_game *game)
         }
         
     }
-    else if (game->player.z_accel == 0 && foots > (game->sectors + game->player.curr_sector)->floor)
+    else if (game->player.z_accel == 0 && game->player.foots > (game->sectors + game->player.curr_sector)->floor)
     {
         game->player.z_accel -= ACCEL;
     }
     else if (game->player.z_accel < 0)
     {
-        if (foots + game->player.z_accel < (game->sectors + game->player.curr_sector)->floor)
+        if (game->player.foots + game->player.z_accel < (game->sectors + game->player.curr_sector)->floor)
         {
             game->player.z_accel = 0;
             game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + HIGH;
