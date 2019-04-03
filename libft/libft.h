@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 18:25:21 by thorker           #+#    #+#             */
-/*   Updated: 2019/03/29 13:38:15 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 16:54:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,5 @@ void					ft_putchar(char c);
 void					ft_putstr(char const *c);
 void					ft_putnbr(int c);
 void					put_sdl_error(char *str);
+double  				ft_atod(const char *c);
 #endif
