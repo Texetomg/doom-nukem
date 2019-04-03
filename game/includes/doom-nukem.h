@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 18:43:46 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 21:54:03 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,26 @@ typedef	struct		s_vec2
 	double			y;
 }					vec2;
 
+typedef struct		s_draw
+{
+	double			x1;
+	double			x2;
+	double			y1b;
+	double			y1t;
+	double			y2b;
+	double			y2t;
+	int				last_sector;
+	int				curr_sector;
+	vec2			fov_left;
+	vec2			fov_right;
+}					t_draw;
+
 typedef struct		s_vec2int
 {
 	int				x;
 	int				y;
 }					vec2int;
+
 typedef struct		s_vec3
 {
 	double			x;
