@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 16:21:20 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/03 17:43:26 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static int	count(int fd)
 //считывание инф-ии со строки 'v'
 static void	define_vertex(vec2 *points, char **line)
 {
-	points->y = ft_atoi(line[1]);
-	points->x = ft_atoi(line[2]);
+	points->y = ft_atod(line[1]);
+	points->x = ft_atod(line[2]);
 }
 //считывание инф-ии со строки 's'
 static void	define_sector(t_sector *sector, char **line)
@@ -53,8 +53,8 @@ static void	define_sector(t_sector *sector, char **line)
 	i = 0;
 	//считывание пола и потолка
 	buffer = ft_strsplit(line[1], ' ');
-	sector->ceil = ft_atoi(buffer[0]);
-	sector->floor = ft_atoi(buffer[1]);
+	sector->ceil = ft_atod(buffer[0]);
+	sector->floor = ft_atod(buffer[1]);
 	free(buffer);
 	//кол-во стен (кол-во инексов векторов)
 	while(line[2][i])
