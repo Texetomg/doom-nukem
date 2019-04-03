@@ -1,5 +1,6 @@
 libft/*.o
 libft/*.gch*
+libft/libft.a
 .DS_Store
 game/objects/*
 game/doom-nukem

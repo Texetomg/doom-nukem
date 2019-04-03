@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 18:43:46 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 20:03:54 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct		s_player
 	int				curr_sector;
 	double			z_accel;
 	double			knees;
+	double			foots;
 }					t_player;
 typedef struct		s_wall
 {
@@ -60,6 +61,16 @@ typedef struct		s_sector
 	int				count_wall;
 }					t_sector;
 
+typedef	struct 		s_keystate
+{
+	int				left;
+	int				right;
+	int				forward;
+	int				back;
+	int				jump;
+	int				shift;
+}					t_keystate;
+
 typedef struct		s_game
 {
 	t_player		player;
@@ -73,6 +84,8 @@ typedef struct		s_game
 	int				count_points;
 	vec2   			*points_cam;
 	int				count_sectors;
+	t_keystate		keystate;
+	
 }					t_game;
 
 t_game  			*create_struct(void);
