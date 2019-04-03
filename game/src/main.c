@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 18:29:06 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 18:32:33 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ int 		main(void)
 	while (loop)
 	{
 		player_move(game, &loop);
+		get_pos_z(game);
 		draw_3d_wall(game);
 		//put_fps(game);
 		SDL_UpdateWindowSurface(game->window);
