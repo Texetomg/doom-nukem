@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 20:04:04 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 20:21:44 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,15 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 	double yceil;
 	double yfloor;
 	int color;
+	int color_sector;
+	double	y2ceil;
+	double	y2floor;
+	double sy1t;
+	double sy1b;
+	double sy2t;
+	double sy2b;
+	double syt;
+	double syb;
 
 	i = 0;
 	while (i < (game->sectors + curr_sector)->count_wall)
@@ -117,6 +126,22 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 			yfloor = (game->sectors + curr_sector)->floor - game->player.pos.z;
 			yscale1 = 500 / first_point.x;
 			yscale2 = 500 / second_point.x;
+			if (*((game->sectors + curr_sector)->neighbors + i) == -1)
+			{
+				color_sector = 0xAA00;
+				y2ceil = yceil;
+				y2floor = yfloor;
+			}
+			else
+			{
+				y2ceil = (game->sectors + *((game->sectors + curr_sector)->neighbors + i))->ceil - game->player.pos.z;
+				y2floor = (game->sectors + *((game->sectors + curr_sector)->neighbors + i))->floor - game->player.pos.z;
+				color_sector = 0xAA0000;
+			}
+			sy1t = -yscale1 * y2ceil + game->display_mode.h / 2;
+			sy1b = -yscale1 * y2floor + game->display_mode.h / 2;
+			sy2t = -yscale2 * y2ceil + game->display_mode.h / 2;
+			sy2b = -yscale2 * y2floor + game->display_mode.h / 2;
 			x1a = -first_point.y * (game->display_mode.w / 2) / 5 * 8.66 / first_point.x + game->display_mode.w / 2;
 			y1t = -yscale1 * yceil + game->display_mode.h / 2;
 			y1b = -yscale1 * yfloor + game->display_mode.h / 2;
@@ -134,12 +159,20 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 				for_swap = y1t;
 				y1t = y2t;
 				y2t = for_swap;
+				for_swap = sy1b;
+				sy1b = sy2b;
+				sy2b = for_swap;
+				for_swap = sy1t;
+				sy1t = sy2t;
+				sy2t = for_swap;
 			}
 			k = (int)x1a;
 			while (k < x2a)
 			{
 				yt = y1t + (y2t - y1t) * (k - x1a) / (x2a - x1a);
+				syt = sy1t + (sy2t - sy1t) * (k - x1a) / (x2a - x1a);
 				yb = y1b + (y2b - y1b) * (k - x1a) / (x2a - x1a);
+				syb = sy1b + (sy2b - sy1b) * (k - x1a) / (x2a - x1a);
 				m = 0;
 				while (m < game->display_mode.h)
 				{
@@ -149,10 +182,12 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 					{
 						if (k == (int)x1a || k == (int)x2a)
 							color = 0;
-						else if (*((game->sectors + curr_sector)->neighbors + i) == -1)
-							color = 0xAA00;
+						else if (m < syt)
+							color = 0xBBBB00;
+						else if (m > syb)
+							color = 0xAAAA;
 						else
-							color = 0xAA0000;
+							color = color_sector;
 					}
 					else
 						color = 0xAAAAAA;
