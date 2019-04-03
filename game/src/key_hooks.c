@@ -6,16 +6,41 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 17:42:49 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:46:37 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-static void    move(vec3 *pos, double x, double y)
+static void    move(t_game *game, double x, double y)
 {
-    pos->x += x;
-	pos->y += y;
+	double	new_x;
+	double	new_y;
+	int		i;
+	vec2	f_point;
+	vec2	s_point;
+
+    new_x = game->player.pos.x + x;
+	new_y = game->player.pos.y + y;
+	i = 0;
+	while (i < (game->sectors + game->player.curr_sector)->count_wall)
+	{
+		f_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points + i));
+		if (i == (game->sectors + game->player.curr_sector)->count_wall - 1)
+			s_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points));
+		else
+			s_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points + i + 1));
+		s_point.x = s_point.x - f_point.x;
+		s_point.y = s_point.y - f_point.y;
+		f_point.x = new_x - f_point.x;
+		f_point.y = new_y - f_point.y;
+		if (cross_product(f_point, s_point) < 0)
+			return ;
+		i++;
+	}
+	game->player.pos.x = new_x;
+	game->player.pos.y = new_y;
+	game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + 0.5;
 }
 
 void	        player_move(t_game *game, int *loop)
@@ -43,13 +68,13 @@ void	        player_move(t_game *game, int *loop)
 				if (e.key.keysym.sym == SDLK_q)
 					game->player.angle += 3.14 / 60;
 				if (e.key.keysym.sym == SDLK_w)
-                    move(&(game->player.pos), x, y);
+                    move(game, x, y);
 				if (e.key.keysym.sym == SDLK_s)
-					move(&(game->player.pos), -x, -y);
+					move(game, -x, -y);
 				if (e.key.keysym.sym == SDLK_d)
-					move(&(game->player.pos), y, -x);
+					move(game, y, -x);
 				if (e.key.keysym.sym == SDLK_a)
-					move(&(game->player.pos), -y, x);
+					move(game, -y, x);
 			}
 		}
 }
