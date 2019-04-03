@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/02 20:31:36 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/03 15:51:45 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,87 +37,53 @@ static int	count(int fd)
 		return (0);
 }
 
-static int	find_number(char *line, int *i)
+//считывание инф-ии со строки 'v'
+static void	define_vertex(vec2 *points, char **line)
 {
-	char	buff[4];
-	int		j;
-
-	j = 0;
-	ft_strclr(buff);
-	while (line[*i] && (line[*i] == '\t' || line[*i] == ' '))
-		*i += 1;
-	while (line[*i] && line[*i] != '\t' && line[*i] != ' ')
-	{
-		buff[j] = line[*i];
-		j++;
-		*i += 1;
-	}
-	return(ft_atoi(buff));
+	points->y = ft_atoi(line[1]);
+	points->x = ft_atoi(line[2]);
 }
-//поиск координат x/y в строке
-static void	define_vertex(vec2 *points, char *line)
+//считывание инф-ии со строки 's'
+static void	define_sector(t_sector *sector, char **line)
 {
-
+	int		counter;
 	int		i;
-
-	i = 2;
-	points->y = find_number(line, &i);
-	points->x = find_number(line, &i);
-}
-
-
-static void	define_sector(t_sector *sector, char *line)
-{
-	int		i;
-	int		j;
-	int		z;
-	int		vectors_count;
-	int		wall_count;
-
-	i = 2;
-	j = 0;
-	z = 0;
-	vectors_count = 0;
-	wall_count = 0;
-	sector->ceil = find_number(line, &i);
-	sector->floor = find_number(line, &i);
-	i += 2;
-	z = i;
-	while (line[i] && line[i] != '\t')
+	char	**buffer;
+	counter = 0;
+	i = 0;
+	//считывание пола и потолка
+	buffer = ft_strsplit(line[1], ' ');
+	sector->ceil = ft_atoi(buffer[0]);
+	sector->floor = ft_atoi(buffer[1]);
+	free(buffer);
+	//кол-во стен (кол-во инексов векторов)
+	while(line[2][i])
 	{
-		if (line[i] == ' ')
-			vectors_count++;
+		if (line[2][i] == ' ')
+			counter++;
 		i++;
 	}
-	i = i - (i - z);
-	//ft_putnbrln(vectors_count + 1);
-	sector->index_points = (int*)malloc(sizeof(int) * (vectors_count + 1));
-	while (vectors_count + 1)
+	i = 0;
+	sector->count_wall = counter + 1;
+	if ((sector->index_points = (int*)malloc(sizeof(int) * sector->count_wall)) == 0)
+		check_error_n_exit(1, "malloc error");
+	buffer = ft_strsplit(line[2], ' ');
+	while(i < sector->count_wall)
 	{
-		*(sector->index_points + j) = find_number(line, &i);
-		vectors_count--;
-		j++;
+		*(sector->index_points + i) = ft_atoi(buffer[i]);
+		i++;
 	}
-	z = i;
-	i += 2;
-	while (line[i] && line[i] != '\t')
+	free(buffer);
+	i = 0;
+	if ((sector->neighbors = (int*)malloc(sizeof(int) *  sector->count_wall)) == 0)
+		check_error_n_exit(1, "malloc error");
+	buffer = ft_strsplit(line[3], ' ');
+	while(i < sector->count_wall)
 	{
-		if (line[i] == ' ')
-			wall_count++;
-		i++;	
+		*(sector->neighbors + i) = ft_atoi(buffer[i]);
+		i++;
 	}
-	i += 2;
-	i = i - (i - z);
-	j = 0;
-	sector->count_wall = wall_count + 1;
-	//ft_putnbrln(sector->count_wall);
-	sector->neighbors = (int*)malloc(sizeof(int) * sector->count_wall);
-	while (wall_count + 1)
-	{
-		*(sector->neighbors + j) = find_number(line, &i);
-		wall_count--;
-		j++;
-	}
+	free(buffer);
 }
 
 //чтение карты
@@ -128,12 +94,11 @@ void		read_map(char *name, t_game *game)
 	int		i;
 	int		j;
 	int		gnl;
-	
+	char	**buffer;
 	i = 0;
 	j = 0;
 	if ((fd = open(name, O_RDONLY)) < 0)
 		check_error_n_exit(1, "file descriptor < 0");
-
 	game->count_points = count(fd);
 	game->count_sectors = count(fd);
 	if ((game->points = (vec2*)malloc(sizeof(vec2) * game->count_points)) == 0)
@@ -142,17 +107,20 @@ void		read_map(char *name, t_game *game)
 		check_error_n_exit(1, "malloc error");
 	while ((gnl = (get_next_line(fd, &line))) != 0)
 	{
-		
 		if (gnl == -1)
 			check_error_n_exit(1, "gnl return -1");
 		else if (line[0] == 'v')
 		{
-			define_vertex(game->points + i, line);
+			buffer = ft_strsplit(line, '\t');
+			define_vertex(game->points + i, buffer);
+			free(buffer);
 			i++;
 		}
 		else if (line[0] == 's')
 		{
-			define_sector(game->sectors + j, line);
+			buffer = ft_strsplit(line, '\t');
+			define_sector(game->sectors + j, buffer);
+			free(buffer);
 			j++;
 		}
 		free(line);

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/02 21:12:52 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/03 15:30:53 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,6 @@ void	draw_sector(t_game *game, int curr_sector, vec2 fov_left, vec2 fov_right)
 			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points));
 		else
 			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points + i + 1));
-		/*ft_putstr("second_point x: ");
-		ft_putnbrln(second_point.x);
-		ft_putstr("second_point y: ");
-		ft_putnbrln(second_point.y);
-		*/
 		if (first_point.x < 0 && second_point.x < 0)
 		{
 			i++;
