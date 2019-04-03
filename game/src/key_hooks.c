@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 18:28:33 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 18:30:30 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,15 @@ static void    move(t_game *game, double x, double y)
 		f_point.x = new_x - f_point.x;
 		f_point.y = new_y - f_point.y;
 		if (cross_product(f_point, s_point) < 0)
-			return ;
+		{
+			if (*((game->sectors + game->player.curr_sector)->neighbors + i) == -1)
+				return ;
+			else
+			{
+				game->player.curr_sector = *((game->sectors + game->player.curr_sector)->neighbors + i);
+				break ;
+			}
+		}
 		i++;
 	}
 	game->player.pos.x = new_x;
