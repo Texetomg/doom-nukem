@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 17:46:37 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:51:16 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static void    move(t_game *game, double x, double y)
 	}
 	game->player.pos.x = new_x;
 	game->player.pos.y = new_y;
-	game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + 0.5;
+	get_pos_z(game);
+//	game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + 0.5;
 }
 
 void	        player_move(t_game *game, int *loop)
@@ -74,6 +75,8 @@ void	        player_move(t_game *game, int *loop)
 				if (e.key.keysym.sym == SDLK_d)
 					move(game, y, -x);
 				if (e.key.keysym.sym == SDLK_a)
+					move(game, -y, x);
+				if (e.key.keysym.sym == SDLK_SPACE)
 					move(game, -y, x);
 			}
 		}

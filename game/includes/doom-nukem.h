@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 17:01:56 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/03 17:55:44 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct		s_player
 	vec3			pos;
 	double			angle;
 	int				curr_sector;
+	double			z_accel;
+	double			knees;
 }					t_player;
 typedef struct		s_wall
 {
@@ -78,4 +80,5 @@ int					put_fps(t_game *game);
 void				read_map(char *name, t_game *game);
 void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
+void				get_pos_z(t_game *game);
 #endif
