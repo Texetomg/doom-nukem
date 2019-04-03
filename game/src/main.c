@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 15:30:53 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:01:02 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void			give_points_cam(t_game *game)
 	}
 }
 // векторное проиведение
-static double   cross_product(vec2 first_point, vec2 second_point)
+double   cross_product(vec2 first_point, vec2 second_point)
 {
 	return (first_point.x * second_point.y - second_point.x * first_point.y);
 }

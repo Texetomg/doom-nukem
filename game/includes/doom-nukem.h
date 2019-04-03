@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/02 21:25:28 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/03 17:01:56 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct		s_game
 }					t_game;
 
 t_game  			*create_struct(void);
+double				cross_product(vec2 first_point, vec2 second_point);
 void    			draw_minimap(t_game *game);
 int					put_fps(t_game *game);
 void				read_map(char *name, t_game *game);
