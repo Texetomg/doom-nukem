@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 17:55:44 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 18:27:28 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <math.h>
 # include <SDL.h>
 #include <sys/time.h>
+# define HIGH 0.5
 
 typedef	struct		s_vec2
 {
