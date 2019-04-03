@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/03 17:05:07 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:45:32 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ t_game	*create_struct(void)
 
 	game->player.pos.x = 0;
 	game->player.pos.y = -3;
-	game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + 0.5;
+	
 	game->player.angle = 0;
 	game->points_cam = (vec2*)malloc(sizeof(vec2) * game->count_points);
 	//ft_putnbrln(game->count_sectors);
 	game->player.curr_sector = 1;
+	game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + 0.5;
 	return (game);
 }
