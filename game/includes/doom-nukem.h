@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 12:29:57 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/05 13:11:51 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define HIGH 0.5
 # define ACCEL 0.0005
 # define STEP 0.01
+# define FSTEP 0.05
 
 typedef	struct		s_vec2
 {
@@ -61,6 +62,7 @@ typedef struct		s_player
 	double			z_accel;
 	double			knees;
 	double			foots;
+	double			speed;
 }					t_player;
 typedef struct		s_wall
 {
@@ -85,6 +87,7 @@ typedef	struct 		s_keystate
 	int				back;
 	int				jump;
 	int				shift;
+	int				ctrl;
 }					t_keystate;
 
 typedef struct		s_game

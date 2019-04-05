@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/03 19:08:54 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/05 14:16:34 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_game	*create_struct(void)
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
 	read_map("src/map", game);
-
+	int i = 0;
 	game->player.pos.x = 0;
 	game->player.pos.y = -3;
 	game->player.z_accel = 0;
@@ -44,5 +44,6 @@ t_game	*create_struct(void)
 	game->points_cam = (vec2*)malloc(sizeof(vec2) * game->count_points);
 	game->player.curr_sector = 1;
 	game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + HIGH;
+	game->player.speed = STEP;
 	return (game);
 }

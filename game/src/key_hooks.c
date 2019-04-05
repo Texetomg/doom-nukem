@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 12:38:53 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/05 13:30:15 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ static void    move(t_game *game, double x, double y)
 			s_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points));
 		else
 			s_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points + i + 1));
-		s_point.x = s_point.x - f_point.x;
-		s_point.y = s_point.y - f_point.y;
+		s_point.x = s_point.x - f_point.x + 0.2;
+		s_point.y = s_point.y - f_point.y + 0.2;
 		f_point.x = new_x - f_point.x;
 		f_point.y = new_y - f_point.y;
+		printf("%f\n", s_point.x);
 		if (cross_product(f_point, s_point) < 0)
 		{
 			if (*((game->sectors + game->player.curr_sector)->neighbors + i) == -1)
@@ -64,6 +65,8 @@ static void		change_keystate(t_keystate *keystate, SDL_Keycode key, int flag)
 		keystate->jump = flag;
 	if (key == SDLK_LSHIFT || key == SDLK_RSHIFT)
 		keystate->shift = flag;
+	if (key == SDLK_LCTRL || key == SDLK_RCTRL)
+		keystate->ctrl = flag;
 }
 
 SDL_Event	key_hooks(t_game *game)
@@ -92,11 +95,11 @@ void	        player_move(t_game *game, int *loop)
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
 		//перемещать курсор в одну и ту же точку
-		SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); 
-	direct.x = STEP * cos(game->player.angle);
-	direct.y = STEP * sin(game->player.angle);
-	curve.x = STEP * (cos(game->player.angle) * 0.7 - sin(game->player.angle) * 0.7);
-	curve.y = STEP * (sin(game->player.angle) * 0.7 + cos(game->player.angle) * 0.7);
+	SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); 
+	direct.x = game->player.speed * cos(game->player.angle);
+	direct.y = game->player.speed * sin(game->player.angle);
+	curve.x = game->player.speed * (cos(game->player.angle) * 0.7 - sin(game->player.angle) * 0.7);
+	curve.y = game->player.speed * (sin(game->player.angle) * 0.7 + cos(game->player.angle) * 0.7);
 	if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 			*loop = 0;
 	if (game->keystate.forward && (!game->keystate.right || !game->keystate.left))
@@ -120,4 +123,9 @@ void	        player_move(t_game *game, int *loop)
 		game->player.z_accel = 0.1;
 		move(game, 0, 0);
 	}
+	if (game->keystate.shift)
+		game->player.speed = FSTEP;
+	else
+		game->player.speed = STEP;
+	
 }
