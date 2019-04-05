@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 14:48:49 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/05 17:33:54 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	draw_wall(t_game *game, t_draw for_draw)
 		i++;
 	}
 }
+//отрисовывет промежутки между потолком/полом и сектором 
 void	pre_draw_sector(t_game *game, t_draw for_draw)
 {
 	int i;

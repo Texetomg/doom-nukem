@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 16:45:22 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/05 17:34:56 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ static void    move(t_game *game, double x, double y)
 	int		i;
 	vec2	f_point;
 	vec2	s_point;
-
+	int		flag;
     new_x = game->player.pos.x + x * 1.5;
 	new_y = game->player.pos.y + y * 1.5;
 	i = 0;
+	flag = 0;
 	while (i < (game->sectors + game->player.curr_sector)->count_wall)
 	{
 		f_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points + i));
@@ -34,28 +35,37 @@ static void    move(t_game *game, double x, double y)
 		s_point.y = s_point.y - f_point.y;
 		f_point.x = new_x - f_point.x;
 		f_point.y = new_y - f_point.y;
+
 		if (cross_product(f_point, s_point) < 0)
 		{
 			if (*((game->sectors + game->player.curr_sector)->neighbors + i) == -1)
+			{
+				flag = 1;
 				i++ ;
+			}
 			else
 			{
-				if (game->player.knees > (game->sectors + (*(game->sectors + game->player.curr_sector)->neighbors + i))->floor)
+				if (game->player.knees > (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->floor)
 				{
 					game->player.curr_sector = *((game->sectors + game->player.curr_sector)->neighbors + i);
 					game->player.pos.x = new_x;
 					game->player.pos.y = new_y;
-					game->player.foots = (game->sectors + game->player.curr_sector)->floor;
-					game->player.knees = game->player.foots + 0.2;
-					game->player.pos.z = game->player.knees + 0.3;
+					if (game->player.foots < (game->sectors + game->player.curr_sector)->floor)
+					{
+						game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + 0.5;
+						game->player.z_accel = 0;
+					}
 				}	
 				return ;
 			}
 		}
 		i++;
 	}
-	game->player.pos.x = game->player.pos.x + x;
-	game->player.pos.y = game->player.pos.y + y;
+	if (flag == 0)
+	{
+		game->player.pos.x = game->player.pos.x + x;
+		game->player.pos.y = game->player.pos.y + y;
+	}
 }
 
 static void		change_keystate(t_keystate *keystate, SDL_Keycode key, int flag)
