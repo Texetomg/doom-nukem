@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 14:09:58 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/05 14:14:13 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define COLOR_FLOOR 0x008080
 # define COLOR_WALL 0xDA70D6
 # define COLOR_BETW 0xAA0000
+# define STEP 0.01
+
 typedef	struct		s_vec2
 {
 	double			x;
