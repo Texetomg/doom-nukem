@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 22:03:45 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/05 14:09:58 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,32 @@
 #include <sys/time.h>
 # define HIGH 0.5
 # define ACCEL 0.0005
-
+# define COLOR_CEIL 0x87CEEB
+# define COLOR_FLOOR 0x008080
+# define COLOR_WALL 0xDA70D6
+# define COLOR_BETW 0xAA0000
 typedef	struct		s_vec2
 {
 	double			x;
 	double			y;
 }					vec2;
-
+typedef struct		s_window
+{
+	double          x1;
+	double          x2;
+	double          y1b;
+	double          y1t;
+	double          y2b;
+	double          y2t;
+}					t_window;
 typedef struct		s_draw
 {
-	double			x1;
-	double			x2;
-	double			y1b;
-	double			y1t;
-	double			y2b;
-	double			y2t;
+	t_window		window;
 	int				last_sector;
 	int				curr_sector;
 	vec2			fov_left;
 	vec2			fov_right;
+	t_window		wall;
 }					t_draw;
 
 typedef struct		s_vec2int
