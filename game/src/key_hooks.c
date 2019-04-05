@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 14:56:52 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/05 16:45:22 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,18 @@ static void    move(t_game *game, double x, double y)
 		if (cross_product(f_point, s_point) < 0)
 		{
 			if (*((game->sectors + game->player.curr_sector)->neighbors + i) == -1)
-				return ;
+				i++ ;
 			else
 			{
-				game->player.curr_sector = *((game->sectors + game->player.curr_sector)->neighbors + i);
-				game->player.pos.x = new_x;
-				game->player.pos.y = new_y;
+				if (game->player.knees > (game->sectors + (*(game->sectors + game->player.curr_sector)->neighbors + i))->floor)
+				{
+					game->player.curr_sector = *((game->sectors + game->player.curr_sector)->neighbors + i);
+					game->player.pos.x = new_x;
+					game->player.pos.y = new_y;
+					game->player.foots = (game->sectors + game->player.curr_sector)->floor;
+					game->player.knees = game->player.foots + 0.2;
+					game->player.pos.z = game->player.knees + 0.3;
+				}	
 				return ;
 			}
 		}
