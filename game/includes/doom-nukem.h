@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 14:17:09 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/05 14:58:19 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 # define COLOR_FLOOR 0x008080
 # define COLOR_WALL 0xDA70D6
 # define COLOR_BETW 0xAA0000
-# define STEP 0.01
-# define FSTEP 0.05
+# define STEP 0.05
 
 typedef	struct		s_vec2
 {
@@ -70,7 +69,6 @@ typedef struct		s_player
 	double			z_accel;
 	double			knees;
 	double			foots;
-	double			speed;
 }					t_player;
 typedef struct		s_wall
 {
@@ -94,7 +92,6 @@ typedef	struct 		s_keystate
 	int				forward;
 	int				back;
 	int				jump;
-	int				shift;
 	int				ctrl;
 }					t_keystate;
 
