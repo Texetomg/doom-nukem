@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 22:03:45 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/05 12:29:57 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <sys/time.h>
 # define HIGH 0.5
 # define ACCEL 0.0005
+# define STEP 0.01
 
 typedef	struct		s_vec2
 {
