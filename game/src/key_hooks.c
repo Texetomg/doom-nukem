@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/12 16:01:53 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/12 17:13:48 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static void    move(t_game *game, double x, double y)
 			}
 			else
 			{
-				if (game->player.knees > (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->floor)
+				if (game->player.knees > (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->floor &&
+					game->player.pos.z < (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->ceil)
 				{
 					game->player.curr_sector = *((game->sectors + game->player.curr_sector)->neighbors + i);
 					game->player.pos.x = new_x;
@@ -153,11 +154,11 @@ void	        player_move(t_game *game, int *loop)
 		game->player.b_foots = 0.5;
 		game->player.b_knees = 0.3;
 	}
-	printf("%s", "head: ");
+	/*printf("%s", "head: ");
 	printf("%f\n", game->player.pos.z);
 	printf("%s", "knees: ");
 	printf("%f\n", game->player.knees);
 	printf("%s", "foots: ");
 	printf("%f\n", game->player.foots);
-	printf("%c", '\n');
+	printf("%c", '\n');*/
 }
