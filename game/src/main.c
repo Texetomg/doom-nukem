@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 17:33:54 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/12 16:56:47 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,9 @@ void	draw_wall(t_game *game, t_draw for_draw)
 		yb_window = for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		yt_wall = for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
 		yb_wall = for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
-		while (k < yb_window)
+		if (k < 0)
+			k = 0;
+		while (k < yb_window && k < game->display_mode.h)
 		{
 			if (k == (int)yt_wall || k == (int)yb_wall || (i == (int)for_draw.wall.x1 && k < yb_wall && k > yt_wall) || (i == (int)for_draw.wall.x2 && k < yb_wall && k > yt_wall))
 				color = 0;
@@ -109,7 +111,7 @@ void	draw_wall(t_game *game, t_draw for_draw)
 				color = COLOR_WALL;
 			else
 				color = COLOR_FLOOR;
-			if (k >= 0 && k < game->display_mode.h && i >= 0 && i < game->display_mode.w)
+			if (i < game->display_mode.w)
 				((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
 			k++;
 		}
@@ -138,10 +140,12 @@ void	pre_draw_sector(t_game *game, t_draw for_draw)
 		yb_window = for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		yt_wall = for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		yb_wall = for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
-		while (k < yb_window)
+		if (k < 0)
+			k = 0;
+		while (k < yb_window && k < game->display_mode.h)
 		{
 			if (k < yt_wall || k > yb_wall)
-				if (k >= 0 && k < game->display_mode.h && i >= 0 && i < game->display_mode.w)
+				if (i < game->display_mode.w)
 					((int*)game->screen->pixels)[k * game->display_mode.w + i] = COLOR_BETW;
 			k++;
 		}
