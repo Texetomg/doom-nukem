@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/05 17:05:21 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/12 15:46:01 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ t_game	*create_struct(void)
 	game->player.curr_sector = 1;
 	game->player.foots = (game->sectors + game->player.curr_sector)->floor;
 	game->player.knees = game->player.foots + 0.2;
-	game->player.pos.z = game->player.knees + 0.3;
+	game->player.pos.z = game->player.foots + 0.5;
+	game->keystate.back = 0;
+	game->keystate.ctrl = 0;
+	game->keystate.forward = 0;
+	game->keystate.jump = 0;
+	game->keystate.left = 0;
+	game->keystate.right = 0;
+	game->player.b_foots = 0.5;
+	game->player.b_knees = 0.3;
 	return (game);
 }

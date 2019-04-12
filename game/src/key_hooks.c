@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 17:34:56 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/12 16:01:53 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ void	        player_move(t_game *game, int *loop)
 	vec2	direct;
 	vec2	curve;
 	
-	
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
 		//перемещать курсор в одну и ту же точку
@@ -138,4 +137,27 @@ void	        player_move(t_game *game, int *loop)
 		game->player.z_accel = 0.1;
 		move(game, 0, 0);
 	}
+	if (game->keystate.ctrl)
+	{
+		if (game->keystate.ctrl_flag == 0)
+			game->player.pos.z -= 0.2;
+		game->keystate.ctrl_flag = 1;
+		game->player.b_foots = 0.3;
+		game->player.b_knees = 0.1;
+	}
+	if (!game->keystate.ctrl)
+	{
+		if (game->keystate.ctrl_flag == 1)
+			game->player.pos.z += 0.2;
+		game->keystate.ctrl_flag = 0;
+		game->player.b_foots = 0.5;
+		game->player.b_knees = 0.3;
+	}
+	printf("%s", "head: ");
+	printf("%f\n", game->player.pos.z);
+	printf("%s", "knees: ");
+	printf("%f\n", game->player.knees);
+	printf("%s", "foots: ");
+	printf("%f\n", game->player.foots);
+	printf("%c", '\n');
 }

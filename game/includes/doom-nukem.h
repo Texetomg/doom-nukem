@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/05 17:16:48 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/12 15:43:45 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ typedef struct		s_player
 	double			z_accel;
 	double			knees;
 	double			foots;
+	double			b_knees;
+	double			b_foots;
 }					t_player;
 typedef struct		s_wall
 {
@@ -93,6 +95,7 @@ typedef	struct 		s_keystate
 	int				back;
 	int				jump;
 	int				ctrl;
+	int				ctrl_flag;
 }					t_keystate;
 
 typedef struct		s_game
