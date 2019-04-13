@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/13 12:42:54 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/13 13:29:15 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "libft.h"
 # include <math.h>
 # include <SDL.h>
+# include <SDL_image.h>
 # include <SDL_ttf.h>
 # include <sys/time.h>
 # define HIGH 0.5
