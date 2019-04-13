@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/12 15:43:45 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/13 11:37:03 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 # include "libft.h"
 # include <math.h>
 # include <SDL.h>
-#include <sys/time.h>
+# include <SDL_ttf.h>
+# include <sys/time.h>
 # define HIGH 0.5
 # define ACCEL 0.0005
 # define COLOR_CEIL 0x87CEEB
