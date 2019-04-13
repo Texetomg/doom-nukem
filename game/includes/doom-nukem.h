@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/13 11:37:03 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/13 12:42:54 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ typedef struct		s_game
 	SDL_Window		*window;
 	SDL_Surface		*screen;
 	SDL_DisplayMode	display_mode;
+	SDL_Renderer	*renderer;
 	struct timeval  time;
 	vec2int			mouse;
 	int				count_points;

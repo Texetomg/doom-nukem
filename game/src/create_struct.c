@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/12 15:46:01 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/13 13:16:15 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
+	TTF_Init();
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
@@ -26,7 +27,10 @@ void	init_sdl(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
+	if ((game->renderer = SDL_CreateRenderer(game->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) == 0)
+		check_error_n_exit(1,(char*)SDL_GetError());
 }
+
 t_game	*create_struct(void)
 {
 	t_game	*game;
