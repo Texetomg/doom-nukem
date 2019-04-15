@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/12 15:46:01 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 16:41:52 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ void	init_sdl(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
+	game->texture = SDL_LoadBMP("src/cat.bmp");
+	ft_putnbrln(game->texture->w);
+	ft_putnbrln(game->texture->h);
+	ft_putnbrln(game->texture->pitch);
 }
 t_game	*create_struct(void)
 {

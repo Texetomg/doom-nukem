@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/12 15:43:45 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 16:33:03 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ typedef struct		s_game
 	vec2   			*points_cam;
 	int				count_sectors;
 	t_keystate		keystate;
-	
+	SDL_Surface		*texture;	
 }					t_game;
 
 t_game  			*create_struct(void);

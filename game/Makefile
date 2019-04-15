@@ -6,12 +6,12 @@
 #    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/04/03 20:16:05 by thorker          ###   ########.fr        #
+#    Updated: 2019/04/15 16:13:13 by thorker          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = doom-nukem
-FLAG = -Wall -Wextra -Werror -g -O
+FLAG = -Wall -Wextra -Werror -g -Ofast
 SRC = main.c draw_minimap.c fps.c create_struct.c read_map.c key_hooks.c utils.c
 INC = -I ../libft/ -I ./includes -I ../framework/SDL2.framework/Versions/A/Headers
 LIB = -L ../libft/ -lft 

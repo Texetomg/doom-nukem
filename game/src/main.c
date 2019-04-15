@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/12 16:56:47 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/15 16:42:55 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,27 +88,35 @@ void	draw_wall(t_game *game, t_draw for_draw)
 {
 	int i;
 	int k;
-	double yb_wall;
-	double yt_wall;
-	double yb_window;
+	int yb_wall;
+	int yt_wall;
+	int yb_window;
 	int color;
+	int x;
+	int y;
+
 	i = (int)for_draw.wall.x1;
 	while (i < for_draw.wall.x2)
 	{ 
 		k = (int)(for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
-		yb_window = for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
-		yt_wall = for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
-		yb_wall = for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
+		yb_window = (int)(for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
+		yt_wall = (int)(for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
+		yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
 		if (k < 0)
 			k = 0;
 		while (k < yb_window && k < game->display_mode.h)
 		{
-			if (k == (int)yt_wall || k == (int)yb_wall || (i == (int)for_draw.wall.x1 && k < yb_wall && k > yt_wall) || (i == (int)for_draw.wall.x2 && k < yb_wall && k > yt_wall))
+			if (k == yt_wall || k == yb_wall || (i == (int)for_draw.wall.x1 && k < yb_wall && k > yt_wall) || (i == (int)for_draw.wall.x2 && k < yb_wall && k > yt_wall))
 				color = 0;
 			else if (k < yt_wall)
 				color = COLOR_CEIL;
 			else if (k < yb_wall)
-				color = COLOR_WALL;
+			{
+				x = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1) * game->texture->w;
+				y = (double)(k - yt_wall) / (yb_wall - yt_wall) * game->texture->h;
+				color = ((int*)game->texture->pixels)[y * game->texture->w + x];
+				//color = 0xAAAA00;
+			}
 			else
 				color = COLOR_FLOOR;
 			if (i < game->display_mode.w)
@@ -118,15 +126,17 @@ void	draw_wall(t_game *game, t_draw for_draw)
 		i++;
 	}
 }
-//отрисовывет промежутки между потолком/полом и сектором 
-void	pre_draw_sector(t_game *game, t_draw for_draw)
+//отрисовывет промежутки между потолком/полом и сектором. И пол и потолок портала.
+void	pre_draw_sector(t_game *game, t_draw for_draw, t_draw for_draw_past)
 {
 	int i;
 	int k;
 	double yb_wall;
 	double yt_wall;
 	double yb_window;
-
+	double yb_window_past;
+	double yt_window;
+	int color;
 	/*if (for_draw.wall.y1t < for_draw.window.y1t &&
 			for_draw.wall.y2t < for_draw.window.y2t &&
 			for_draw.wall.y1b > for_draw.window.y1b &&
@@ -136,17 +146,26 @@ void	pre_draw_sector(t_game *game, t_draw for_draw)
 	i = (int)for_draw.window.x1;
 	while (i < for_draw.window.x2)
 	{
-		k = (int)(for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
+		k = for_draw_past.window.y1t + (for_draw_past.window.y2t - for_draw_past.window.y1t) * (i - for_draw_past.window.x1) / (for_draw_past.window.x2 - for_draw_past.window.x1);
+		yb_window_past = for_draw_past.window.y1b + (for_draw_past.window.y2b - for_draw_past.window.y1b) * (i - for_draw_past.window.x1) / (for_draw_past.window.x2 - for_draw_past.window.x1);
+		yt_window = (for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
 		yb_window = for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		yt_wall = for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		yb_wall = for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		if (k < 0)
 			k = 0;
-		while (k < yb_window && k < game->display_mode.h)
+		while (k < yb_window_past && k < game->display_mode.h)
 		{
-			if (k < yt_wall || k > yb_wall)
-				if (i < game->display_mode.w)
-					((int*)game->screen->pixels)[k * game->display_mode.w + i] = COLOR_BETW;
+			if (k <= yt_window)
+				color = COLOR_CEIL;
+			else if (k >= (int)yb_window)
+				color = COLOR_FLOOR;
+			else if (k < yt_wall || k > yb_wall)
+				color = COLOR_BETW;
+			else
+				color = -1;
+			if (i < game->display_mode.w && color >= 0)
+					((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
 			k++;
 		}
 		i++;
@@ -191,7 +210,6 @@ void	draw_sector(t_game *game, t_draw for_draw)
 			for_draw.wall.y1t = -yscale1 * yceil + game->display_mode.h / 2;
 			for_draw.wall.y2b = -yscale2 * yfloor + game->display_mode.h / 2;
 			for_draw.wall.y1b = -yscale1 * yfloor + game->display_mode.h / 2;
-			draw_wall(game, for_draw);
 			if (*((game->sectors + for_draw.curr_sector)->neighbors + i) >= 0)
 			{
 				if (*((game->sectors + for_draw.curr_sector)->neighbors + i) != for_draw.last_sector)
@@ -210,11 +228,13 @@ void	draw_sector(t_game *game, t_draw for_draw)
 					for_next_draw.fov_left = first_point;
 					for_next_draw.fov_right = second_point;
 					draw_sector(game, for_next_draw);
-					pre_draw_sector(game, for_next_draw);
+					pre_draw_sector(game, for_next_draw, for_draw);
 				}
 			}
 			else
+			{
 				draw_wall(game, for_draw);
+			}
 		}
 		i++;
 	}
@@ -242,20 +262,40 @@ static void	draw_3d_wall(t_game *game)
 	draw_minimap(game);
 }
 
+
+void		draw_texture(t_game *game)
+{
+	int x;
+	int y;
+	int color;
+	x = 0;
+	while (x < game->texture->w)
+	{
+		y = 0;
+		while (y < game->texture->h)
+		{
+			color = ((int*)game->texture->pixels)[y * game->texture->w + x];
+			if (x < game->display_mode.w && y < game->display_mode.h)
+				((int*)game->screen->pixels)[y * game->display_mode.w + x] = color;
+			y++;
+		}
+		x++;
+	}
+}
 int 		main(void)
 {
 	t_game		*game;
 	int loop;
-
 	game = create_struct();
 	loop = 1;
 	while (loop)
 	{
 		player_move(game, &loop);
 		get_pos_z(game);
-		SDL_FillRect(game->screen,0, 0);
+		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
 		put_fps(game);
+		draw_texture(game);
 		SDL_UpdateWindowSurface(game->window);
 	}
 	SDL_DestroyWindow(game->window);
