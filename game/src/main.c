@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/13 15:39:06 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 16:24:50 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,47 +242,22 @@ static void	draw_3d_wall(t_game *game)
 	draw_minimap(game);
 }
 
-/*SDL_Texture *load_texture(char *img, SDL_Renderer *renderer)
-{
-	SDL_Texture *texture;
-
-	if ((texture = IMG_LoadTexture(renderer, img)) == 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
-	return (texture);
-}
-
-static void	render_texture(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, int w, int h)
-{
-	SDL_Rect dst;
-	dst.x = x;
-	dst.y = y;
-	dst.w = w;
-	dst.h = h;
-	SDL_RenderCopy(renderer, texture, NULL, &dst);
-}
-*/
-
 int 		main(void)
 {
 	t_game		*game;
 	int loop;
-//	SDL_Texture *hands;
 	
 	game = create_struct();
 	loop = 1;
-	
-//	hands = load_texture("imgs/hand_1.png", game->renderer);
-//	render_texture(hands, game->renderer, 100, 100, 100, 100);
-	
-	SDL_RenderPresent(game->renderer);
 	while (loop)
 	{
 		player_move(game, &loop);
 		get_pos_z(game);
 		SDL_FillRect(game->screen,0, 0);
 		draw_3d_wall(game);
+		if ((game->renderer = SDL_CreateRenderer(game->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) == NULL)
+		check_error_n_exit(1,(char*)SDL_GetError());
 		put_fps(game);
-		//SDL_FreeSurface(game->screen);
 		SDL_UpdateWindowSurface(game->window);
 	}
 	SDL_DestroyWindow(game->window);
