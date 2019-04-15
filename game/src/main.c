@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/15 16:47:56 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 16:50:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,8 +295,6 @@ int 		main(void)
 		get_pos_z(game);
 		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
-		if ((game->renderer = SDL_CreateRenderer(game->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) == NULL)
-		check_error_n_exit(1,(char*)SDL_GetError());
 		put_fps(game);
 		draw_texture(game);
 		SDL_UpdateWindowSurface(game->window);
