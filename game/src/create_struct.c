@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/15 16:48:30 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 17:28:03 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@ static void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
-	TTF_Init();
-	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
-		check_error_n_exit(1,(char*)SDL_GetError());
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
