@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/15 16:50:17 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 17:54:09 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,25 +263,26 @@ static void	draw_3d_wall(t_game *game)
 }
 
 
-void		draw_texture(t_game *game)
+void		draw_texture(SDL_Surface *texture, SDL_DisplayMode display, SDL_Surface *screen)
 {
 	int x;
 	int y;
 	int color;
 	x = 0;
-	while (x < game->texture->w)
+	while (x < texture->w)
 	{
 		y = 0;
-		while (y < game->texture->h)
+		while (y < texture->h)
 		{
-			color = ((int*)game->texture->pixels)[y * game->texture->w + x];
-			if (x < game->display_mode.w && y < game->display_mode.h)
-				((int*)game->screen->pixels)[y * game->display_mode.w + x] = color;
+			color = ((int*)texture->pixels)[y * texture->w + x];
+			if (x < display.w && y < display.h)
+				((int*)screen->pixels)[y * display.w + x]  = color;
 			y++;
 		}
 		x++;
 	}
 }
+
 int 		main(void)
 {
 	t_game		*game;
@@ -296,7 +297,7 @@ int 		main(void)
 		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
 		put_fps(game);
-		draw_texture(game);
+		draw_texture(game->texture_arr[0], game->display_mode, game->screen);
 		SDL_UpdateWindowSurface(game->window);
 	}
 	SDL_DestroyWindow(game->window);
