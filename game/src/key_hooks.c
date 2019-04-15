@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/12 17:13:48 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/12 17:34:57 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,17 +148,10 @@ void	        player_move(t_game *game, int *loop)
 	}
 	if (!game->keystate.ctrl)
 	{
-		if (game->keystate.ctrl_flag == 1)
+		if (game->keystate.ctrl_flag == 1 && game->player.pos.z + 0.2 <  ((game->sectors + game->player.curr_sector)->ceil))
 			game->player.pos.z += 0.2;
 		game->keystate.ctrl_flag = 0;
 		game->player.b_foots = 0.5;
 		game->player.b_knees = 0.3;
 	}
-	/*printf("%s", "head: ");
-	printf("%f\n", game->player.pos.z);
-	printf("%s", "knees: ");
-	printf("%f\n", game->player.knees);
-	printf("%s", "foots: ");
-	printf("%f\n", game->player.foots);
-	printf("%c", '\n');*/
 }
