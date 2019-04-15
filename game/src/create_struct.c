@@ -6,16 +6,20 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/15 16:41:52 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/15 16:48:30 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+
 //инициализация sdl
-void	init_sdl(t_game *game)
+static void	init_sdl(t_game *game)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
+	TTF_Init();
+	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
+		check_error_n_exit(1,(char*)SDL_GetError());
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
@@ -31,9 +35,11 @@ void	init_sdl(t_game *game)
 	ft_putnbrln(game->texture->h);
 	ft_putnbrln(game->texture->pitch);
 }
+
 t_game	*create_struct(void)
 {
 	t_game	*game;
+	
 
 	if ((game = (t_game*)malloc(sizeof(t_game))) == 0)
 		check_error_n_exit(1,"malloc error");

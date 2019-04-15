@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/15 16:45:31 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/15 16:51:54 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,6 +286,7 @@ int 		main(void)
 {
 	t_game		*game;
 	int loop;
+	
 	game = create_struct();
 	loop = 1;
 	while (loop)

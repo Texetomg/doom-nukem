@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/15 16:33:03 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/15 16:48:42 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 # include "libft.h"
 # include <math.h>
 # include <SDL.h>
-#include <sys/time.h>
+# include <SDL_image.h>
+# include <SDL_ttf.h>
+# include <sys/time.h>
 # define HIGH 0.5
 # define ACCEL 0.0005
 # define COLOR_CEIL 0x87CEEB
@@ -106,6 +108,7 @@ typedef struct		s_game
 	SDL_Window		*window;
 	SDL_Surface		*screen;
 	SDL_DisplayMode	display_mode;
+	SDL_Renderer	*renderer;
 	struct timeval  time;
 	vec2int			mouse;
 	int				count_points;
@@ -123,4 +126,7 @@ void				read_map(char *name, t_game *game);
 void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
 void				get_pos_z(t_game *game);
+SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
+void        		apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
+
 #endif

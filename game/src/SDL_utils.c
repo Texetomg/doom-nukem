@@ -6,13 +6,13 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 16:23:55 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/03/29 13:56:30 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 16:21:54 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "map-editor.h"
+#include "doom-nukem.h"
 
-SDL_Texture* load_image(char *file, SDL_Renderer *ren)
+SDL_Texture*    load_image(char *file, SDL_Renderer *ren)
 {
     SDL_Surface *loaded_image;
     SDL_Texture *texture;
@@ -29,7 +29,7 @@ SDL_Texture* load_image(char *file, SDL_Renderer *ren)
     return (texture);
 }
 
-void        apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren)
+void            apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren)
 {
     SDL_Rect    pos;
 
