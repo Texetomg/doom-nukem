@@ -6,11 +6,43 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/15 17:56:06 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/16 16:45:38 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+
+static void read_gif(t_game *game)
+{
+	char *folder;
+	char *i;
+	char *extension;
+	char *path;
+	char *tmp;
+	int k;
+
+	folder = ft_strdup("imgs/gif1/");
+	extension = ft_strdup(".bmp");
+	path = ft_strnew(20);
+	game->gif.frame = 40;
+	game->gif.curr_frame = 0;
+	game->gif.array = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * game->gif.frame);
+	k = 0;
+	while (k < game->gif.frame)
+	{
+		i = ft_itoa(k);
+		tmp = ft_strjoin(folder,i);
+		path = ft_strjoin(tmp, extension);
+		*(game->gif.array + k) = SDL_LoadBMP(path);
+		ft_putendl(path);
+		free(path);
+		free(tmp);
+		free(i);
+		k++;
+	}
+	free(folder);
+	free(extension);
+}
 
 //инициализация sdl
 static void	init_sdl(t_game *game)
@@ -28,10 +60,8 @@ static void	init_sdl(t_game *game)
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	game->texture_arr[0] = SDL_LoadBMP("imgs/hand_1.bmp");
-	game->texture = SDL_LoadBMP("src/cat.bmp");
-	ft_putnbrln(game->texture->w);
-	ft_putnbrln(game->texture->h);
-	ft_putnbrln(game->texture->pitch);
+	game->texture = SDL_LoadBMP("imgs/cat.bmp");
+	read_gif(game);
 }
 
 t_game	*create_struct(void)
