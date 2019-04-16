@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 18:03:18 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:14:10 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,8 +221,8 @@ void	draw_sector(t_game *game, t_draw for_draw)
 			yfloor = (game->sectors + for_draw.curr_sector)->floor - game->player.pos.z;
 			yscale1 = 500 / first_point.x;
 			yscale2 = 500 / second_point.x;
-			for_draw.wall.x1 = -first_point.y * (game->display_mode.w / 2) / 5 * 8.66 / first_point.x + game->display_mode.w / 2;
-			for_draw.wall.x2 = -second_point.y * (game->display_mode.w / 2) / 5 * 8.66 / second_point.x + game->display_mode.w / 2;
+			for_draw.wall.x1 = -first_point.y * (game->display_mode.w / 2) / first_point.x + game->display_mode.w / 2;
+			for_draw.wall.x2 = -second_point.y * (game->display_mode.w / 2) / second_point.x + game->display_mode.w / 2;
 			for_draw.wall.y2t = -yscale2 * yceil + game->display_mode.h / 2;
 			for_draw.wall.y1t = -yscale1 * yceil + game->display_mode.h / 2;
 			for_draw.wall.y2b = -yscale2 * yfloor + game->display_mode.h / 2;
@@ -262,9 +262,9 @@ static void	draw_3d_wall(t_game *game)
 	t_draw	for_draw;
 	
 	//ft_putendl("draw_3d_wall");
-	for_draw.fov_left.x = 8.66;
+	for_draw.fov_left.x = 5;
 	for_draw.fov_left.y = 5;
-	for_draw.fov_right.x = 8.66;
+	for_draw.fov_right.x = 5;
 	for_draw.fov_right.y = -5;
 	for_draw.window.x1 = 0;
 	for_draw.window.x2 = game->display_mode.w;
