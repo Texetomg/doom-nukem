@@ -1,40 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atod.c                                          :+:      :+:    :+:   */
+/*   clean_buffer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/03 16:18:31 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 18:17:21 by bfalmer-         ###   ########.fr       */
+/*   Created: 2019/04/16 18:19:18 by bfalmer-          #+#    #+#             */
+/*   Updated: 2019/04/16 18:19:32 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-double	ft_atod(const char *c)
+void clean_buffer(char **buffer)
 {
-	int		i;
-	char	**buffer;
-	double	result;
-	double	fract;
+	int i;
 
-	i = ft_skip(c);
-	fract = 1;
-
-	buffer = ft_strsplit((c + i), '.');
-	result = ft_atoi(buffer[0]);
 	i = 0;
-	if (buffer[1])
+	while (buffer[i])
 	{
-		while (i < (int)ft_strlen(buffer[1]))
-		{
-			fract *= 0.1;
-			i++;
-		}
-		result += ft_atoi(buffer[1]) * fract;
+		ft_strdel(&buffer[i]);
+		i++;
 	}
-	clean_buffer(buffer);
-	return(result);
+	i = 0;
+	free(buffer);
 }

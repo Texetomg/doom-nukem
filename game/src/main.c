@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/15 17:55:56 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 19:35:46 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,19 +265,29 @@ static void	draw_3d_wall(t_game *game)
 	draw_minimap(game);
 }
 
+
+
 int 		main(void)
 {
 	t_game		*game;
 	int loop;
-	
+	int i = 0;
 	game = create_struct();
 	loop = 1;
+	
+
 	while (loop)
 	{
 		player_move(game, &loop);
 		get_pos_z(game);
 		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
+		while (i < (game->texture_arr[0]->w) * (game->texture_arr[0]->h))
+		{
+			((int*)(game->screen->pixels))[i] = ((int*)(game->texture_arr[0]->pixels))[i];
+			i++;
+		}
+		i = 0;
 		put_fps(game);
 		SDL_UpdateWindowSurface(game->window);
 	}

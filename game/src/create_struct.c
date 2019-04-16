@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/15 17:56:06 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/15 17:57:46 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	init_sdl(t_game *game)
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	game->texture_arr[0] = SDL_LoadBMP("imgs/hand_1.bmp");
-	game->texture = SDL_LoadBMP("src/cat.bmp");
+	game->texture = SDL_LoadBMP("imgs/cat.bmp");
 	ft_putnbrln(game->texture->w);
 	ft_putnbrln(game->texture->h);
 	ft_putnbrln(game->texture->pitch);

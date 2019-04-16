@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/03 17:43:26 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:18:57 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	define_sector(t_sector *sector, char **line)
 	buffer = ft_strsplit(line[1], ' ');
 	sector->ceil = ft_atod(buffer[0]);
 	sector->floor = ft_atod(buffer[1]);
-	free(buffer);
+	clean_buffer(buffer);
 	//кол-во стен (кол-во инексов векторов)
 	while(line[2][i])
 	{
@@ -73,7 +73,7 @@ static void	define_sector(t_sector *sector, char **line)
 		*(sector->index_points + i) = ft_atoi(buffer[i]);
 		i++;
 	}
-	free(buffer);
+	clean_buffer(buffer);
 	i = 0;
 	if ((sector->neighbors = (int*)malloc(sizeof(int) *  sector->count_wall)) == 0)
 		check_error_n_exit(1, "malloc error");
@@ -83,8 +83,9 @@ static void	define_sector(t_sector *sector, char **line)
 		*(sector->neighbors + i) = ft_atoi(buffer[i]);
 		i++;
 	}
-	free(buffer);
+	clean_buffer(buffer);
 }
+
 
 //чтение карты
 void		read_map(char *name, t_game *game)
@@ -113,14 +114,14 @@ void		read_map(char *name, t_game *game)
 		{
 			buffer = ft_strsplit(line, '\t');
 			define_vertex(game->points + i, buffer);
-			free(buffer);
+			clean_buffer(buffer);
 			i++;
 		}
 		else if (line[0] == 's')
 		{
 			buffer = ft_strsplit(line, '\t');
 			define_sector(game->sectors + j, buffer);
-			free(buffer);
+			clean_buffer(buffer);
 			j++;
 		}
 		free(line);

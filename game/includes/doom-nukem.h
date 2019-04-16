@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/15 17:56:17 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:18:46 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,5 @@ void				change_wall(t_wall *cam_wall);
 void				get_pos_z(t_game *game);
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
 void        		apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
-
+void				clean_buffer(char **buffer);
 #endif
