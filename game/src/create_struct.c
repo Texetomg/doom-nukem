@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/16 16:45:38 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:08:16 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void read_gif(t_game *game)
 		tmp = ft_strjoin(folder,i);
 		path = ft_strjoin(tmp, extension);
 		*(game->gif.array + k) = SDL_LoadBMP(path);
-		ft_putendl(path);
 		free(path);
 		free(tmp);
 		free(i);
@@ -77,7 +76,7 @@ t_game	*create_struct(void)
 	game->player.pos.x = 0;
 	game->player.pos.y = -3;
 	game->player.z_accel = 0;
-	game->player.angle = 0;
+	game->player.angle = 3.14/6;
 	game->points_cam = (vec2*)malloc(sizeof(vec2) * game->count_points);
 	game->player.curr_sector = 1;
 	game->player.foots = (game->sectors + game->player.curr_sector)->floor;

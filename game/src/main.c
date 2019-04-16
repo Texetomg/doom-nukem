@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 16:45:40 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:03:18 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ void	draw_sector(t_game *game, t_draw for_draw)
 			}
 			else
 			{
-				draw_wall(game, for_draw, x1a, x2a, y1, y1);
+				draw_wall(game, for_draw, x1a, x2a, y1, y2);
 			}
 		}
 		i++;
@@ -283,9 +283,10 @@ int 		main(void)
 {
 	t_game		*game;
 	int loop;
-	
+	int k;	
 	game = create_struct();
 	loop = 1;
+	k = -3;
 	while (loop)
 	{
 		player_move(game, &loop);
@@ -294,9 +295,15 @@ int 		main(void)
 		draw_3d_wall(game);
 		put_fps(game);
 		SDL_UpdateWindowSurface(game->window);
-		game->gif.curr_frame++;
-		if (game->gif.curr_frame == game->gif.frame)
+		if (k == 0)
+		{
+			game->gif.curr_frame++;
+			if (game->gif.curr_frame == game->gif.frame)
 			game->gif.curr_frame = 0;
+			k = -3;
+		}
+		else
+			k++;
 	}
 	SDL_DestroyWindow(game->window);
 	SDL_Quit();
