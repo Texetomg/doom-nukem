@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/12 19:48:13 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/16 18:14:46 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,8 @@ void	draw_minimap(t_game *game)
 	}
 	pos0.x = game->display_mode.w / 20;
 	pos0.y = game->display_mode.h / 20;
-	left_fov.x = game->display_mode.w / 20 + 8.66 * 20;
-	right_fov.x = game->display_mode.w / 20 + 8.66 * 20;
+	left_fov.x = game->display_mode.w / 20 + 5 * 20;
+	right_fov.x = game->display_mode.w / 20 + 5 * 20;
 	left_fov.y = game->display_mode.h / 20 - 5 * 20;
 	right_fov.y = game->display_mode.h / 20 + 5 * 20;
 	draw_wall_x(game, pos0, left_fov, 0xFFFFFF);

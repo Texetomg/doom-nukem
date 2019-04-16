@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 18:18:46 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:23:14 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@
 # define COLOR_BETW 0xAA0000
 # define STEP 0.05
 
+typedef struct		s_gif
+{
+	int				frame;
+	int				curr_frame;
+	SDL_Surface     **array;
+}					t_gif;
 typedef	struct		s_vec2
 {
 	double			x;
@@ -115,6 +121,7 @@ typedef struct		s_game
 	t_keystate		keystate;
 	SDL_Surface		*texture;
 	SDL_Surface		*texture_arr[3];	
+	t_gif			gif;
 }					t_game;
 
 t_game  			*create_struct(void);
