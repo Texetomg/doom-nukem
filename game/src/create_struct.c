@@ -6,13 +6,13 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/17 15:42:19 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/17 19:02:34 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-static void read_gif(t_game *game, char *str, int index)
+static void read_gif(t_game *game, char *str, int index, int frame)
 {
 	char *folder;
 	char *i;
@@ -24,7 +24,7 @@ static void read_gif(t_game *game, char *str, int index)
 	folder = ft_strdup(str);
 	extension = ft_strdup(".bmp");
 	path = ft_strnew(20);
-	game->gif[index].frame = 40;
+	game->gif[index].frame = frame;
 	game->gif[index].curr_frame = 0;
 	game->gif[index].array = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * game->gif[index].frame);
 	k = 0;
@@ -62,9 +62,7 @@ static void	init_sdl(t_game *game)
 	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
         check_error_n_exit(1,(char*)SDL_GetError());
     }
-	game->texture_arr[0] = SDL_LoadBMP("imgs/h_1.bmp");
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
-	read_gif(game, "imgs/gif1/", 0);
 }
 
 t_game	*create_struct(void)
@@ -77,6 +75,8 @@ t_game	*create_struct(void)
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
 	read_map("src/map2", game);
+	read_gif(game, "imgs/gif1/", 0, 40);
+	read_gif(game, "imgs/gif_damage/", 1, 29);
 	game->player.pos.x = 0;
 	game->player.pos.y = -3;
 	game->player.z_accel = 0;
