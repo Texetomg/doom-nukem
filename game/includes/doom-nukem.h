@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 18:23:42 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 19:24:40 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@ typedef struct		s_gif
 	int				curr_frame;
 	SDL_Surface     **array;
 }					t_gif;
+
 typedef	struct		s_vec2
 {
 	double			x;
 	double			y;
 }					vec2;
+
 typedef struct		s_window
 {
 	double          x1;
@@ -45,6 +47,7 @@ typedef struct		s_window
 	double          y2b;
 	double          y2t;
 }					t_window;
+
 typedef struct		s_draw
 {
 	t_window		window;
@@ -79,12 +82,14 @@ typedef struct		s_player
 	double			b_knees;
 	double			b_foots;
 }					t_player;
+
 typedef struct		s_wall
 {
 	vec2			pos1;
 	vec2			pos2;
 	int				color;
 }					t_wall;
+
 typedef struct		s_sector
 {
 	double			floor;
@@ -106,15 +111,21 @@ typedef	struct 		s_keystate
 	int				mouse_l;
 }					t_keystate;
 
+typedef	struct 		s_sounds
+{
+	Mix_Music		*music;
+	Mix_Chunk		*bang;
+}					t_sounds;
+
 typedef struct		s_game
 {
+	t_sounds		sounds;
 	t_player		player;
 	vec2			*points;
 	t_sector		*sectors;
 	SDL_Window		*window;
 	SDL_Surface		*screen;
 	SDL_DisplayMode	display_mode;
-	SDL_Renderer	*renderer;
 	struct timeval  time;
 	vec2int			mouse;
 	int				count_points;

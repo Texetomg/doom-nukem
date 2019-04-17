@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/17 18:23:22 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 19:35:54 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void read_gif(t_game *game, char *str, int index, int frame)
 
 	folder = ft_strdup(str);
 	extension = ft_strdup(".bmp");
-	path = ft_strnew(20);
 	game->gif[index].frame = frame;
 	game->gif[index].curr_frame = 0;
 	game->gif[index].array = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * game->gif[index].frame);
@@ -75,6 +74,10 @@ t_game	*create_struct(void)
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
 	read_map("src/map2", game);
+	if (!(game->sounds.music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->sounds.bang = Mix_LoadWAV( "sounds/WOO.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
 	read_gif(game, "imgs/gif1/", 0, 40);
 	read_gif(game, "imgs/gif_damage/", 1, 29);
 	game->player.pos.x = 0;

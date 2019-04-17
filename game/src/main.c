@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 18:22:55 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 19:34:12 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,13 +308,11 @@ int 		main(void)
 	t_game		*game;
 	int loop;
 	int k;
-	Mix_Music *music = NULL;
 	game = create_struct();
 	loop = 1;		
 	k = -3;
-	if (!(music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	Mix_PlayMusic( music, -1 );
+	
+	Mix_PlayMusic( game->sounds.music, -1 );
 	while (loop)
 	{
 		player_move(game, &loop);
@@ -344,7 +342,33 @@ int 		main(void)
 		else
 			k++;
 	}
+	Mix_FreeChunk(game->sounds.bang);
+	game->sounds.bang = NULL;
+	Mix_FreeMusic(game->sounds.music);
+	game->sounds.music = NULL;
+	Mix_Quit();
+	SDL_FreeSurface(game->screen);
+	game->screen = NULL;
+	SDL_FreeSurface(game->texture);
+	game->texture = NULL;
+	/*
+	while (game->texture_arr[i])
+	{
+		SDL_FreeSurface(game->texture_arr[i]);
+		game->texture_arr[i] = NULL;
+		i++;
+	}
+	i = 0;
+	
+	while (game->gif->array[i])
+	{
+		SDL_FreeSurface(game->gif->array[i]);
+		game->gif->array[i] = NULL;
+		i++;
+	}
+	*/
 	SDL_DestroyWindow(game->window);
+	game->window = NULL;
 	SDL_Quit();
 	return (0);
 }
