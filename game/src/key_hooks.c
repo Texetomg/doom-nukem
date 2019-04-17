@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 18:49:28 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 18:15:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ static void    move(t_game *game, double x, double y)
 
 static void		change_keystate(t_keystate *keystate, SDL_Keycode key, int flag)
 {
+
+	
 	if (key == SDLK_w)
 		keystate->forward = flag;
 	if (key == SDLK_s)
@@ -106,7 +108,6 @@ void	        player_move(t_game *game, int *loop)
 	SDL_Event e;
 	vec2	direct;
 	vec2	curve;
-	
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
 	//перемещать курсор в одну и ту же точку
@@ -154,4 +155,10 @@ void	        player_move(t_game *game, int *loop)
 		game->player.b_foots = 0.5;
 		game->player.b_knees = 0.3;
 	}
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+	{
+		if (game->gif[1].curr_frame == 0)
+			game->keystate.mouse_l = 1;
+	}
+
 }

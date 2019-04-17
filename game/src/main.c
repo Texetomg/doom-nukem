@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 13:57:04 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 18:19:55 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,11 +291,10 @@ void draw_hands(t_game *game)
 	{
 		while (x < game->screen->w / 3)
 		{
-			new_x = (double)x / (game->screen->w / 3) * game->texture_arr[0]->w;
-			new_y = (double)y / (game->screen->h / 3) * game->texture_arr[0]->h;
-			color = ((int*)(game->texture_arr[0]->pixels))[new_y * game->texture_arr[0]->w + new_x];
-			if (color != -1)
-				((int*)(game->screen->pixels))[(int)(y + game->screen->h / 100 * 65) * game->screen->w + x + (game->screen->w / 100 * 45)] = color;
+			new_x = (double)x / (game->screen->w / 3) * (*(game->gif[1].array + ((int)(game->gif[1].curr_frame))))->w;
+			new_y = (double)y / (game->screen->h / 3) * (*(game->gif[1].array + ((int)(game->gif[1].curr_frame))))->h;
+			color = ((int*)((*(game->gif[1].array + ((int)(game->gif[1].curr_frame))))->pixels))[new_y * (*(game->gif[1].array + ((int)(game->gif[1].curr_frame))))->w + new_x];
+			((int*)(game->screen->pixels))[(int)(y + game->screen->h / 100 * 65) * game->screen->w + x + (game->screen->w / 100 * 45)] = color;
 			x++;
 		}
 		x = 0;
@@ -313,7 +312,6 @@ int 		main(void)
 	game = create_struct();
 	loop = 1;		
 	k = -3;
-	ft_putnbrln(1);
 	if (!(music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	Mix_PlayMusic( music, -1 );
@@ -326,11 +324,21 @@ int 		main(void)
 		draw_hands(game);
 		put_fps(game);
 		SDL_UpdateWindowSurface(game->window);
+		
+		if(game->keystate.mouse_l == 1)
+		{
+			game->gif[1].curr_frame++;
+			if (game->gif[1].curr_frame == game->gif[1].frame)
+			{
+				game->gif[1].curr_frame = 0;
+				game->keystate.mouse_l = 0;
+			}
+		}
 		if (k == 0)
 		{
 			game->gif[0].curr_frame++;
 			if (game->gif[0].curr_frame == game->gif[0].frame)
-			game->gif[0].curr_frame = 0;
+				game->gif[0].curr_frame = 0;
 			k = -3;
 		}
 		else

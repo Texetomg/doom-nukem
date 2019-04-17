@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 13:53:38 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 14:12:23 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef	struct 		s_keystate
 	int				jump;
 	int				ctrl;
 	int				ctrl_flag;
+	int				mouse_l;
 }					t_keystate;
 
 typedef struct		s_game
