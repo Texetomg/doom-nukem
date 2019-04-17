@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 18:24:58 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 14:47:06 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,21 @@ static void    move(t_game *game, double x, double y)
 	flag = 0;
 	while (i < (game->sectors + game->player.curr_sector)->count_wall)
 	{
+		
 		f_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points + i));
 		if (i == (game->sectors + game->player.curr_sector)->count_wall - 1)
 			s_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points));
 		else
 			s_point = *(game->points + *((game->sectors + game->player.curr_sector)->index_points + i + 1));
+
 		s_point.x = s_point.x - f_point.x;
 		s_point.y = s_point.y - f_point.y;
 		f_point.x = new_x - f_point.x;
 		f_point.y = new_y - f_point.y;
-
 		if (cross_product(f_point, s_point) < 0)
 		{
 			if (*((game->sectors + game->player.curr_sector)->neighbors + i) == -1)
-			{
 				flag = 1;
-				i++ ;
-			}
 			else
 			{
 				if (game->player.knees > (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->floor &&
@@ -56,8 +54,10 @@ static void    move(t_game *game, double x, double y)
 						game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + 0.5;
 						game->player.z_accel = 0;
 					}
-				}	
-				return ;
+					return ;
+				}
+				else
+					flag = 1;
 			}
 		}
 		i++;
