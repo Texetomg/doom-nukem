@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 19:31:53 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 19:37:35 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void    move(t_game *game, double x, double y)
 				if (game->player.knees > (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->floor &&
 					game->player.pos.z < (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->ceil)
 				{
+					//добавить проверку других стен
 					game->player.curr_sector = *((game->sectors + game->player.curr_sector)->neighbors + i);
 					game->player.pos.x = new_x;
 					game->player.pos.y = new_y;
