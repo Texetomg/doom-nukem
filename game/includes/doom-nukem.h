@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 20:19:26 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 13:53:38 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ typedef struct		s_game
 	t_keystate		keystate;
 	SDL_Surface		*texture;
 	SDL_Surface		*texture_arr[3];	
-	t_gif			gif;
+	t_gif			gif[2];
 }					t_game;
 
 t_game  			*create_struct(void);

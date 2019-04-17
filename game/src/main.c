@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 13:46:13 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 13:57:04 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ void	draw_wall(t_game *game, t_draw for_draw, double x1, double x2, double y1, d
 				y = (double)(k - yt_wall) / (yb_wall - yt_wall) * game->texture->h;
 				if (for_draw.curr_sector == 2)
 				{
-					x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * (*(game->gif.array + game->gif.curr_frame))->w;
-					y = (double)(k - yt_wall) / (yb_wall - yt_wall) * (*(game->gif.array + game->gif.curr_frame))->h;
-					color = ((int*)(*(game->gif.array + game->gif.curr_frame))->pixels)[y * (*(game->gif.array + game->gif.curr_frame))->w + x];
+					x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * (*(game->gif[0].array + game->gif[0].curr_frame))->w;
+					y = (double)(k - yt_wall) / (yb_wall - yt_wall) * (*(game->gif[0].array + game->gif[0].curr_frame))->h;
+					color = ((int*)(*(game->gif[0].array + game->gif[0].curr_frame))->pixels)[y * (*(game->gif[0].array + game->gif[0].curr_frame))->w + x];
 				}
 				else
 					color = ((int*)game->texture->pixels)[y * game->texture->w + x];
@@ -328,9 +328,9 @@ int 		main(void)
 		SDL_UpdateWindowSurface(game->window);
 		if (k == 0)
 		{
-			game->gif.curr_frame++;
-			if (game->gif.curr_frame == game->gif.frame)
-			game->gif.curr_frame = 0;
+			game->gif[0].curr_frame++;
+			if (game->gif[0].curr_frame == game->gif[0].frame)
+			game->gif[0].curr_frame = 0;
 			k = -3;
 		}
 		else
