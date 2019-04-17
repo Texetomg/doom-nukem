@@ -6,13 +6,17 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/04/17 14:46:21 by thorker          ###   ########.fr       */
+=======
+/*   Updated: 2019/04/17 13:58:32 by bfalmer-         ###   ########.fr       */
+>>>>>>> 39d7462a3703f02bbdd4aa524d958972e0575f25
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-static void read_gif(t_game *game)
+static void read_gif(t_game *game, char *str, int index)
 {
 	char *folder;
 	char *i;
@@ -21,19 +25,19 @@ static void read_gif(t_game *game)
 	char *tmp;
 	int k;
 
-	folder = ft_strdup("imgs/gif1/");
+	folder = ft_strdup(str);
 	extension = ft_strdup(".bmp");
 	path = ft_strnew(20);
-	game->gif.frame = 40;
-	game->gif.curr_frame = 0;
-	game->gif.array = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * game->gif.frame);
+	game->gif[index].frame = 40;
+	game->gif[index].curr_frame = 0;
+	game->gif[index].array = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * game->gif[index].frame);
 	k = 0;
-	while (k < game->gif.frame)
+	while (k < game->gif[index].frame)
 	{
 		i = ft_itoa(k);
 		tmp = ft_strjoin(folder,i);
 		path = ft_strjoin(tmp, extension);
-		*(game->gif.array + k) = SDL_LoadBMP(path);
+		*(game->gif[index].array + k) = SDL_LoadBMP(path);
 		free(path);
 		free(tmp);
 		free(i);
@@ -46,8 +50,9 @@ static void read_gif(t_game *game)
 //инициализация sdl
 static void	init_sdl(t_game *game)
 {
+	
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
+		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:	
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
@@ -58,14 +63,12 @@ static void	init_sdl(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
-	game->texture_arr[0] = SDL_LoadBMP("imgs/hand_1.bmp");
+	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
+        check_error_n_exit(1,(char*)SDL_GetError());
+    }
+	game->texture_arr[0] = SDL_LoadBMP("imgs/h_1.bmp");
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
-	/*
-	ft_putnbrln(game->texture->w);
-	ft_putnbrln(game->texture->h);
-	ft_putnbrln(game->texture->pitch);
-	*/
-	read_gif(game);
+	read_gif(game, "imgs/gif1/", 0);
 }
 
 t_game	*create_struct(void)

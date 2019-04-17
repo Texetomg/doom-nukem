@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 14:10:18 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/17 15:35:47 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ void	draw_wall(t_game *game, t_draw for_draw, double x1, double x2, double y1, d
 				y = (double)(k - yt_wall) / (yb_wall - yt_wall) * game->texture->h;
 				if (for_draw.curr_sector == 2)
 				{
-					x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * (*(game->gif.array + game->gif.curr_frame))->w;
-					y = (double)(k - yt_wall) / (yb_wall - yt_wall) * (*(game->gif.array + game->gif.curr_frame))->h;
-					color = ((int*)(*(game->gif.array + game->gif.curr_frame))->pixels)[y * (*(game->gif.array + game->gif.curr_frame))->w + x];
+					x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * (*(game->gif[0].array + game->gif[0].curr_frame))->w;
+					y = (double)(k - yt_wall) / (yb_wall - yt_wall) * (*(game->gif[0].array + game->gif[0].curr_frame))->h;
+					color = ((int*)(*(game->gif[0].array + game->gif[0].curr_frame))->pixels)[y * (*(game->gif[0].array + game->gif[0].curr_frame))->w + x];
 				}
 				else
 					color = ((int*)game->texture->pixels)[y * game->texture->w + x];
@@ -279,37 +279,58 @@ static void	draw_3d_wall(t_game *game)
 	draw_minimap(game);
 }
 
+void draw_hands(t_game *game)
+{
+	int		x = 0;
+	int		y = 0;
+	int		new_x = 0;
+	int		new_y = 0;
+	int		color;
 
+	while (y < game->screen->h / 3)
+	{
+		while (x < game->screen->w / 3)
+		{
+			new_x = (double)x / (game->screen->w / 3) * game->texture_arr[0]->w;
+			new_y = (double)y / (game->screen->h / 3) * game->texture_arr[0]->h;
+			color = ((int*)(game->texture_arr[0]->pixels))[new_y * game->texture_arr[0]->w + new_x];
+			if (color != -1)
+				((int*)(game->screen->pixels))[(int)(y + game->screen->h / 100 * 65) * game->screen->w + x + (game->screen->w / 100 * 45)] = color;
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+	
+}
 
 int 		main(void)
 {
 	t_game		*game;
 	int loop;
-
-	int i = 0;
+	int k;
+	Mix_Music *music = NULL;
 	game = create_struct();
-	loop = 1;
-	int k;	
+	loop = 1;		
 	k = -3;
+	ft_putnbrln(1);
+	if (!(music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	Mix_PlayMusic( music, -1 );
 	while (loop)
 	{
 		player_move(game, &loop);
 		get_pos_z(game);
 		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
-		while (i < (game->texture_arr[0]->w) * (game->texture_arr[0]->h))
-		{
-			((int*)(game->screen->pixels))[i] = ((int*)(game->texture_arr[0]->pixels))[i];
-			i++;
-		}
-		i = 0;
+		draw_hands(game);
 		put_fps(game);
 		SDL_UpdateWindowSurface(game->window);
 		if (k == 0)
 		{
-			game->gif.curr_frame++;
-			if (game->gif.curr_frame == game->gif.frame)
-			game->gif.curr_frame = 0;
+			game->gif[0].curr_frame++;
+			if (game->gif[0].curr_frame == game->gif[0].frame)
+			game->gif[0].curr_frame = 0;
 			k = -3;
 		}
 		else

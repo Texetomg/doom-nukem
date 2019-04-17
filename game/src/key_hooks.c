@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 14:47:06 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/17 15:36:01 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	        player_move(t_game *game, int *loop)
 	
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
-		//перемещать курсор в одну и ту же точку
+	//перемещать курсор в одну и ту же точку
 	SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); 
 	direct.x = STEP * cos(game->player.angle);
 	direct.y = STEP * sin(game->player.angle);
