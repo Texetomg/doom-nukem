@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/16 18:22:06 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 13:37:38 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,9 @@ static void read_gif(t_game *game)
 //инициализация sdl
 static void	init_sdl(t_game *game)
 {
+	
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
+		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:	
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
@@ -58,13 +59,11 @@ static void	init_sdl(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
-	game->texture_arr[0] = SDL_LoadBMP("imgs/hand_1.bmp");
+	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
+        check_error_n_exit(1,(char*)SDL_GetError());
+    }
+	game->texture_arr[0] = SDL_LoadBMP("imgs/h_1.bmp");
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
-	/*
-	ft_putnbrln(game->texture->w);
-	ft_putnbrln(game->texture->h);
-	ft_putnbrln(game->texture->pitch);
-	*/
 	read_gif(game);
 }
 

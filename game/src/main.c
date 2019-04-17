@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 18:23:01 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/17 13:45:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,30 +279,51 @@ static void	draw_3d_wall(t_game *game)
 	draw_minimap(game);
 }
 
+void draw_hands(t_game *game)
+{
+	int		x = 0;
+	int		y = 0;
+	int		new_x = 0;
+	int		new_y = 0;
+	int		color;
 
+	while (y < game->screen->h / 3)
+	{
+		while (x < game->screen->w / 3)
+		{
+			new_x = (double)x / (game->screen->w / 3) * game->texture_arr[0]->w;
+			new_y = (double)y / (game->screen->h / 3) * game->texture_arr[0]->h;
+			color = ((int*)(game->texture_arr[0]->pixels))[new_y * game->texture_arr[0]->w + new_x];
+			if (color != -1)
+				((int*)(game->screen->pixels))[(int)(y + game->screen->h / 100 * 65) * game->screen->w + x + (game->screen->w / 100 * 45)] = color;
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+	
+}
 
 int 		main(void)
 {
 	t_game		*game;
 	int loop;
-
-	int i = 0;
+	int k;
+	Mix_Music *music = NULL;
 	game = create_struct();
-	loop = 1;
-	int k;	
+	loop = 1;		
 	k = -3;
+	ft_putnbrln(1);
+	if (!(music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	Mix_PlayMusic( music, -1 );
 	while (loop)
 	{
 		player_move(game, &loop);
 		get_pos_z(game);
 		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
-		while (i < (game->texture_arr[0]->w) * (game->texture_arr[0]->h))
-		{
-			((int*)(game->screen->pixels))[i] = ((int*)(game->texture_arr[0]->pixels))[i];
-			i++;
-		}
-		i = 0;
+		draw_hands(game);
 		put_fps(game);
 		SDL_UpdateWindowSurface(game->window);
 		if (k == 0)
