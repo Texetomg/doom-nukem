@@ -117,10 +117,21 @@ typedef	struct 		s_sounds
 	Mix_Chunk		*bang;
 }					t_sounds;
 
+typedef struct 		s_sprites
+{
+	vec2			pos;
+	int				w;
+	int				h;
+	vec2			new_pos;
+	double			shift;
+}					t_sprites;
+
+
 typedef struct		s_game
 {
 	t_sounds		sounds;
 	t_player		player;
+	t_sprites		sprites;
 	vec2			*points;
 	t_sector		*sectors;
 	SDL_Window		*window;

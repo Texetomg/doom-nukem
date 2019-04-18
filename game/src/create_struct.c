@@ -97,10 +97,13 @@ static void set_initial_values(t_game *game)
 	game->keystate.right = 0;
 	game->player.b_foots = 0.5;
 	game->player.b_knees = 0.3;
+	game->sprites.pos.x = 1;
+	game->sprites.pos.y = -2;
+	game->sprites.h = 50;
+	game->sprites.w = 50;
 }
 
-//static void load_images()
-
+/* static void load_images()	*/
 t_game	*create_struct(void)
 {
 	t_game	*game;

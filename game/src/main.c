@@ -279,7 +279,7 @@ static void	draw_3d_wall(t_game *game)
 	draw_minimap(game);
 }
 //отрисовка рук/оружия 
-void draw_hands(t_game *game)
+void		draw_hands(t_game *game)
 {
 	int		x = 0;
 	int		y = 0;
@@ -300,10 +300,11 @@ void draw_hands(t_game *game)
 		x = 0;
 		y++;
 	}
-	
 }
 
-int 		main(void)
+
+
+int			main(void)
 {
 	t_game		*game;
 	int loop;
@@ -312,7 +313,7 @@ int 		main(void)
 	loop = 1;		
 	k = -3;
 	int	leaks_flag = 0;
-	
+	int i;
 	while (loop)
 	{
 		player_move(game, &loop);
@@ -321,6 +322,20 @@ int 		main(void)
 		draw_3d_wall(game);
 		draw_hands(game);
 		put_fps(game);
+		game->sprites.new_pos.x = (game->sprites.pos.y - game->player.pos.y) * sin(game->player.angle) + (game->sprites.pos.x - game->player.pos.x) * cos(game->player.angle);
+		game->sprites.new_pos.y = (game->sprites.pos.y - game->player.pos.y) * cos(game->player.angle) - (game->sprites.pos.x - game->player.pos.x) * sin(game->player.angle);
+		ft_putnbrln(game->sprites.pos.x * 1000);
+		ft_putnbrln(game->sprites.pos.y * 1000);
+		game->sprites.shift = (-game->sprites.new_pos.y / game->sprites.new_pos.x) * (game->screen->w / 2) + game->screen->w / 2;
+		game->sprites.h = 200 / game->sprites.new_pos.x;
+		i = (game->screen->h / 2) - game->sprites.h / 2;
+		while (i < (game->screen->h / 2) + game->sprites.h / 2)
+		{
+			if (i > 0 && i < game->screen->h && game->sprites.shift > 0 && game->sprites.shift < game->screen->w)
+				((int*)(game->screen->pixels))[(int)(game->screen->w * i + (int)game->sprites.shift)] = 0xFFFFFF;
+			i++;
+		}
+		i = 0;
 		SDL_UpdateWindowSurface(game->window);
 		// временный блок для проверки ликов при полной отрисовки
 		if (leaks_flag == 0)

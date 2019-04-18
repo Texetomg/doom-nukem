@@ -112,7 +112,7 @@ void	        player_move(t_game *game, int *loop)
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
 	//перемещать курсор в одну и ту же точку
-	//SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); 
+	SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); 
 	direct.x = STEP * cos(game->player.angle);
 	direct.y = STEP * sin(game->player.angle);
 	curve.x = STEP * (cos(game->player.angle) * 0.7 - sin(game->player.angle) * 0.7);
