@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/18 13:42:28 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/18 16:08:03 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	init_sdl(t_game *game)
 
 static void load_sounds(t_sounds *sounds)
 {
-	if (!(sounds->music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
+	if (!(sounds->music = Mix_LoadMUS( "sounds/Sdc.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(sounds->bang = Mix_LoadWAV( "sounds/WOO.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
