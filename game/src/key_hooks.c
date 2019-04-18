@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 19:37:35 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/18 16:13:19 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,29 +112,29 @@ void	        player_move(t_game *game, int *loop)
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
 	//перемещать курсор в одну и ту же точку
-	//SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); 
+	SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2); 
 	direct.x = STEP * cos(game->player.angle);
 	direct.y = STEP * sin(game->player.angle);
 	curve.x = STEP * (cos(game->player.angle) * 0.7 - sin(game->player.angle) * 0.7);
 	curve.y = STEP * (sin(game->player.angle) * 0.7 + cos(game->player.angle) * 0.7);
 	if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 			*loop = 0;
-	if (game->keystate.forward && (!game->keystate.right || !game->keystate.left))
+	if (game->keystate.forward && (!game->keystate.right && !game->keystate.left))
 		move(game, direct.x, direct.y);
-	if (game->keystate.back && (!game->keystate.right || !game->keystate.left))
+	if (game->keystate.back && (!game->keystate.right && !game->keystate.left))
 		move(game, -direct.x, -direct.y);
-	if (game->keystate.right && (!game->keystate.forward || !game->keystate.back))
+	if (game->keystate.right && (!game->keystate.forward && !game->keystate.back))
 		move(game, direct.y, -direct.x);
-	if (game->keystate.left && (!game->keystate.forward || !game->keystate.back))
+	if (game->keystate.left && (!game->keystate.forward && !game->keystate.back))
 		move(game, -direct.y, direct.x);
 	if (game->keystate.forward && game->keystate.right)
-		move(game, curve.x, curve.y);
-	if (game->keystate.forward && game->keystate.left)
 		move(game, curve.y, -curve.x);
+	if (game->keystate.forward && game->keystate.left)
+		move(game, curve.x, curve.y);
 	if (game->keystate.back && game->keystate.right)
-		move(game, -curve.y, curve.x);
-	if (game->keystate.back && game->keystate.left)
 		move(game, -curve.x, -curve.y);
+	if (game->keystate.back && game->keystate.left)
+		move(game, -curve.y, curve.x);
 	if (game->keystate.jump && game->player.foots == (game->sectors + game->player.curr_sector)->floor)
 	{
 		game->player.z_accel = 0.1;
