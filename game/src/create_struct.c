@@ -6,13 +6,13 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/17 19:37:25 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/18 13:42:28 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-static void read_gif(t_game *game, char *str, int index, int frame)
+static void read_gif(t_gif *gif, char *str, int index, int frame)
 {
 	char *folder;
 	char *i;
@@ -23,16 +23,16 @@ static void read_gif(t_game *game, char *str, int index, int frame)
 
 	folder = ft_strdup(str);
 	extension = ft_strdup(".bmp");
-	game->gif[index].frame = frame;
-	game->gif[index].curr_frame = 0;
-	game->gif[index].array = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * game->gif[index].frame);
+	gif[index].frame = frame;
+	gif[index].curr_frame = 0;
+	gif[index].array = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * gif[index].frame);
 	k = 0;
-	while (k < game->gif[index].frame)
+	while (k < gif[index].frame)
 	{
 		i = ft_itoa(k);
 		tmp = ft_strjoin(folder,i);
 		path = ft_strjoin(tmp, extension);
-		*(game->gif[index].array + k) = SDL_LoadBMP(path);
+		*(gif[index].array + k) = SDL_LoadBMP(path);
 		free(path);
 		free(tmp);
 		free(i);
@@ -64,22 +64,22 @@ static void	init_sdl(t_game *game)
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
 }
 
-t_game	*create_struct(void)
+static void load_sounds(t_sounds *sounds)
 {
-	t_game	*game;
-	
+	if (!(sounds->music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(sounds->bang = Mix_LoadWAV( "sounds/WOO.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
+}
 
-	if ((game = (t_game*)malloc(sizeof(t_game))) == 0)
-		check_error_n_exit(1,"malloc error");
-	init_sdl(game);
-	gettimeofday(&game->time, NULL);
-	read_map("src/map2", game);
-	if (!(game->sounds.music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->sounds.bang = Mix_LoadWAV( "sounds/WOO.mp3" )))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	read_gif(game, "imgs/gif1/", 0, 40);
-	read_gif(game, "imgs/gif_damage/", 1, 29);
+static void load_images(t_gif *gif)
+{
+	read_gif(gif, "imgs/gif1/", 0, 40);
+	read_gif(gif, "imgs/gif_damage/", 1, 29);
+}
+
+static void set_initial_values(t_game *game)
+{
 	game->player.pos.x = 0;
 	game->player.pos.y = -3;
 	game->player.z_accel = 0;
@@ -97,5 +97,22 @@ t_game	*create_struct(void)
 	game->keystate.right = 0;
 	game->player.b_foots = 0.5;
 	game->player.b_knees = 0.3;
+}
+
+//static void load_images()
+
+t_game	*create_struct(void)
+{
+	t_game	*game;
+	
+	if ((game = (t_game*)malloc(sizeof(t_game))) == 0)
+		check_error_n_exit(1,"malloc error");
+	init_sdl(game);
+	gettimeofday(&game->time, NULL);
+	read_map("src/map2", game);
+	load_sounds(&game->sounds);
+	load_images(game->gif);
+	set_initial_values(game);
+	Mix_PlayMusic( game->sounds.music, -1 );
 	return (game);
 }

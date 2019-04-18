@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/17 19:37:47 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/18 13:43:25 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,15 @@ typedef struct		s_game
 	t_sector		*sectors;
 	SDL_Window		*window;
 	SDL_Surface		*screen;
+	SDL_Surface		*texture;
+	SDL_Surface		*texture_arr[3];
 	SDL_DisplayMode	display_mode;
 	struct timeval  time;
 	vec2int			mouse;
 	int				count_points;
 	vec2   			*points_cam;
 	int				count_sectors;
-	t_keystate		keystate;
-	SDL_Surface		*texture;
-	SDL_Surface		*texture_arr[3];	
+	t_keystate		keystate;	
 	t_gif			gif[2];
 }					t_game;
 
@@ -148,4 +148,5 @@ void				get_pos_z(t_game *game);
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
 void        		apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
 void				clean_buffer(char **buffer);
+void    			free_SDL(t_game *game);
 #endif
