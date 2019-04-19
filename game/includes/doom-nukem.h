@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/18 13:43:25 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:56:29 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <math.h>
 # include <SDL.h>
 # include <SDL_mixer.h>
+# include <SDL_ttf.h>
 # include <sys/time.h>
 # define HIGH 0.5
 # define ACCEL 0.0005
@@ -119,16 +120,25 @@ typedef	struct 		s_sounds
 
 typedef struct 		s_sprites
 {
-	vec2			pos;
+	vec3			pos;
+	int				sector;
 	int				w;
 	int				h;
-	vec2			new_pos;
+	vec3			new_pos;
 	double			shift;
+	SDL_Surface 	*texture;
 }					t_sprites;
+
+typedef	struct 		s_hud
+{
+	SDL_Color		color;
+	SDL_Rect		fps_dest;
+}					t_hud;
 
 
 typedef struct		s_game
 {
+	t_hud			hud;
 	t_sounds		sounds;
 	t_player		player;
 	t_sprites		sprites;
@@ -149,15 +159,16 @@ typedef struct		s_game
 }					t_game;
 
 t_game  			*create_struct(void);
-double				cross_product(vec2 first_point, vec2 second_point);
-void    			draw_minimap(t_game *game);
-int					put_fps(t_game *game);
+double   			cross_product(vec2 first_point, vec2 second_point);
+void				draw_minimap(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int count_sectors);
+void    			put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
-void				player_move(t_game *game, int *loop);
+void				player_move(SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop);
 void				change_wall(t_wall *cam_wall);
-void				get_pos_z(t_game *game);
+void    			get_pos_z(t_player *player, t_sector *sectors );
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
 void        		apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
 void				clean_buffer(char **buffer);
 void    			free_SDL(t_game *game);
+void    			print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest);
 #endif

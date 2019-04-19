@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/18 16:08:03 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/18 18:57:01 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,13 @@ static void	init_sdl(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
+	if (TTF_Init() < 0)
+		check_error_n_exit(1,(char*)SDL_GetError());
 	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
         check_error_n_exit(1,(char*)SDL_GetError());
     }
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
+	game->sprites.texture = SDL_LoadBMP("imgs/sprites/boss.bmp");
 }
 
 static void load_sounds(t_sounds *sounds)
@@ -99,8 +102,15 @@ static void set_initial_values(t_game *game)
 	game->player.b_knees = 0.3;
 	game->sprites.pos.x = 1;
 	game->sprites.pos.y = -2;
-	game->sprites.h = 50;
-	game->sprites.w = 50;
+	game->sprites.pos.z = 0;
+	game->sprites.sector = 1;
+	game->hud.color.r = 255;
+	game->hud.color.g = 255;
+	game->hud.color.b = 0;
+	game->hud.fps_dest.h = 80;
+	game->hud.fps_dest.w = 120;
+	game->hud.fps_dest.x = 0;
+	game->hud.fps_dest.y = 0;
 }
 
 /* static void load_images()	*/
@@ -116,6 +126,6 @@ t_game	*create_struct(void)
 	load_sounds(&game->sounds);
 	load_images(game->gif);
 	set_initial_values(game);
-	Mix_PlayMusic( game->sounds.music, -1 );
+	//Mix_PlayMusic( game->sounds.music, -1 );
 	return (game);
 }

@@ -13,17 +13,23 @@
 #include "doom-nukem.h"
 #include <sys/time.h>
 
-int	put_fps(t_game *game)
+static int	count_fps(struct timeval *time)
 {
 	struct timeval old_time;
-    old_time = game->time;
-    gettimeofday(&game->time, NULL);
-    if(game->time.tv_sec > old_time.tv_sec)
+    old_time = *time;
+    gettimeofday(time, NULL);
+    if(time->tv_sec > old_time.tv_sec)
 	{
-		ft_putstr("fps = ");
-        ft_putnbrln((int)(1000000 / (game->time.tv_usec + 1000000 - old_time.tv_usec)));
+        return((int)(1000000 / (time->tv_usec + 1000000 - old_time.tv_usec)));
 	}
-    /*else
-        ft_putnbrln((int)(1000000 / (game->time.tv_usec - old_time.tv_usec)));*/
-	return (1);
+    else 
+	    return ((int)(1000000 / (time->tv_usec - old_time.tv_usec)));
+}
+
+void    put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time)
+{
+    char *fps;
+    fps = ft_itoa(count_fps(time));
+	print_text(screen, fps, "font.otf", 46, hud.color, hud.fps_dest);
+	free(fps);
 }
