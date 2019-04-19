@@ -22,7 +22,8 @@ static int	count_fps(struct timeval *time)
 	{
         return((int)(1000000 / (time->tv_usec + 1000000 - old_time.tv_usec)));
 	}
-	return ((int)(1000000 / (time->tv_usec - old_time.tv_usec)));
+    else 
+	    return ((int)(1000000 / (time->tv_usec - old_time.tv_usec)));
 }
 
 void    put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time)

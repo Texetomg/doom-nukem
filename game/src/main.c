@@ -279,7 +279,7 @@ static void	draw_3d_wall(t_game *game)
 	draw_minimap(game);
 }
 //отрисовка рук/оружия 
-void		draw_hands(t_game *game)
+static void		draw_hands(SDL_Surface *screen, t_gif *gif)
 {
 	int		x = 0;
 	int		y = 0;
@@ -287,14 +287,14 @@ void		draw_hands(t_game *game)
 	int		new_y = 0;
 	int		color;
 
-	while (y < game->screen->h / 3)
+	while (y < screen->h / 3)
 	{
-		while (x < game->screen->w / 3)
+		while (x < screen->w / 3)
 		{
-			new_x = (double)x / (game->screen->w / 3) * (*(game->gif[1].array + ((int)(game->gif[1].curr_frame))))->w;
-			new_y = (double)y / (game->screen->h / 3) * (*(game->gif[1].array + ((int)(game->gif[1].curr_frame))))->h;
-			color = ((int*)((*(game->gif[1].array + ((int)(game->gif[1].curr_frame))))->pixels))[new_y * (*(game->gif[1].array + ((int)(game->gif[1].curr_frame))))->w + new_x];
-			((int*)(game->screen->pixels))[(int)(y + game->screen->h / 100 * 65) * game->screen->w + x + (game->screen->w / 100 * 45)] = color;
+			new_x = (double)x / (screen->w / 3) * (*(gif[1].array + gif[1].curr_frame))->w;
+			new_y = (double)y / (screen->h / 3) * (*(gif[1].array + ((int)(gif[1].curr_frame))))->h;
+			color = ((int*)((*(gif[1].array + ((int)(gif[1].curr_frame))))->pixels))[new_y * (*(gif[1].array + ((int)(gif[1].curr_frame))))->w + new_x];
+			((int*)(screen->pixels))[(int)(y + screen->h / 100 * 65) * screen->w + x + (screen->w / 100 * 45)] = color;
 			x++;
 		}
 		x = 0;
@@ -304,25 +304,25 @@ void		draw_hands(t_game *game)
 
 
 
-void		draw_sprites(t_game *game)
+static void		draw_sprites(SDL_Surface *screen, t_sector *sectors, t_sprites sprites, t_player player)
 {
 	int i;
 	int j;
 
-	game->sprites.new_pos.x = (game->sprites.pos.y - game->player.pos.y) * sin(game->player.angle) + (game->sprites.pos.x - game->player.pos.x) * cos(game->player.angle);
-	game->sprites.new_pos.y = (game->sprites.pos.y - game->player.pos.y) * cos(game->player.angle) - (game->sprites.pos.x - game->player.pos.x) * sin(game->player.angle);
-	game->sprites.shift = (-game->sprites.new_pos.y / game->sprites.new_pos.x) * (game->screen->w / 2) + game->screen->w / 2;
-	game->sprites.h = 200 / game->sprites.new_pos.x;
-	game->sprites.w = 200 / game->sprites.new_pos.x;
-	i = (game->sectors + game->sprites.sector)->floor;
-	while (i < (game->sectors + game->sprites.sector)->floor + game->sprites.h)
+	sprites.new_pos.x = (sprites.pos.y - player.pos.y) * sin(player.angle) + (sprites.pos.x - player.pos.x) * cos(player.angle);
+	sprites.new_pos.y = (sprites.pos.y - player.pos.y) * cos(player.angle) - (sprites.pos.x - player.pos.x) * sin(player.angle);
+	sprites.shift = (-sprites.new_pos.y / sprites.new_pos.x) * (screen->w / 2) + screen->w / 2;
+	sprites.h = 200 / sprites.new_pos.x;
+	sprites.w = 200 / sprites.new_pos.x;
+	i = (sectors + sprites.sector)->floor;
+	while (i < (sectors + sprites.sector)->floor + sprites.h)
 	{
-		j = (game->sprites.shift ) - game->sprites.w / 2;
-		while (j < (game->sprites.shift) + game->sprites.w / 2)
+		j = (sprites.shift ) - sprites.w / 2;
+		while (j < (sprites.shift) + sprites.w / 2)
 		{
-			if (i >= 0 && i < game->screen->h && j >= 0 && j < game->screen->w )
+			if (i >= 0 && i < screen->h && j >= 0 && j < screen->w )
 			{
-				((int*)(game->screen->pixels))[(int)(game->screen->w * i + (int)(j))] = 0x000000;
+				((int*)(screen->pixels))[(int)(screen->w * i + (int)(j))] = 0x000000;
 			}
 			j++;
 		}
@@ -342,11 +342,11 @@ int			main(void)
 	while (loop)
 	{
 		player_move(game, &loop);
-		get_pos_z(game);
+		get_pos_z(&game->player, game->sectors);
 		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
-		draw_sprites(game);
-		draw_hands(game);
+		draw_sprites(game->screen, game->sectors, game->sprites, game->player);
+		draw_hands(game->screen, game->gif);
 		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);
 		// временный блок для проверки ликов при полной отрисовки

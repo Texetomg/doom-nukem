@@ -164,7 +164,7 @@ void    put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
 void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
-void				get_pos_z(t_game *game);
+void    get_pos_z(t_player *player, t_sector *sectors );
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
 void        		apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
 void				clean_buffer(char **buffer);

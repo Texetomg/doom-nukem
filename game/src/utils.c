@@ -12,41 +12,41 @@
 
 #include "doom-nukem.h"
 
-void    get_pos_z(t_game *game)
+void    get_pos_z(t_player *player, t_sector *sectors )
 {  
-    if (game->player.z_accel > 0)
+    if (player->z_accel > 0)
     {
-        if (game->player.pos.z + game->player.z_accel  >= (game->sectors + game->player.curr_sector)->ceil)
+        if (player->pos.z + player->z_accel  >= (sectors + player->curr_sector)->ceil)
         {
-            game->player.z_accel = 0;
+            player->z_accel = 0;
         }
         else
         {
-            game->player.pos.z += game->player.z_accel;
-            game->player.z_accel -= ACCEL;
+            player->pos.z += player->z_accel;
+            player->z_accel -= ACCEL;
         }
         
     }
-    else if (game->player.z_accel == 0 && game->player.foots > (game->sectors + game->player.curr_sector)->floor)
+    else if (player->z_accel == 0 && player->foots > (sectors + player->curr_sector)->floor)
     {
-        game->player.z_accel -= ACCEL;
+        player->z_accel -= ACCEL;
     }
-    else if (game->player.z_accel < 0)
+    else if (player->z_accel < 0)
     {
-        if (game->player.foots + game->player.z_accel < (game->sectors + game->player.curr_sector)->floor)
+        if (player->foots + player->z_accel < (sectors + player->curr_sector)->floor)
         {
-            game->player.z_accel = 0;
-            game->player.pos.z = (game->sectors + game->player.curr_sector)->floor + game->player.b_foots;
+            player->z_accel = 0;
+            player->pos.z = (sectors + player->curr_sector)->floor + player->b_foots;
         }
         else
         {
-            game->player.pos.z += game->player.z_accel;
-            game->player.z_accel -= ACCEL;   
+            player->pos.z += player->z_accel;
+            player->z_accel -= ACCEL;   
         }
     }
 
-    game->player.foots = game->player.pos.z - game->player.b_foots;
-    game->player.knees = game->player.pos.z - game->player.b_knees;
+    player->foots = player->pos.z - player->b_foots;
+    player->knees = player->pos.z - player->b_knees;
 }
 
 void    print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest)
