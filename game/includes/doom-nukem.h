@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/18 13:43:25 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/18 18:56:29 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,11 @@ typedef	struct 		s_sounds
 
 typedef struct 		s_sprites
 {
-	vec2			pos;
+	vec3			pos;
+	int				sector;
 	int				w;
 	int				h;
-	vec2			new_pos;
+	vec3			new_pos;
 	double			shift;
 }					t_sprites;
 

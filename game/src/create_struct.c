@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/18 16:08:03 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/18 18:57:01 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ static void set_initial_values(t_game *game)
 	game->player.b_knees = 0.3;
 	game->sprites.pos.x = 1;
 	game->sprites.pos.y = -2;
-	game->sprites.h = 50;
-	game->sprites.w = 50;
+	game->sprites.pos.z = 0;
+	game->sprites.sector = 1;
 }
 
 /* static void load_images()	*/
