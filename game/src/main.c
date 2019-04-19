@@ -12,15 +12,15 @@
 
 #include "doom-nukem.h"
 //поварачивает точки в систему координат игрока
-static void			give_points_cam(vec2 *points_cam, vec2 *points, t_player player, int count_points)
+static void			give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points)
 {
 	int		i;
 	//ft_putendl("give_point_cam");
 	i = 0;
 	while (i < count_points)
 	{
-		(points_cam + i)->x = ((points + i)->y - player.pos.y) * sin(player.angle) + ((points + i)->x - player.pos.x) * cos(player.angle);
-		(points_cam + i)->y = ((points + i)->y - player.pos.y) * cos(player.angle) - ((points + i)->x - player.pos.x) * sin(player.angle);
+		(points_cam + i)->x = ((points + i)->y - player->pos.y) * sin(player->angle) + ((points + i)->x - player->pos.x) * cos(player->angle);
+		(points_cam + i)->y = ((points + i)->y - player->pos.y) * cos(player->angle) - ((points + i)->x - player->pos.x) * sin(player->angle);
 		i++;
 	}
 }
@@ -86,7 +86,15 @@ static void	swap(double *a, double *b)
 }
 */
 //отрисовывает стену
-static void	draw_wall(SDL_DisplayMode display_mode, t_gif *gif, SDL_Surface *texture, t_draw for_draw, SDL_Surface *screen, double x1, double x2, double y1, double y2)
+static void	draw_wall(SDL_DisplayMode display_mode,
+						t_gif *gif,
+						SDL_Surface *texture,
+						t_draw for_draw,
+						SDL_Surface *screen,
+						double x1,
+						double x2,
+						double y1,
+						double y2)
 {
 	int i;
 	int k;
@@ -137,7 +145,10 @@ static void	draw_wall(SDL_DisplayMode display_mode, t_gif *gif, SDL_Surface *tex
 	}
 }
 //отрисовывет промежутки между потолком/полом и сектором. И пол и потолок портала.
-static void	pre_draw_sector(SDL_Surface *screen, SDL_DisplayMode display_mode, t_draw for_draw, t_draw for_draw_past)
+static void	pre_draw_sector(SDL_Surface *screen,
+							SDL_DisplayMode display_mode,
+							t_draw for_draw,
+							t_draw for_draw_past)
 {
 	int i;
 	int k;
@@ -182,7 +193,14 @@ static void	pre_draw_sector(SDL_Surface *screen, SDL_DisplayMode display_mode, t
 	}
 }
 //рекурсивная функиця(в будущем), которая отрисовывает сектор;
-static void	draw_sector(t_game *game, t_player *player, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, t_draw for_draw)
+static void	draw_sector(t_gif *gif,
+							SDL_Surface *texture,
+							SDL_Surface *screen,
+							t_player *player,
+							SDL_DisplayMode display_mode,
+							t_sector *sectors,
+							vec2 *points_cam,
+							t_draw for_draw)
 {
 	//ft_putendl("draw_Sector");
 	int i;
@@ -246,18 +264,27 @@ static void	draw_sector(t_game *game, t_player *player, SDL_DisplayMode display_
 					for_next_draw.last_sector = for_draw.curr_sector;
 					for_next_draw.fov_left = first_point;
 					for_next_draw.fov_right = second_point;
-					draw_sector(game, &game->player, display_mode, game->sectors,game->points_cam, for_next_draw);
-					pre_draw_sector(game->screen, display_mode, for_next_draw, for_draw);
+					draw_sector(gif, texture, screen, player, display_mode, sectors, points_cam, for_next_draw);
+					pre_draw_sector(screen, display_mode, for_next_draw, for_draw);
 				}
 			}
 			else
-				draw_wall(display_mode, game->gif, game->texture, for_draw, game->screen, x1a, x2a, y1, y2);
+				draw_wall(display_mode, gif, texture, for_draw, screen, x1a, x2a, y1, y2);
 		}
 		i++;
 	}
 }
 //запускает отрисовку всех стен
-static void	draw_3d_wall(t_game *game)
+static void	draw_3d_wall(SDL_Surface *screen,
+							SDL_Surface *texture,
+							vec2 *points,
+							int count_points,
+							vec2 *points_cam,
+							SDL_DisplayMode display_mode,
+							t_player *player,
+							t_sector *sectors,
+							int count_sectors,
+							t_gif *gif)
 {
 	t_draw	for_draw;
 	
@@ -267,17 +294,17 @@ static void	draw_3d_wall(t_game *game)
 	for_draw.fov_right.x = 5;
 	for_draw.fov_right.y = -5;
 	for_draw.window.x1 = 0;
-	for_draw.window.x2 = game->display_mode.w;
-	for_draw.window.y1b = game->display_mode.h;
+	for_draw.window.x2 = display_mode.w;
+	for_draw.window.y1b = display_mode.h;
 	for_draw.window.y1t = 0;
-	for_draw.window.y2b = game->display_mode.h;
+	for_draw.window.y2b = display_mode.h;
 	for_draw.window.y2t = 0;
 	for_draw.last_sector = -2;
-	for_draw.curr_sector = game->player.curr_sector;
+	for_draw.curr_sector = player->curr_sector;
 
-	give_points_cam(game->points_cam, game->points, game->player, game->count_points);
-	draw_sector(game,  &game->player, game->display_mode, game->sectors, game->points_cam, for_draw);
-	draw_minimap(game->screen, game->display_mode, game->sectors, game->points_cam, game->count_sectors);
+	give_points_cam(points_cam, points, player, count_points);
+	draw_sector(gif, texture, screen, player, display_mode, sectors, points_cam, for_draw);
+	draw_minimap(screen, display_mode, sectors, points_cam, count_sectors);
 }
 //отрисовка рук/оружия 
 static void		draw_hands(SDL_Surface *screen, t_gif *gif)
@@ -345,7 +372,7 @@ int			main(void)
 		player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop);
 		get_pos_z(&game->player, game->sectors);
 		SDL_FillRect(game->screen,0, 0x00FF00);
-		draw_3d_wall(game);
+		draw_3d_wall(game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
 		draw_sprites(game->screen, game->sectors, game->sprites, game->player);
 		draw_hands(game->screen, game->gif);
 		put_fps(game->screen, game->hud, &game->time);
