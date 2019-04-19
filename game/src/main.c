@@ -330,32 +330,58 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif)
 	}
 }
 
-
-
 static void		draw_sprites(SDL_Surface *screen, t_sector *sectors, t_sprites sprites, t_player player)
 {
-	int i;
-	int j;
+	int y;
+	int x;
+	int		new_x = 0;
+	int		new_y = 0;
+	int color;
 
 	sprites.new_pos.x = (sprites.pos.y - player.pos.y) * sin(player.angle) + (sprites.pos.x - player.pos.x) * cos(player.angle);
 	sprites.new_pos.y = (sprites.pos.y - player.pos.y) * cos(player.angle) - (sprites.pos.x - player.pos.x) * sin(player.angle);
 	sprites.shift = (-sprites.new_pos.y / sprites.new_pos.x) * (screen->w / 2) + screen->w / 2;
 	sprites.h = 200 / sprites.new_pos.x;
 	sprites.w = 200 / sprites.new_pos.x;
-	i = (sectors + sprites.sector)->floor;
-	while (i < (sectors + sprites.sector)->floor + sprites.h)
+	y = (sectors + sprites.sector)->floor;
+	while (y < (sectors + sprites.sector)->floor + sprites.h)
 	{
-		j = (sprites.shift ) - sprites.w / 2;
-		while (j < (sprites.shift) + sprites.w / 2)
+		x = (sprites.shift ) - sprites.w / 2;
+		while (x < (sprites.shift) + sprites.w / 2)
 		{
-			if (i >= 0 && i < screen->h && j >= 0 && j < screen->w )
+			new_x = (double)x / ((sprites.shift ) + sprites.w / 2) * sprites.texture->w;
+			new_y = (double)y / ((sectors + sprites.sector)->floor + sprites.h) * sprites.texture->h;
+			if (y >= 0 && y < screen->h && x >= 0 && x < screen->w )
 			{
-				((int*)(screen->pixels))[(int)(screen->w * i + (int)(j))] = 0x000000;
+				color = 0x000000;//((int*)(sprites.texture->pixels))[sprites.texture->w * new_y + new_x];
+				((int*)(screen->pixels))[(int)(screen->w * y + (int)(x))] = color;
 			}
-			j++;
+			x++;
 		}
-		i++;
+		y++;
 	}
+}
+
+static void		gif_loop(t_gif *gif, t_keystate *keystate, int *k)
+{
+	if(keystate->mouse_l == 1)
+	{
+		gif[1].curr_frame++;
+		if (gif[1].curr_frame == gif[1].frame)
+		{
+			gif[1].curr_frame = 0;
+			keystate->mouse_l = 0;
+		}
+	}
+	if (*k == 0)
+	{
+		gif[0].curr_frame++;
+		if (gif[0].curr_frame == gif[0].frame)
+			gif[0].curr_frame = 0;
+		*k = -3;
+	}
+	else
+		*k += 1;
 }
 
 int			main(void)
@@ -366,7 +392,6 @@ int			main(void)
 	game = create_struct();
 	loop = 1;		
 	k = -3;
-	int	leaks_flag = 0;
 	while (loop)
 	{
 		player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop);
@@ -377,31 +402,8 @@ int			main(void)
 		draw_hands(game->screen, game->gif);
 		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);
-		// временный блок для проверки ликов при полной отрисовки
-		if (leaks_flag == 0)
-		{
-		//	system("leaks doom-nukem");
-			leaks_flag = 1;
-		}
 		//запуск гифок
-		if(game->keystate.mouse_l == 1)
-		{
-			game->gif[1].curr_frame++;
-			if (game->gif[1].curr_frame == game->gif[1].frame)
-			{
-				game->gif[1].curr_frame = 0;
-				game->keystate.mouse_l = 0;
-			}
-		}
-		if (k == 0)
-		{
-			game->gif[0].curr_frame++;
-			if (game->gif[0].curr_frame == game->gif[0].frame)
-				game->gif[0].curr_frame = 0;
-			k = -3;
-		}
-		else
-			k++;
+		gif_loop(game->gif, &game->keystate, &k);
 	}
 	//закрытие sdl
 	free_SDL(game);

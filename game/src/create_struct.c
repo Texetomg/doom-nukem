@@ -64,6 +64,7 @@ static void	init_sdl(t_game *game)
         check_error_n_exit(1,(char*)SDL_GetError());
     }
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
+	game->sprites.texture = SDL_LoadBMP("imgs/sprites/boss.bmp");
 }
 
 static void load_sounds(t_sounds *sounds)

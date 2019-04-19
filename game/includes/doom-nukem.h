@@ -126,6 +126,7 @@ typedef struct 		s_sprites
 	int				h;
 	vec3			new_pos;
 	double			shift;
+	SDL_Surface 	*texture;
 }					t_sprites;
 
 typedef	struct 		s_hud
