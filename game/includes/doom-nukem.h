@@ -158,16 +158,16 @@ typedef struct		s_game
 }					t_game;
 
 t_game  			*create_struct(void);
-double				cross_product(vec2 first_point, vec2 second_point);
-void    			draw_minimap(t_game *game);
-void    put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
+double   			cross_product(vec2 first_point, vec2 second_point);
+void				draw_minimap(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int count_sectors);
+void    			put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
-void				player_move(t_game *game, int *loop);
+void				player_move(SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop);
 void				change_wall(t_wall *cam_wall);
-void    get_pos_z(t_player *player, t_sector *sectors );
+void    			get_pos_z(t_player *player, t_sector *sectors );
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
 void        		apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
 void				clean_buffer(char **buffer);
 void    			free_SDL(t_game *game);
-void    print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest);
+void    			print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest);
 #endif

@@ -12,15 +12,15 @@
 
 #include "doom-nukem.h"
 //поварачивает точки в систему координат игрока
-void			give_points_cam(t_game *game)
+static void			give_points_cam(vec2 *points_cam, vec2 *points, t_player player, int count_points)
 {
 	int		i;
 	//ft_putendl("give_point_cam");
 	i = 0;
-	while (i < game->count_points)
+	while (i < count_points)
 	{
-		(game->points_cam + i)->x = ((game->points + i)->y - game->player.pos.y) * sin(game->player.angle) + ((game->points + i)->x - game->player.pos.x) * cos(game->player.angle);
-		(game->points_cam + i)->y = ((game->points + i)->y - game->player.pos.y) * cos(game->player.angle) - ((game->points + i)->x - game->player.pos.x) * sin(game->player.angle);
+		(points_cam + i)->x = ((points + i)->y - player.pos.y) * sin(player.angle) + ((points + i)->x - player.pos.x) * cos(player.angle);
+		(points_cam + i)->y = ((points + i)->y - player.pos.y) * cos(player.angle) - ((points + i)->x - player.pos.x) * sin(player.angle);
 		i++;
 	}
 }
@@ -44,7 +44,7 @@ static void     cross(vec2 *first_point, vec2 second_point, vec2 fov)
 	first_point->y = new_y;
 }
 //находит точки в фове(их пересечения) возращает ноль если не в фове;
-int             intersection(vec2 *first_point, vec2 *second_point, vec2 left_fov, vec2 right_fov)
+static int             intersection(vec2 *first_point, vec2 *second_point, vec2 left_fov, vec2 right_fov)
 {
 	double x;
 	double y;
@@ -75,7 +75,8 @@ int             intersection(vec2 *first_point, vec2 *second_point, vec2 left_fo
 	return (1);
 }
 //меняет местами два числа
-void	swap(double *a, double *b)
+/*
+static void	swap(double *a, double *b)
 {
 	double c;
 
@@ -83,8 +84,9 @@ void	swap(double *a, double *b)
 	*a = *b;
 	*b = c;
 }
+*/
 //отрисовывает стену
-void	draw_wall(t_game *game, t_draw for_draw, double x1, double x2, double y1, double y2)
+static void	draw_wall(SDL_DisplayMode display_mode, t_gif *gif, SDL_Surface *texture, t_draw for_draw, SDL_Surface *screen, double x1, double x2, double y1, double y2)
 {
 	int i;
 	int k;
@@ -104,7 +106,7 @@ void	draw_wall(t_game *game, t_draw for_draw, double x1, double x2, double y1, d
 		yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
 		if (k < 0)
 			k = 0;
-		while (k < yb_window && k < game->display_mode.h)
+		while (k < yb_window && k < display_mode.h)
 		{
 			if (k == yt_wall || k == yb_wall || (i == (int)for_draw.wall.x1 && k < yb_wall && k > yt_wall) || (i == (int)for_draw.wall.x2 && k < yb_wall && k > yt_wall))
 				color = 0;
@@ -113,29 +115,29 @@ void	draw_wall(t_game *game, t_draw for_draw, double x1, double x2, double y1, d
 			else if (k < yb_wall)
 			{
 				a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
-				x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * game->texture->w;
-				y = (double)(k - yt_wall) / (yb_wall - yt_wall) * game->texture->h;
+				x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * texture->w;
+				y = (double)(k - yt_wall) / (yb_wall - yt_wall) * texture->h;
 				if (for_draw.curr_sector == 2)
 				{
-					x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * (*(game->gif[0].array + game->gif[0].curr_frame))->w;
-					y = (double)(k - yt_wall) / (yb_wall - yt_wall) * (*(game->gif[0].array + game->gif[0].curr_frame))->h;
-					color = ((int*)(*(game->gif[0].array + game->gif[0].curr_frame))->pixels)[y * (*(game->gif[0].array + game->gif[0].curr_frame))->w + x];
+					x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * (*(gif[0].array + gif[0].curr_frame))->w;
+					y = (double)(k - yt_wall) / (yb_wall - yt_wall) * (*(gif[0].array + gif[0].curr_frame))->h;
+					color = ((int*)(*(gif[0].array + gif[0].curr_frame))->pixels)[y * (*(gif[0].array + gif[0].curr_frame))->w + x];
 				}
 				else
-					color = ((int*)game->texture->pixels)[y * game->texture->w + x];
+					color = ((int*)texture->pixels)[y * texture->w + x];
 				//color = 0xAAAA00;
 			}
 			else
 				color = COLOR_FLOOR;
-			if (i < game->display_mode.w)
-				((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
+			if (i < display_mode.w)
+				((int*)screen->pixels)[k * display_mode.w + i] = color;
 			k++;
 		}
 		i++;
 	}
 }
 //отрисовывет промежутки между потолком/полом и сектором. И пол и потолок портала.
-void	pre_draw_sector(t_game *game, t_draw for_draw, t_draw for_draw_past)
+static void	pre_draw_sector(SDL_Surface *screen, SDL_DisplayMode display_mode, t_draw for_draw, t_draw for_draw_past)
 {
 	int i;
 	int k;
@@ -162,7 +164,7 @@ void	pre_draw_sector(t_game *game, t_draw for_draw, t_draw for_draw_past)
 		yb_wall = for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		if (k < 0)
 			k = 0;
-		while (k < yb_window_past && k < game->display_mode.h)
+		while (k < yb_window_past && k < display_mode.h)
 		{
 			if (k <= yt_window)
 				color = COLOR_CEIL;
@@ -172,15 +174,15 @@ void	pre_draw_sector(t_game *game, t_draw for_draw, t_draw for_draw_past)
 				color = COLOR_BETW;
 			else
 				color = -1;
-			if (i < game->display_mode.w && color >= 0)
-					((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
+			if (i < display_mode.w && color >= 0)
+					((int*)screen->pixels)[k * display_mode.w + i] = color;
 			k++;
 		}
 		i++;
 	}
 }
 //рекурсивная функиця(в будущем), которая отрисовывает сектор;
-void	draw_sector(t_game *game, t_draw for_draw)
+static void	draw_sector(t_game *game, t_draw for_draw)
 {
 	//ft_putendl("draw_Sector");
 	int i;
@@ -245,13 +247,11 @@ void	draw_sector(t_game *game, t_draw for_draw)
 					for_next_draw.fov_left = first_point;
 					for_next_draw.fov_right = second_point;
 					draw_sector(game, for_next_draw);
-					pre_draw_sector(game, for_next_draw, for_draw);
+					pre_draw_sector(game->screen, game->display_mode, for_next_draw, for_draw);
 				}
 			}
 			else
-			{
-				draw_wall(game, for_draw, x1a, x2a, y1, y2);
-			}
+				draw_wall(game->display_mode, game->gif, game->texture, for_draw, game->screen, x1a, x2a, y1, y2);
 		}
 		i++;
 	}
@@ -274,9 +274,10 @@ static void	draw_3d_wall(t_game *game)
 	for_draw.window.y2t = 0;
 	for_draw.last_sector = -2;
 	for_draw.curr_sector = game->player.curr_sector;
-	give_points_cam(game);
+
+	give_points_cam(game->points_cam, game->points, game->player, game->count_points);
 	draw_sector(game, for_draw);
-	draw_minimap(game);
+	draw_minimap(game->screen, game->display_mode, game->sectors, game->points_cam, game->count_sectors);
 }
 //отрисовка рук/оружия 
 static void		draw_hands(SDL_Surface *screen, t_gif *gif)
@@ -341,7 +342,7 @@ int			main(void)
 	int	leaks_flag = 0;
 	while (loop)
 	{
-		player_move(game, &loop);
+		player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop);
 		get_pos_z(&game->player, game->sectors);
 		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
