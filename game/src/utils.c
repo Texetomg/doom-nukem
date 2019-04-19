@@ -49,6 +49,20 @@ void    get_pos_z(t_game *game)
     game->player.knees = game->player.pos.z - game->player.b_knees;
 }
 
+void    print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest)
+{
+	TTF_Font *fnt;
+    SDL_Surface *sText;
+
+	if ((fnt = TTF_OpenFont(font, size)) == NULL)
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if ((sText = TTF_RenderText_Blended(fnt, text, color)) == NULL)
+        check_error_n_exit(1,(char*)SDL_GetError());
+	SDL_BlitSurface(sText, NULL, screen, &dest);
+	SDL_FreeSurface(sText);
+	TTF_CloseFont(fnt);
+}
+
 void    free_SDL(t_game *game)
 {
     Mix_FreeChunk(game->sounds.bang);
@@ -76,6 +90,7 @@ void    free_SDL(t_game *game)
 		i++;
 	}
 	*/
+    atexit(TTF_Quit);
 	SDL_DestroyWindow(game->window);
 	game->window = NULL;
 	SDL_Quit();

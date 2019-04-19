@@ -13,9 +13,9 @@
 NAME = doom-nukem
 FLAG = -Wall -Wextra -Werror -g -Ofast
 SRC = main.c draw_minimap.c fps.c create_struct.c read_map.c key_hooks.c utils.c SDL_utils.c
-INC = -I ../libft/ -I ./includes -I ../framework/SDL2.framework/Versions/A/Headers -I ../framework/SDL2_mixer.framework/Versions/A/Headers
+INC = -I ../libft/ -I ./includes -I ../framework/SDL2.framework/Versions/A/Headers -I ../framework/SDL2_mixer.framework/Versions/A/Headers  -I ../framework/SDL2_ttf.framework/Versions/A/Headers
 LIB = -L ../libft/ -lft 
-FRWR = -framework SDL2 -F ../framework -framework SDL2_mixer
+FRWR = -framework SDL2 -F ../framework -framework SDL2_mixer  -framework SDL2_ttf
 OBJS = $(addprefix objects/, $(SRC:.c=.o))
 OBJDIR = objects
 SRCDIR = src

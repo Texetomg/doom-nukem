@@ -304,6 +304,32 @@ void		draw_hands(t_game *game)
 
 
 
+void		draw_sprites(t_game *game)
+{
+	int i;
+	int j;
+
+	game->sprites.new_pos.x = (game->sprites.pos.y - game->player.pos.y) * sin(game->player.angle) + (game->sprites.pos.x - game->player.pos.x) * cos(game->player.angle);
+	game->sprites.new_pos.y = (game->sprites.pos.y - game->player.pos.y) * cos(game->player.angle) - (game->sprites.pos.x - game->player.pos.x) * sin(game->player.angle);
+	game->sprites.shift = (-game->sprites.new_pos.y / game->sprites.new_pos.x) * (game->screen->w / 2) + game->screen->w / 2;
+	game->sprites.h = 200 / game->sprites.new_pos.x;
+	game->sprites.w = 200 / game->sprites.new_pos.x;
+	i = (game->sectors + game->sprites.sector)->floor;
+	while (i < (game->sectors + game->sprites.sector)->floor + game->sprites.h)
+	{
+		j = (game->sprites.shift ) - game->sprites.w / 2;
+		while (j < (game->sprites.shift) + game->sprites.w / 2)
+		{
+			if (i >= 0 && i < game->screen->h && j >= 0 && j < game->screen->w )
+			{
+				((int*)(game->screen->pixels))[(int)(game->screen->w * i + (int)(j))] = 0x000000;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 int			main(void)
 {
 	t_game		*game;
@@ -313,41 +339,20 @@ int			main(void)
 	loop = 1;		
 	k = -3;
 	int	leaks_flag = 0;
-	int i;
-	int j;
 	while (loop)
 	{
 		player_move(game, &loop);
 		get_pos_z(game);
 		SDL_FillRect(game->screen,0, 0x00FF00);
 		draw_3d_wall(game);
-		
-		put_fps(game);
-		game->sprites.new_pos.x = (game->sprites.pos.y - game->player.pos.y) * sin(game->player.angle) + (game->sprites.pos.x - game->player.pos.x) * cos(game->player.angle);
-		game->sprites.new_pos.y = (game->sprites.pos.y - game->player.pos.y) * cos(game->player.angle) - (game->sprites.pos.x - game->player.pos.x) * sin(game->player.angle);
-		game->sprites.shift = (-game->sprites.new_pos.y / game->sprites.new_pos.x) * (game->screen->w / 2) + game->screen->w / 2;
-		game->sprites.h = 200 / game->sprites.new_pos.x;
-		game->sprites.w = 200 / game->sprites.new_pos.x;
-		i = (game->sectors + game->sprites.sector)->floor;
-		while (i < (game->sectors + game->sprites.sector)->floor + game->sprites.h)
-		{
-			j = (game->sprites.shift ) - game->sprites.w / 2;
-			while (j < (game->sprites.shift) + game->sprites.w / 2)
-			{
-				if (i >= 0 && i < game->screen->h && j >= 0 && j < game->screen->w )
-				{
-					((int*)(game->screen->pixels))[(int)(game->screen->w * i + (int)(j))] = 0x000000;
-				}
-				j++;
-			}
-			i++;
-		}
+		draw_sprites(game);
 		draw_hands(game);
+		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);
 		// временный блок для проверки ликов при полной отрисовки
 		if (leaks_flag == 0)
 		{
-			system("leaks doom-nukem");
+		//	system("leaks doom-nukem");
 			leaks_flag = 1;
 		}
 		//запуск гифок

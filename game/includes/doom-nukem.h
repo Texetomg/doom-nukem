@@ -16,6 +16,7 @@
 # include <math.h>
 # include <SDL.h>
 # include <SDL_mixer.h>
+# include <SDL_ttf.h>
 # include <sys/time.h>
 # define HIGH 0.5
 # define ACCEL 0.0005
@@ -127,9 +128,16 @@ typedef struct 		s_sprites
 	double			shift;
 }					t_sprites;
 
+typedef	struct 		s_hud
+{
+	SDL_Color		color;
+	SDL_Rect		fps_dest;
+}					t_hud;
+
 
 typedef struct		s_game
 {
+	t_hud			hud;
 	t_sounds		sounds;
 	t_player		player;
 	t_sprites		sprites;
@@ -152,7 +160,7 @@ typedef struct		s_game
 t_game  			*create_struct(void);
 double				cross_product(vec2 first_point, vec2 second_point);
 void    			draw_minimap(t_game *game);
-int					put_fps(t_game *game);
+void    put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
 void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
@@ -161,4 +169,5 @@ SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
 void        		apply_surface(int x, int y, SDL_Texture *tex, SDL_Renderer *ren);
 void				clean_buffer(char **buffer);
 void    			free_SDL(t_game *game);
+void    print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest);
 #endif
