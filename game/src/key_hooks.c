@@ -104,7 +104,16 @@ SDL_Event	key_hooks(t_player *player, SDL_DisplayMode display_mode, t_keystate *
 	return (e);
 }
 
-void	        player_move(SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop)
+void	        player_move(SDL_DisplayMode display_mode,
+							vec2int *mouse,
+							SDL_Window *window,
+							t_sounds sounds,
+							t_gif *gif,
+							t_keystate *keystate,
+							vec2 *points,
+							t_sector *sectors,
+							t_player *player,
+							int *loop)
 {
 	SDL_Event e;
 	vec2	direct;
