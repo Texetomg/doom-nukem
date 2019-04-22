@@ -65,6 +65,13 @@ typedef struct		s_vec2int
 	int				y;
 }					vec2int;
 
+typedef struct 		s_img_size
+{
+	int				h;
+	int				w;
+}					t_img_size;
+
+
 typedef struct		s_vec3
 {
 	double			x;
@@ -135,6 +142,13 @@ typedef	struct 		s_hud
 	SDL_Rect		fps_dest;
 }					t_hud;
 
+typedef	struct 		s_menu
+{
+	int				status;
+	SDL_Surface		*image;
+	int				string;
+}					t_menu;
+
 
 typedef struct		s_game
 {
@@ -148,6 +162,7 @@ typedef struct		s_game
 	SDL_Surface		*screen;
 	SDL_Surface		*texture;
 	SDL_Surface		*texture_arr[3];
+	t_menu			menu;
 	SDL_DisplayMode	display_mode;
 	struct timeval  time;
 	vec2int			mouse;
@@ -158,12 +173,13 @@ typedef struct		s_game
 	t_gif			gif[2];
 }					t_game;
 
+void    			menu_render(t_game *game);
 t_game  			*create_struct(void);
 double   			cross_product(vec2 first_point, vec2 second_point);
 void				draw_minimap(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int count_sectors);
 void    			put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
-void				player_move(SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop);
+void				player_move(SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop, t_menu menu);
 void				change_wall(t_wall *cam_wall);
 void    			get_pos_z(t_player *player, t_sector *sectors );
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);

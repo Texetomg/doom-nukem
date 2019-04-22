@@ -113,57 +113,61 @@ void	        player_move(SDL_DisplayMode display_mode,
 							vec2 *points,
 							t_sector *sectors,
 							t_player *player,
-							int *loop)
+							int *loop,
+							t_menu menu)
 {
 	SDL_Event e;
 	vec2	direct;
 	vec2	curve;
 	e = key_hooks(player, display_mode, keystate, mouse);
 	SDL_GetMouseState(&mouse->x, &mouse->y);
+	(void)window;
 	//перемещать курсор в одну и ту же точку
-	SDL_WarpMouseInWindow(window, display_mode.w / 2, display_mode.h / 2); 
 	direct.x = STEP * cos(player->angle);
 	direct.y = STEP * sin(player->angle);
 	curve.x = STEP * (cos(player->angle) * 0.7 - sin(player->angle) * 0.7);
 	curve.y = STEP * (sin(player->angle) * 0.7 + cos(player->angle) * 0.7);
 	if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 			*loop = 0;
-	if (keystate->forward && (!keystate->right && !keystate->left))
-		move(points, sectors, player, direct.x, direct.y);
-	if (keystate->back && (!keystate->right && !keystate->left))
-		move(points, sectors, player, -direct.x, -direct.y);
-	if (keystate->right && (!keystate->forward && !keystate->back))
-		move(points, sectors, player, direct.y, -direct.x);
-	if (keystate->left && (!keystate->forward && !keystate->back))
-		move(points, sectors, player, -direct.y, direct.x);
-	if (keystate->forward && keystate->right)
-		move(points, sectors, player, curve.y, -curve.x);
-	if (keystate->forward && keystate->left)
-		move(points, sectors, player, curve.x, curve.y);
-	if (keystate->back && keystate->right)
-		move(points, sectors, player, -curve.x, -curve.y);
-	if (keystate->back && keystate->left)
-		move(points, sectors, player, -curve.y, curve.x);
-	if (keystate->jump && player->foots == (sectors + player->curr_sector)->floor)
+	if (menu.status == 0)
 	{
-		player->z_accel = 0.1;
-		move(points, sectors, player, 0, 0);
-	}
-	if (keystate->ctrl)
-	{
-		if (keystate->ctrl_flag == 0)
-			player->pos.z -= 0.2;
-		keystate->ctrl_flag = 1;
-		player->b_foots = 0.3;
-		player->b_knees = 0.1;
-	}
-	if (!keystate->ctrl)
-	{
-		if (keystate->ctrl_flag == 1 && player->pos.z + 0.2 <  ((sectors + player->curr_sector)->ceil))
-			player->pos.z += 0.2;
-		keystate->ctrl_flag = 0;
-		player->b_foots = 0.5;
-		player->b_knees = 0.3;
+		if (keystate->forward && (!keystate->right && !keystate->left))
+			move(points, sectors, player, direct.x, direct.y);
+		if (keystate->back && (!keystate->right && !keystate->left))
+			move(points, sectors, player, -direct.x, -direct.y);
+		if (keystate->right && (!keystate->forward && !keystate->back))
+			move(points, sectors, player, direct.y, -direct.x);
+		if (keystate->left && (!keystate->forward && !keystate->back))
+			move(points, sectors, player, -direct.y, direct.x);
+		if (keystate->forward && keystate->right)
+			move(points, sectors, player, curve.y, -curve.x);
+		if (keystate->forward && keystate->left)
+			move(points, sectors, player, curve.x, curve.y);
+		if (keystate->back && keystate->right)
+			move(points, sectors, player, -curve.x, -curve.y);
+		if (keystate->back && keystate->left)
+			move(points, sectors, player, -curve.y, curve.x);
+		if (keystate->jump && player->foots == (sectors + player->curr_sector)->floor)
+		{
+			player->z_accel = 0.1;
+			move(points, sectors, player, 0, 0);
+		}
+		if (keystate->ctrl)
+		{
+			if (keystate->ctrl_flag == 0)
+				player->pos.z -= 0.2;
+			keystate->ctrl_flag = 1;
+			player->b_foots = 0.3;
+			player->b_knees = 0.1;
+		}
+		if (!keystate->ctrl)
+		{
+			if (keystate->ctrl_flag == 1 && player->pos.z + 0.2 <  ((sectors + player->curr_sector)->ceil))
+				player->pos.z += 0.2;
+			keystate->ctrl_flag = 0;
+			player->b_foots = 0.5;
+			player->b_knees = 0.3;
+		}
 	}
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
 	{
