@@ -6,28 +6,23 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/22 15:48:49 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/22 17:15:39 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-vec2	get_floor(t_game *game, int x, int y, double dz)
+vec3	get_floor(t_game *game, int x, int y, double dz)
 {
-	vec2	re;
+	vec3	re;
 	double	x1;
 	double	y1;
 
 	x1 = game->display_mode.h / 2 * (dz) / (y - game->display_mode.h / 2);
 	y1 = -x1 * (x - game->display_mode.w / 2) / game->display_mode.w * 2;
 	re.x = y1 * cos(game->player.angle) + x1 * sin(game->player.angle) + game->player.pos.y;
-	re.x = re.x - (int)re.x;
-	if (re.x < 0)
-		re.x = 1 + re.x;
 	re.y = x1 * cos(game->player.angle) - y1 * sin(game->player.angle) + game->player.pos.x;
-	re.y = re.y - (int)re.y;
-	if (re.y < 0)
-		re.y = 1 + re.y;
+	re.z = x1;
 	return (re);
 }
 
@@ -105,6 +100,55 @@ static void	swap(double *a, double *b)
 	*b = c;
 }
 */
+void	draw_floor(t_game *game, t_draw for_draw, double dz)
+{
+	int i;
+	int k;
+	vec3 first;
+	vec3 second;
+	int yb_window;
+	int yb_wall;
+	int color;
+	double a;
+	double x;
+	double y;
+
+	i = (int)for_draw.wall.x1;
+	if (i < 0)
+		i = 0;
+	while (i < for_draw.wall.x2 && i < game->display_mode.w)
+	{
+		yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
+		yb_window = (int)(for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
+		if (yb_wall < 0)
+			k = 0;
+		else
+			k = yb_wall;
+		first = get_floor(game, i, yb_wall, dz);
+		second = get_floor(game, i, yb_window, dz);
+		while (k < yb_window && k < game->display_mode.h)
+		{
+			a = (double)(k - yb_wall) / (yb_window - yb_wall);
+			x = ((1 - a) * first.x / first.z + a * second.x / second.z) / ((1 - a) / first.z + a / second.z);
+			if (x < 0)
+				x = (x - (int)x + 1) * game->texture->w;
+			else
+				x = (x - (int)x) * game->texture->w;
+			y = ((1 - a) * first.y / first.z + a * second.y / second.z) / ((1 - a) / first.z + a / second.z);
+				if (y < 0)
+				y = (y - (int)y + 1) * game->texture->h;
+			else
+				y = (y - (int)y) * game->texture->h;
+			if (x > 0 && x < game->texture->w && y > 0 && y < game->texture->h)
+			{
+				color = ((int*)game->texture->pixels)[((int)y) * game->texture->w + ((int)x)];
+				((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
+			}
+			k++;
+		}
+		i++;
+	}
+}
 //отрисовывает стену
 static void	draw_wall(t_game *game,
 						SDL_DisplayMode display_mode,
@@ -115,8 +159,7 @@ static void	draw_wall(t_game *game,
 						double x1,
 						double x2,
 						double y1,
-						double y2,
-						double dz)
+						double y2)
 {
 	int i;
 	int k;
@@ -127,9 +170,11 @@ static void	draw_wall(t_game *game,
 	int x;
 	int y;
 	double a;
-	vec2 floor;
+
 	i = (int)for_draw.wall.x1;
-	while (i < for_draw.wall.x2)
+	if (i < 0)
+		i = 0;
+	while (i < for_draw.wall.x2 && i < display_mode.w)
 	{ 
 		k = (int)(for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
 		yb_window = (int)(for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
@@ -137,13 +182,13 @@ static void	draw_wall(t_game *game,
 		yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
 		if (k < 0)
 			k = 0;
-		while (k < yb_window && k < display_mode.h)
+		while (k < yb_wall && k < game->display_mode.h)
 		{
 			if (k == yt_wall || k == yb_wall || (i == (int)for_draw.wall.x1 && k < yb_wall && k > yt_wall) || (i == (int)for_draw.wall.x2 && k < yb_wall && k > yt_wall))
 				color = 0;
 			else if (k < yt_wall)
 				color = COLOR_CEIL;
-			else if (k < yb_wall)
+			else
 			{
 				a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
 				x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * texture->w;
@@ -158,15 +203,7 @@ static void	draw_wall(t_game *game,
 					color = ((int*)texture->pixels)[y * texture->w + x];
 				//color = 0xAAAA00;
 			}
-			else
-			{
-				floor = get_floor(game, i, k, dz);
-				x = floor.x * texture->w;
-				y = floor.y * texture->h;
-				color = ((int*)texture->pixels)[y * texture->w + x];
-			}
-			if (i < display_mode.w)
-				((int*)screen->pixels)[k * display_mode.w + i] = color;
+			((int*)screen->pixels)[k * display_mode.w + i] = color;
 			k++;
 		}
 		i++;
@@ -203,12 +240,10 @@ static void	pre_draw_sector(SDL_Surface *screen,
 		yb_wall = for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		if (k < 0)
 			k = 0;
-		while (k < yb_window_past && k < display_mode.h)
+		while (k < yb_window && k < display_mode.h)
 		{
 			if (k <= yt_window)
 				color = COLOR_CEIL;
-			else if (k >= (int)yb_window)
-				color = COLOR_FLOOR;
 			else if (k < yt_wall || k > yb_wall)
 				color = COLOR_BETW;
 			else
@@ -298,7 +333,8 @@ static void	draw_sector(t_game *game,
 				}
 			}
 			else
-				draw_wall(game, display_mode, gif, texture, for_draw, screen, x1a, x2a, y1, y2, -yfloor);
+				draw_wall(game, display_mode, gif, texture, for_draw, screen, x1a, x2a, y1, y2);
+			draw_floor(game, for_draw, -yfloor);
 		}
 		i++;
 	}
@@ -346,10 +382,10 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif)
 
 	while (y < screen->h / 3)
 	{
+		new_y = (double)y / (screen->h / 3) * (*(gif[1].array + ((int)(gif[1].curr_frame))))->h;
 		while (x < screen->w / 3)
 		{
 			new_x = (double)x / (screen->w / 3) * (*(gif[1].array + gif[1].curr_frame))->w;
-			new_y = (double)y / (screen->h / 3) * (*(gif[1].array + ((int)(gif[1].curr_frame))))->h;
 			color = ((int*)((*(gif[1].array + ((int)(gif[1].curr_frame))))->pixels))[new_y * (*(gif[1].array + ((int)(gif[1].curr_frame))))->w + new_x];
 			((int*)(screen->pixels))[(int)(y + screen->h / 100 * 65) * screen->w + x + (screen->w / 100 * 45)] = color;
 			x++;
@@ -359,30 +395,30 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif)
 	}
 }
 
-static void		draw_sprites(SDL_Surface *screen, t_sector *sectors, t_sprites sprites, t_player player)
+static void		draw_sprites(SDL_Surface *screen, t_sector *sectors, t_sprites sprites, t_player player, SDL_DisplayMode display_mode)
 {
 	int y;
 	int x;
 	int		new_x = 0;
 	int		new_y = 0;
 	int color;
-
+	(void)sectors;
 	sprites.new_pos.x = (sprites.pos.y - player.pos.y) * sin(player.angle) + (sprites.pos.x - player.pos.x) * cos(player.angle);
 	sprites.new_pos.y = (sprites.pos.y - player.pos.y) * cos(player.angle) - (sprites.pos.x - player.pos.x) * sin(player.angle);
 	sprites.shift = (-sprites.new_pos.y / sprites.new_pos.x) * (screen->w / 2) + screen->w / 2;
 	sprites.h = 200 / sprites.new_pos.x;
 	sprites.w = 200 / sprites.new_pos.x;
-	y = (sectors + sprites.sector)->floor;
-	while (y < (sectors + sprites.sector)->floor + sprites.h)
+	(y = display_mode.h / 2 - sprites.h / 2) < 0 ? y = 0 : y;
+	while (y <= display_mode.h / 2 + sprites.h / 2 && y < display_mode.h)
 	{
-		x = (sprites.shift ) - sprites.w / 2;
-		while (x < (sprites.shift) + sprites.w / 2)
+		(x = (sprites.shift ) - sprites.w / 2) < 0 ? x = 0 : x;
+		new_y = ((double)y - display_mode.h / 2 + sprites.h / 2) / ((display_mode.h / 2 + sprites.h / 2) - (display_mode.h / 2 - sprites.h / 2)) * sprites.texture->h;
+		while (x < (sprites.shift) + sprites.w / 2 && x < display_mode.w)
 		{
-			new_x = (double)x / ((sprites.shift ) + sprites.w / 2) * sprites.texture->w;
-			new_y = (double)y / ((sectors + sprites.sector)->floor + sprites.h) * sprites.texture->h;
+			new_x = ((double)x - ((sprites.shift ) - sprites.w / 2)) / (((sprites.shift) + sprites.w / 2) - ((sprites.shift) - sprites.w / 2)) * sprites.texture->w;
 			if (y >= 0 && y < screen->h && x >= 0 && x < screen->w )
 			{
-				color = 0x000000;//((int*)(sprites.texture->pixels))[sprites.texture->w * new_y + new_x];
+				color = ((int*)(sprites.texture->pixels))[sprites.texture->w * new_y + new_x];
 				((int*)(screen->pixels))[(int)(screen->w * y + (int)(x))] = color;
 			}
 			x++;
@@ -423,18 +459,25 @@ int			main(void)
 	k = -3;
 	while (loop)
 	{
-		player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop);
-		get_pos_z(&game->player, game->sectors);
-		SDL_FillRect(game->screen,0, 0x00FF00);
-		draw_3d_wall(game, game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
-		draw_sprites(game->screen, game->sectors, game->sprites, game->player);
-		draw_hands(game->screen, game->gif);
-		put_fps(game->screen, game->hud, &game->time);
-		SDL_UpdateWindowSurface(game->window);
-		//запуск гифок
-		gif_loop(game->gif, &game->keystate, &k);
-	}
+		player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, game->menu);
+		if (game->menu.status == 1)
+		{	
+			menu_render(game);
+		}
+		else
+		{
+			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2);
+			get_pos_z(&game->player, game->sectors);
+			draw_3d_wall(game, game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
+			draw_sprites(game->screen, game->sectors, game->sprites, game->player, game->display_mode);
+			draw_hands(game->screen, game->gif);}
+			put_fps(game->screen, game->hud, &game->time);
+			//запуск гифок
+			gif_loop(game->gif, &game->keystate, &k);
+			SDL_UpdateWindowSurface(game->window);
+		}
 	//закрытие sdl
+	
 	free_SDL(game);
 	return (0);
 }

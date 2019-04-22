@@ -64,7 +64,8 @@ static void	init_sdl(t_game *game)
         check_error_n_exit(1,(char*)SDL_GetError());
     }
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
-	game->sprites.texture = SDL_LoadBMP("imgs/sprites/boss.bmp");
+	game->sprites.texture = SDL_LoadBMP("imgs/cat.bmp");
+	game->menu.image = SDL_LoadBMP("imgs/epic_menu.bmp");
 }
 
 static void load_sounds(t_sounds *sounds)
@@ -111,6 +112,7 @@ static void set_initial_values(t_game *game)
 	game->hud.fps_dest.w = 120;
 	game->hud.fps_dest.x = 0;
 	game->hud.fps_dest.y = 0;
+	game->menu.status = 0;
 }
 
 /* static void load_images()	*/
