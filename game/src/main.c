@@ -423,25 +423,23 @@ int			main(void)
 	k = -3;
 	while (loop)
 	{
-		player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, game->menu);
 		if (game->menu.status == 1)
-		{	
-			menu_render(game);
-		}
+			menu_render(game, &loop);
 		else
 		{
+			player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, &game->menu);
 			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2);
 			get_pos_z(&game->player, game->sectors);
 			draw_3d_wall(game, game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
 			draw_sprites(game->screen, game->sectors, game->sprites, game->player, game->display_mode);
-			draw_hands(game->screen, game->gif);}
-			put_fps(game->screen, game->hud, &game->time);
+			draw_hands(game->screen, game->gif);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
-			SDL_UpdateWindowSurface(game->window);
 		}
+		put_fps(game->screen, game->hud, &game->time);
+		SDL_UpdateWindowSurface(game->window);
+	}
 	//закрытие sdl
-	
 	free_SDL(game);
 	return (0);
 }
