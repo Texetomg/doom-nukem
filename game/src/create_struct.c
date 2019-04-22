@@ -112,7 +112,7 @@ static void set_initial_values(t_game *game)
 	game->hud.fps_dest.w = 120;
 	game->hud.fps_dest.x = 0;
 	game->hud.fps_dest.y = 0;
-	game->menu.status = 1;
+	game->menu.status = 0;
 }
 
 /* static void load_images()	*/

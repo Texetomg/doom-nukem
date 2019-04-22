@@ -432,7 +432,7 @@ int			main(void)
 		{
 			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2);
 			get_pos_z(&game->player, game->sectors);
-			draw_3d_wall(game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
+			draw_3d_wall(game, game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
 			draw_sprites(game->screen, game->sectors, game->sprites, game->player, game->display_mode);
 			draw_hands(game->screen, game->gif);}
 			put_fps(game->screen, game->hud, &game->time);
