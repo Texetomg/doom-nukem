@@ -11,6 +11,26 @@
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+
+vec2	get_floor(t_game *game, int x, int y, double dz)
+{
+	vec2	re;
+	double	x1;
+	double	y1;
+
+	x1 = game->display_mode.h / 2 * (dz) / (y - game->display_mode.h / 2);
+	y1 = -x1 * (x - game->display_mode.w / 2) / game->display_mode.w * 2;
+	re.x = y1 * cos(game->player.angle) + x1 * sin(game->player.angle) + game->player.pos.y;
+	re.x = re.x - (int)re.x;
+	if (re.x < 0)
+		re.x = 1 + re.x;
+	re.y = x1 * cos(game->player.angle) - y1 * sin(game->player.angle) + game->player.pos.x;
+	re.y = re.y - (int)re.y;
+	if (re.y < 0)
+		re.y = 1 + re.y;
+	return (re);
+}
+
 //поварачивает точки в систему координат игрока
 static void			give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points)
 {
@@ -86,7 +106,8 @@ static void	swap(double *a, double *b)
 }
 */
 //отрисовывает стену
-static void	draw_wall(SDL_DisplayMode display_mode,
+static void	draw_wall(t_game *game,
+						SDL_DisplayMode display_mode,
 						t_gif *gif,
 						SDL_Surface *texture,
 						t_draw for_draw,
@@ -94,7 +115,8 @@ static void	draw_wall(SDL_DisplayMode display_mode,
 						double x1,
 						double x2,
 						double y1,
-						double y2)
+						double y2,
+						double dz)
 {
 	int i;
 	int k;
@@ -105,6 +127,7 @@ static void	draw_wall(SDL_DisplayMode display_mode,
 	int x;
 	int y;
 	double a;
+	vec2 floor;
 	i = (int)for_draw.wall.x1;
 	while (i < for_draw.wall.x2)
 	{ 
@@ -136,7 +159,12 @@ static void	draw_wall(SDL_DisplayMode display_mode,
 				//color = 0xAAAA00;
 			}
 			else
-				color = COLOR_FLOOR;
+			{
+				floor = get_floor(game, i, k, dz);
+				x = floor.x * texture->w;
+				y = floor.y * texture->h;
+				color = ((int*)texture->pixels)[y * texture->w + x];
+			}
 			if (i < display_mode.w)
 				((int*)screen->pixels)[k * display_mode.w + i] = color;
 			k++;
@@ -193,7 +221,8 @@ static void	pre_draw_sector(SDL_Surface *screen,
 	}
 }
 //рекурсивная функиця(в будущем), которая отрисовывает сектор;
-static void	draw_sector(t_gif *gif,
+static void	draw_sector(t_game *game,
+							t_gif *gif,
 							SDL_Surface *texture,
 							SDL_Surface *screen,
 							t_player *player,
@@ -239,8 +268,8 @@ static void	draw_sector(t_gif *gif,
 			y2 = second_point.x;
 			yceil = (sectors + for_draw.curr_sector)->ceil - player->pos.z;
 			yfloor = (sectors + for_draw.curr_sector)->floor - player->pos.z;
-			yscale1 = 500 / first_point.x;
-			yscale2 = 500 / second_point.x;
+			yscale1 =  display_mode.h / 2 / first_point.x;
+			yscale2 =  display_mode.h / 2 / second_point.x;
 			for_draw.wall.x1 = -first_point.y * (display_mode.w / 2) / first_point.x + display_mode.w / 2;
 			for_draw.wall.x2 = -second_point.y * (display_mode.w / 2) / second_point.x + display_mode.w / 2;
 			for_draw.wall.y2t = -yscale2 * yceil + display_mode.h / 2;
@@ -264,18 +293,18 @@ static void	draw_sector(t_gif *gif,
 					for_next_draw.last_sector = for_draw.curr_sector;
 					for_next_draw.fov_left = first_point;
 					for_next_draw.fov_right = second_point;
-					draw_sector(gif, texture, screen, player, display_mode, sectors, points_cam, for_next_draw);
+					draw_sector(game, gif, texture, screen, player, display_mode, sectors, points_cam, for_next_draw);
 					pre_draw_sector(screen, display_mode, for_next_draw, for_draw);
 				}
 			}
 			else
-				draw_wall(display_mode, gif, texture, for_draw, screen, x1a, x2a, y1, y2);
+				draw_wall(game, display_mode, gif, texture, for_draw, screen, x1a, x2a, y1, y2, -yfloor);
 		}
 		i++;
 	}
 }
 //запускает отрисовку всех стен
-static void	draw_3d_wall(SDL_Surface *screen,
+static void	draw_3d_wall(t_game *game, SDL_Surface *screen,
 							SDL_Surface *texture,
 							vec2 *points,
 							int count_points,
@@ -303,7 +332,7 @@ static void	draw_3d_wall(SDL_Surface *screen,
 	for_draw.curr_sector = player->curr_sector;
 
 	give_points_cam(points_cam, points, player, count_points);
-	draw_sector(gif, texture, screen, player, display_mode, sectors, points_cam, for_draw);
+	draw_sector(game, gif, texture, screen, player, display_mode, sectors, points_cam, for_draw);
 	draw_minimap(screen, display_mode, sectors, points_cam, count_sectors);
 }
 //отрисовка рук/оружия 
