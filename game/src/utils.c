@@ -6,11 +6,25 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/18 13:20:47 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/04/23 16:41:38 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+
+//поварачивает точки в систему координат игрока
+void            give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points)
+{
+    int        i;
+    //ft_putendl("give_point_cam");
+    i = 0;
+    while (i < count_points)
+    {
+        (points_cam + i)->x = ((points + i)->y - player->pos.y) * sin(player->angle) + ((points + i)->x - player->pos.x) * cos(player->angle);
+        (points_cam + i)->y = ((points + i)->y - player->pos.y) * cos(player->angle) - ((points + i)->x - player->pos.x) * sin(player->angle);
+        i++;
+    }
+}
 
 void    get_pos_z(t_player *player, t_sector *sectors )
 {  
