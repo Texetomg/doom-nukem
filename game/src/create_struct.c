@@ -105,14 +105,16 @@ static void set_initial_values(t_game *game)
 	game->sprites.pos.y = -2;
 	game->sprites.pos.z = 0;
 	game->sprites.sector = 1;
-	game->hud.color.r = 255;
-	game->hud.color.g = 255;
-	game->hud.color.b = 0;
+	set_color(&game->hud.color, 255, 255, 0);
 	game->hud.fps_dest.h = 80;
 	game->hud.fps_dest.w = 120;
 	game->hud.fps_dest.x = 0;
 	game->hud.fps_dest.y = 0;
-	game->menu.status = 0;
+	game->menu.status = 1;
+	game->menu.strings[0] = "lesbian";
+	game->menu.strings[1] = "black";
+	game->menu.strings[2] = "white";
+	game->menu.position = 0;
 }
 
 /* static void load_images()	*/

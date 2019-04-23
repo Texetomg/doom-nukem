@@ -114,7 +114,7 @@ void	        player_move(SDL_DisplayMode display_mode,
 							t_sector *sectors,
 							t_player *player,
 							int *loop,
-							t_menu menu)
+							t_menu *menu)
 {
 	SDL_Event e;
 	vec2	direct;
@@ -127,10 +127,12 @@ void	        player_move(SDL_DisplayMode display_mode,
 	direct.y = STEP * sin(player->angle);
 	curve.x = STEP * (cos(player->angle) * 0.7 - sin(player->angle) * 0.7);
 	curve.y = STEP * (sin(player->angle) * 0.7 + cos(player->angle) * 0.7);
-	if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
-			*loop = 0;
-	if (menu.status == 0)
+	if (menu->status == 0)
 	{
+		if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
+			*loop = 0;
+		if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_TAB)
+			menu->status = 1;
 		if (keystate->forward && (!keystate->right && !keystate->left))
 			move(points, sectors, player, direct.x, direct.y);
 		if (keystate->back && (!keystate->right && !keystate->left))
@@ -168,12 +170,11 @@ void	        player_move(SDL_DisplayMode display_mode,
 			player->b_foots = 0.5;
 			player->b_knees = 0.3;
 		}
+		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+		{
+			Mix_PlayChannel( -1, sounds.bang, 0);
+			if (gif[1].curr_frame == 0)
+				keystate->mouse_l = 1;
+		}
 	}
-	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
-	{
-		Mix_PlayChannel( -1, sounds.bang, 0);
-		if (gif[1].curr_frame == 0)
-			keystate->mouse_l = 1;
-	}
-
 }
