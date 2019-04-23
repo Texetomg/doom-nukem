@@ -132,7 +132,10 @@ void	        player_move(SDL_DisplayMode display_mode,
 		if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 			*loop = 0;
 		if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_TAB)
+		{
 			menu->status = 1;
+			Mix_HaltMusic();
+		}
 		if (keystate->forward && (!keystate->right && !keystate->left))
 			move(points, sectors, player, direct.x, direct.y);
 		if (keystate->back && (!keystate->right && !keystate->left))

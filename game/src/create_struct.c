@@ -65,14 +65,16 @@ static void	init_sdl(t_game *game)
     }
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
 	game->sprites.texture = SDL_LoadBMP("imgs/cat.bmp");
-	game->menu.image = SDL_LoadBMP("imgs/epic_menu.bmp");
+//	game->menu.image = IMG_Load("imgs/destiny/normal.jpg");
 }
 
-static void load_sounds(t_sounds *sounds)
+static void load_sounds(t_game *game)
 {
-	if (!(sounds->music = Mix_LoadMUS( "sounds/Sdc.mp3" )))
+	if (!(game->menu.music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(sounds->bang = Mix_LoadWAV( "sounds/WOO.mp3" )))
+	if (!(game->sounds.music = Mix_LoadMUS( "sounds/Sdc.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->sounds.bang = Mix_LoadWAV( "sounds/WOO.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
@@ -111,10 +113,10 @@ static void set_initial_values(t_game *game)
 	game->hud.fps_dest.x = 0;
 	game->hud.fps_dest.y = 0;
 	game->menu.status = 1;
-	game->menu.strings[0] = "lesbian";
-	game->menu.strings[1] = "black";
-	game->menu.strings[2] = "white";
-	game->menu.position = 0;
+	game->menu.strings[0] = "Loli";
+	game->menu.strings[1] = "Trump";
+	game->menu.strings[2] = "Doomguy";
+	game->menu.text_pos = 0;
 }
 
 /* static void load_images()	*/
@@ -127,9 +129,9 @@ t_game	*create_struct(void)
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
 	read_map("src/map2", game);
-	load_sounds(&game->sounds);
+	load_sounds(game);
 	load_images(game->gif);
 	set_initial_values(game);
-	//Mix_PlayMusic( game->sounds.music, -1 );
+	
 	return (game);
 }

@@ -544,12 +544,31 @@ int			main(void)
 	game = create_struct();
 	loop = 1;		
 	k = -3;
+	
 	while (loop)
 	{
+
 		if (game->menu.status == 1)
-			menu_render(game, &loop);
-		else
 		{
+			if( Mix_PlayingMusic() == 0 )
+			{
+				//Play the music
+				Mix_PlayMusic( game->menu.music, -1 );
+			}
+			menu_render(game, &loop);
+		}
+		else
+		{	
+			if( Mix_PlayingMusic() == 0 )
+			{
+				//Play the music
+				Mix_PlayMusic( game->sounds.music, -1 );
+			}
+			if( Mix_PausedMusic() == 1 )
+            {
+                //Resume the music
+            	Mix_ResumeMusic();
+        	}
 			player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, &game->menu);
 			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2);
 			get_pos_z(&game->player, game->sectors);
@@ -561,6 +580,7 @@ int			main(void)
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);
+		
 	}
 	//закрытие sdl
 	free_SDL(game);

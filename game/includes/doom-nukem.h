@@ -17,6 +17,7 @@
 # include <SDL.h>
 # include <SDL_mixer.h>
 # include <SDL_ttf.h>
+# include <SDL_image.h>
 # include <sys/time.h>
 # define HIGH 0.5
 # define ACCEL 0.0005
@@ -145,10 +146,12 @@ typedef	struct 		s_hud
 typedef	struct 		s_menu
 {
 	int				status;
-	SDL_Surface		*image;
+	SDL_Surface		*image[3];
 	char			*strings[3];
-	int				position;
-	SDL_Color		color;
+	Mix_Music		*music;
+	Mix_Chunk		*clap[3];
+	int				text_pos;
+	SDL_Color		text_color;
 	SDL_Rect		dest;
 	
 }					t_menu;
