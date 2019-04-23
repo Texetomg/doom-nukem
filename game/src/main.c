@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/23 13:03:41 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/23 13:25:29 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,27 +313,25 @@ static void	pre_draw_sector(SDL_Surface *screen,
 	double yb_wall;
 	double yt_wall;
 	double yb_window;
+	double yt_window;
 	int color;
-	/*if (for_draw.wall.y1t < for_draw.window.y1t &&
-			for_draw.wall.y2t < for_draw.window.y2t &&
-			for_draw.wall.y1b > for_draw.window.y1b &&
-			for_draw.wall.y2b > for_draw.window.y2b)
-		return ;
-		*/
-	i = (int)for_draw.window.x1;
+
+	i = (int)for_draw.wall.x1;
 	if (i < 0)
 		i = 0;
-	while (i < for_draw.window.x2 && i < display_mode.w)
+	while (i < for_draw.wall.x2 && i < display_mode.w)
 	{
-		k = for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
+		yt_window = for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		yb_window = for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		yt_wall = for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		yb_wall = for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
-		if (k < 0)
+		if (yt_wall < 0)
 			k = 0;
-		while (k < yb_window && k < display_mode.h)
+		else
+			k = yt_wall;
+		while (k < yb_wall && k < display_mode.h)
 		{
-			if (k < yt_wall || k > yb_wall)
+			if (k < yt_window || k > yb_window)
 			{
 				color = COLOR_BETW;
 				((int*)screen->pixels)[k * display_mode.w + i] = color;
@@ -403,15 +401,15 @@ static void	draw_sector(t_game *game,
 			{
 				if (*((sectors + for_draw.curr_sector)->neighbors + i) != for_draw.last_sector)
 				{
-					for_next_draw.window = for_draw.wall;
+					for_next_draw.wall = for_draw.wall;
 					y2ceil = (sectors + *((sectors + for_draw.curr_sector)->neighbors + i))->ceil - player->pos.z;
 					y2floor = (sectors + *((sectors + for_draw.curr_sector)->neighbors + i))->floor - player->pos.z;
-					for_next_draw.wall.y1t = -yscale1 * y2ceil + display_mode.h / 2;
-					for_next_draw.wall.y1b = -yscale1 * y2floor + display_mode.h / 2;
-					for_next_draw.wall.y2t = -yscale2 * y2ceil + display_mode.h / 2;
-					for_next_draw.wall.y2b = -yscale2 * y2floor + display_mode.h / 2;
-					for_next_draw.wall.x1 = for_next_draw.window.x1;
-					for_next_draw.wall.x2 = for_next_draw.window.x2;
+					for_next_draw.window.y1t = -yscale1 * y2ceil + display_mode.h / 2;
+					for_next_draw.window.y1b = -yscale1 * y2floor + display_mode.h / 2;
+					for_next_draw.window.y2t = -yscale2 * y2ceil + display_mode.h / 2;
+					for_next_draw.window.y2b = -yscale2 * y2floor + display_mode.h / 2;
+					for_next_draw.window.x1 = for_next_draw.wall.x1;
+					for_next_draw.window.x2 = for_next_draw.wall.x2;
 					for_next_draw.curr_sector = *((sectors + for_draw.curr_sector)->neighbors + i);
 					for_next_draw.last_sector = for_draw.curr_sector;
 					for_next_draw.fov_left = first_point;
