@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/23 12:46:34 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/23 13:03:41 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ void	draw_floor(t_game *game, t_draw for_draw, double dz)
 				y = (y - (int)y + 1) * game->texture->h;
 			else
 				y = (y - (int)y) * game->texture->h;
-			if (x > 0 && x < game->texture->w && y > 0 && y < game->texture->h)
+			if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
 			{
 	 			color = ((int*)game->texture->pixels)[((int)y) * game->texture->w + ((int)x)];
 				((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
@@ -284,23 +284,19 @@ static void	draw_wall(t_game *game,
 			k = yt_wall;
 		while (k < yb_wall && k < game->display_mode.h)
 		{
-			if (k == yt_wall || k == yb_wall || (i == (int)for_draw.wall.x1 && k < yb_wall && k > yt_wall) || (i == (int)for_draw.wall.x2 && k < yb_wall && k > yt_wall))
-				color = 0;
-			else
+			a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
+			x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * texture->w;
+			y = (double)(k - yt_wall) / (yb_wall - yt_wall) * texture->h;
+			if (for_draw.curr_sector == 2)
 			{
-				a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
-				x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * texture->w;
-				y = (double)(k - yt_wall) / (yb_wall - yt_wall) * texture->h;
-				if (for_draw.curr_sector == 2)
-				{
-					x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * (*(gif[0].array + gif[0].curr_frame))->w;
-					y = (double)(k - yt_wall) / (yb_wall - yt_wall) * (*(gif[0].array + gif[0].curr_frame))->h;
+				x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * (*(gif[0].array + gif[0].curr_frame))->w;
+				y = (double)(k - yt_wall) / (yb_wall - yt_wall) * (*(gif[0].array + gif[0].curr_frame))->h;
+				if (x >= 0 && x < (*(gif[0].array + gif[0].curr_frame))->w && y >= 0 && y < (*(gif[0].array + gif[0].curr_frame))->h)
 					color = ((int*)(*(gif[0].array + gif[0].curr_frame))->pixels)[y * (*(gif[0].array + gif[0].curr_frame))->w + x];
-				}
-				else
-					color = ((int*)texture->pixels)[y * texture->w + x];
-				//color = 0xAAAA00;
 			}
+			else
+				if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
+					color = ((int*)texture->pixels)[y * texture->w + x];
 			((int*)screen->pixels)[k * display_mode.w + i] = color;
 			k++;
 		}
