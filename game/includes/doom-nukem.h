@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/22 14:15:56 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/23 16:41:37 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,4 +196,10 @@ void				clean_buffer(char **buffer);
 void    			free_SDL(t_game *game);
 void    			print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest);
 void				set_color(SDL_Color *color, int r, int g, int b);
+void    			draw_sector(t_game *game, t_gif *gif, SDL_Surface *texture, SDL_Surface *screen,t_player *player, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, t_draw for_draw);
+vec3    			get_ceil(t_game *game, int x, int y, double dz);
+vec3    			get_floor(t_game *game, int x, int y, double dz);
+void     			cross(vec2 *first_point, vec2 second_point, vec2 fov);
+int             	intersection(vec2 *first_point, vec2 *second_point, vec2 left_fov, vec2 right_fov);
+void           		give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points);
 #endif
