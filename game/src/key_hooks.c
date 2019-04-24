@@ -173,8 +173,10 @@ void	        player_move(SDL_DisplayMode display_mode,
 			player->b_foots = 0.5;
 			player->b_knees = 0.3;
 		}
-		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+		//if (SDL_GetRelativeMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
+		if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
 		{
+			Mix_HaltChannel(-1);
 			Mix_PlayChannel( -1, sounds.bang, 0);
 			if (gif[1].curr_frame == 0)
 				keystate->mouse_l = 1;

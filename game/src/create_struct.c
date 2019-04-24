@@ -12,17 +12,15 @@
 
 #include "doom-nukem.h"
 
-static void read_gif(t_gif *gif, char *str, int index, int frame)
+static void read_gif(t_gif *gif, char *str, int index, int frame, char* extension)
 {
 	char *folder;
 	char *i;
-	char *extension;
 	char *path;
 	char *tmp;
 	int k;
 
 	folder = ft_strdup(str);
-	extension = ft_strdup(".bmp");
 	gif[index].frame = frame;
 	gif[index].curr_frame = 0;
 	gif[index].array = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * gif[index].frame);
@@ -32,14 +30,13 @@ static void read_gif(t_gif *gif, char *str, int index, int frame)
 		i = ft_itoa(k);
 		tmp = ft_strjoin(folder,i);
 		path = ft_strjoin(tmp, extension);
-		*(gif[index].array + k) = SDL_LoadBMP(path);
+		*(gif[index].array + k) = IMG_Load(path);
 		free(path);
 		free(tmp);
 		free(i);
 		k++;
 	}
 	free(folder);
-	free(extension);
 }
 
 //инициализация sdl
@@ -74,14 +71,14 @@ static void load_sounds(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->sounds.music = Mix_LoadMUS( "sounds/Sdc.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->sounds.bang = Mix_LoadWAV( "sounds/WOO.mp3" )))
+	if (!(game->sounds.bang = Mix_LoadWAV( "sounds/gunshot.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
 static void load_images(t_gif *gif)
 {
-	read_gif(gif, "imgs/gif1/", 0, 40);
-	read_gif(gif, "imgs/gif_damage/", 1, 29);
+	read_gif(gif, "imgs/gif1/", 0, 40, ".bmp");
+	read_gif(gif, "imgs/hands/", 1, 3, ".png");
 }
 
 static void set_initial_values(t_game *game)
