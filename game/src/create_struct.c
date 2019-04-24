@@ -118,6 +118,9 @@ static void set_initial_values(t_game *game)
 	game->start_menu.strings[3] = "Doomguy";
 	game->start_menu.strings[4] = "Exit";
 	game->start_menu.text_pos = 0;
+	game->tab_menu.strings[0] = "Continue";
+	game->tab_menu.strings[1] = "New game";
+	game->tab_menu.strings[2] = "Exit";
 }
 
 /* static void load_images()	*/
