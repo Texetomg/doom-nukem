@@ -114,7 +114,7 @@ void	        player_move(SDL_DisplayMode display_mode,
 							t_sector *sectors,
 							t_player *player,
 							int *loop,
-							t_menu *menu)
+							t_menu_status *menu_status)
 {
 	SDL_Event e;
 	vec2	direct;
@@ -127,14 +127,14 @@ void	        player_move(SDL_DisplayMode display_mode,
 	direct.y = STEP * sin(player->angle);
 	curve.x = STEP * (cos(player->angle) * 0.7 - sin(player->angle) * 0.7);
 	curve.y = STEP * (sin(player->angle) * 0.7 + cos(player->angle) * 0.7);
-	if (menu->status == 0)
+	if (menu_status->start == 0) //???????
 	{
 		if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 			*loop = 0;
 		if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_TAB)
 		{
-			menu->status = 1;
-			Mix_HaltMusic();
+			menu_status->tab = 1;
+			menu_status->main = 0;
 		}
 		if (keystate->forward && (!keystate->right && !keystate->left))
 			move(points, sectors, player, direct.x, direct.y);

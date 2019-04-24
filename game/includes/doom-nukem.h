@@ -145,16 +145,21 @@ typedef	struct 		s_hud
 
 typedef	struct 		s_menu
 {
-	int				status;
-	SDL_Surface		*image[3];
-	char			*strings[3];
+	SDL_Surface		*image[5];
+	char			*strings[5];
 	Mix_Music		*music;
-	Mix_Chunk		*clap[3];
+	Mix_Chunk		*clap[4];
 	int				text_pos;
 	SDL_Color		text_color;
 	SDL_Rect		dest;
-	
 }					t_menu;
+
+typedef struct 		s_menu_status
+{
+	int				start;
+	int				tab;
+	int				main;
+}					t_menu_status;
 
 
 typedef struct		s_game
@@ -169,7 +174,9 @@ typedef struct		s_game
 	SDL_Surface		*screen;
 	SDL_Surface		*texture;
 	SDL_Surface		*texture_arr[3];
-	t_menu			menu;
+	t_menu			start_menu;
+	t_menu			tab_menu;
+	t_menu_status	menu_status;
 	SDL_DisplayMode	display_mode;
 	struct timeval  time;
 	vec2int			mouse;
@@ -181,13 +188,14 @@ typedef struct		s_game
 	int				complexity;
 }					t_game;
 
-void    			menu_render(t_game *game, int *loop);
+void    			start_menu_render(t_game *game, int *loop);
+void    			tab_menu_render(t_game *game, int *loop);
 t_game  			*create_struct(void);
 double   			cross_product(vec2 first_point, vec2 second_point);
 void				draw_minimap(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int count_sectors);
 void    			put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
-void				player_move(SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop, t_menu *menu);
+void				player_move(SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop, t_menu_status *menu_status);
 void				change_wall(t_wall *cam_wall);
 void    			get_pos_z(t_player *player, t_sector *sectors );
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);

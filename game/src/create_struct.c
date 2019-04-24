@@ -62,12 +62,12 @@ static void	init_sdl(t_game *game)
     }
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
 	game->sprites.texture = SDL_LoadBMP("imgs/cat.bmp");
-//	game->menu.image = IMG_Load("imgs/destiny/normal.jpg");
+//	game->start_menu.image = IMG_Load("imgs/destiny/normal.jpg");
 }
 
 static void load_sounds(t_game *game)
 {
-	if (!(game->menu.music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
+	if (!(game->start_menu.music = Mix_LoadMUS( "sounds/GACHI.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->sounds.music = Mix_LoadMUS( "sounds/Sdc.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
@@ -109,11 +109,15 @@ static void set_initial_values(t_game *game)
 	game->hud.fps_dest.w = 120;
 	game->hud.fps_dest.x = 0;
 	game->hud.fps_dest.y = 0;
-	game->menu.status = 1;
-	game->menu.strings[0] = "Loli";
-	game->menu.strings[1] = "Trump";
-	game->menu.strings[2] = "Doomguy";
-	game->menu.text_pos = 0;
+	game->menu_status.start = 1;
+	game->menu_status.tab = 0;
+	game->menu_status.main = 0;
+	game->start_menu.strings[0] = "CHOOSE YOUR DESTINY:";
+	game->start_menu.strings[1] = "Loli";
+	game->start_menu.strings[2] = "Trump";
+	game->start_menu.strings[3] = "Doomguy";
+	game->start_menu.strings[4] = "Exit";
+	game->start_menu.text_pos = 0;
 }
 
 /* static void load_images()	*/

@@ -135,19 +135,23 @@ int			main(void)
 	while (loop)
 	{
 
-		if (game->menu.status == 1)
+		if (game->menu_status.start == 1)
 		{
 			if( Mix_PlayingMusic() == 0 )
-				Mix_PlayMusic( game->menu.music, -1 );
-			menu_render(game, &loop);
+				Mix_PlayMusic(game->start_menu.music, -1);
+			start_menu_render(game, &loop);
 		}
-		else
+		if(game->menu_status.tab == 1)
+		{
+			if( Mix_PlayingMusic() == 0 )
+				Mix_PlayMusic(game->sounds.music, -1);
+			tab_menu_render(game, &loop);
+		}
+		if (game->menu_status.main == 1)
 		{	
 			if( Mix_PlayingMusic() == 0 )
-			{
-				Mix_PlayMusic( game->sounds.music, -1 );
-			}
-			player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, &game->menu);
+				Mix_PlayMusic(game->sounds.music, -1);
+			player_move(game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, &game->menu_status);
 			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2);
 			get_pos_z(&game->player, game->sectors);
 			draw_3d_wall(game, game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
