@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/23 16:41:37 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/25 13:29:38 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ double   			cross_product(vec2 first_point, vec2 second_point);
 void				draw_minimap(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int count_sectors);
 void    			put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
-void				player_move(SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop, t_menu_status *menu_status);
+void				player_move(t_game *game, SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop, t_menu_status *menu_status);
 void				change_wall(t_wall *cam_wall);
 void    			get_pos_z(t_player *player, t_sector *sectors );
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
@@ -210,4 +210,5 @@ vec3    			get_floor(t_game *game, int x, int y, double dz);
 void     			cross(vec2 *first_point, vec2 second_point, vec2 fov);
 int             	intersection(vec2 *first_point, vec2 *second_point, vec2 left_fov, vec2 right_fov);
 void           		give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points);
+int             inside_sector(t_game *game, double x, double y, t_sector sector);
 #endif
