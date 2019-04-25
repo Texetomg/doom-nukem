@@ -49,24 +49,6 @@ void    start_menu_render(t_game *game, int *loop)
 	SDL_Event e;
 	game->start_menu.dest.h = 80;
 	game->start_menu.dest.w = 120;
-	if (!(game->start_menu.image[0] = IMG_Load("imgs/start_menu/0.jpg")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[1] = IMG_Load("imgs/start_menu/1.jpg")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[2] = IMG_Load("imgs/start_menu/2.jpg")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[3] = IMG_Load("imgs/start_menu/3.jpg")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[4] = IMG_Load("imgs/start_menu/4.jpg")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.clap[0] = Mix_LoadWAV( "sounds/loli.mp3" )))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.clap[1] = Mix_LoadWAV( "sounds/trump.mp3" )))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.clap[2] = Mix_LoadWAV( "sounds/doom.mp3" )))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.clap[3] = Mix_LoadWAV( "sounds/gay.mp3" )))
-		check_error_n_exit(1,(char*)SDL_GetError());
 	
 	set_color(&game->start_menu.text_color, 255, 255, 0);
 	draw_image(game, game->start_menu.text_pos, game->start_menu.image);
@@ -127,8 +109,6 @@ void    tab_menu_render(t_game *game, int *loop)
 	game->tab_menu.dest.w = 120;
 	game->tab_menu.dest.x = game->screen->w / 100 * 65;
 	game->tab_menu.dest.y = game->screen->h / 100 * 5;
-	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.png")))
-		check_error_n_exit(1,(char*)SDL_GetError());
 	game->tab_menu.image[1] = NULL;
 	game->tab_menu.image[2] = NULL;
 	set_color(&game->start_menu.text_color, 255, 255, 0);
