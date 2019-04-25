@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/25 13:33:43 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/25 15:12:55 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,18 @@ static void		change_keystate(t_keystate *keystate, SDL_Keycode key, int flag)
 		keystate->ctrl = flag;
 }
 
-SDL_Event	key_hooks(t_player *player, SDL_DisplayMode display_mode, t_keystate *keystate, vec2int *mouse)
+SDL_Event	key_hooks(t_game *game, t_player *player, SDL_DisplayMode display_mode, t_keystate *keystate, vec2int *mouse)
 {
 	SDL_Event e;
+	int new_horizon;
 
 	while (SDL_PollEvent(&e))
 	{
 		
 		player->angle -= 3.14 / 600 * (mouse->x - display_mode.w / 2);
+		new_horizon = game->line_horiz - 2 * (mouse->y - display_mode.h / 2);
+		if (new_horizon >= 0 && new_horizon < display_mode.h)
+			game->line_horiz = new_horizon;
 		if (e.type == SDL_KEYDOWN)
 			change_keystate(keystate, e.key.keysym.sym, 1);
 		if (e.type == SDL_KEYUP)
@@ -124,7 +128,7 @@ void	        player_move(t_game *game,
 	SDL_Event e;
 	vec2	direct;
 	vec2	curve;
-	e = key_hooks(player, display_mode, keystate, mouse);
+	e = key_hooks(game, player, display_mode, keystate, mouse);
 	SDL_GetMouseState(&mouse->x, &mouse->y);
 	(void)window;
 	//перемещать курсор в одну и ту же точку

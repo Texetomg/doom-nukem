@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:06:32 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/23 16:39:48 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/25 14:10:55 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ vec3    get_ceil(t_game *game, int x, int y, double dz)
     double    x1;
     double    y1;
     
-    x1 = game->display_mode.h / 2 * (dz) / (game->display_mode.h / 2 - y);
+    x1 = game->display_mode.h / 2 * (dz) / (game->line_horiz - y);
     y1 = -x1 * (x - game->display_mode.w / 2) / game->display_mode.w * 2;
     re.x = y1 * cos(game->player.angle) + x1 * sin(game->player.angle) + game->player.pos.y;
     re.y = x1 * cos(game->player.angle) - y1 * sin(game->player.angle) + game->player.pos.x;
@@ -36,7 +36,7 @@ vec3    get_floor(t_game *game, int x, int y, double dz)
     double    x1;
     double    y1;
     
-    x1 = game->display_mode.h / 2 * (dz) / (y - game->display_mode.h / 2);
+    x1 = game->display_mode.h / 2 * (dz) / (y - game->line_horiz);
     y1 = -x1 * (x - game->display_mode.w / 2) / game->display_mode.w * 2;
     re.x = y1 * cos(game->player.angle) + x1 * sin(game->player.angle) + game->player.pos.y;
     re.y = x1 * cos(game->player.angle) - y1 * sin(game->player.angle) + game->player.pos.x;

@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/23 17:04:06 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/25 14:02:20 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void    draw_ceil(t_game *game, t_draw for_draw, double dz)
             k = 0;
         else
             k = yt_window;
-        while (k < yt_wall && k < game->display_mode.h / 2)
+        while (k < yt_wall && k < game->line_horiz)
         {
             a = (double)(k - yt_window) / (yt_wall - yt_window);
             x = ((1 - a) * first.x / first.z + a * second.x / second.z) / ((1 - a) / first.z + a / second.z);
@@ -116,8 +116,8 @@ void    draw_floor(t_game *game, t_draw for_draw, double dz)
         second.z = 1 / ((1 - a) / second_left.z + a / second_right.z);
         yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
         yb_window = (int)(for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
-        if (yb_wall < game->display_mode.h / 2)
-            k = game->display_mode.h / 2;
+        if (yb_wall < game->line_horiz)
+            k = game->line_horiz;
         else
             k = yb_wall;
         while (k < yb_window && k < game->display_mode.h)
@@ -280,10 +280,10 @@ void    draw_sector(t_game *game,
             yscale2 =  display_mode.h / 2 / second_point.x;
             for_draw.wall.x1 = -first_point.y * (display_mode.w / 2) / first_point.x + display_mode.w / 2;
             for_draw.wall.x2 = -second_point.y * (display_mode.w / 2) / second_point.x + display_mode.w / 2;
-            for_draw.wall.y2t = -yscale2 * yceil + display_mode.h / 2;
-            for_draw.wall.y1t = -yscale1 * yceil + display_mode.h / 2;
-            for_draw.wall.y2b = -yscale2 * yfloor + display_mode.h / 2;
-            for_draw.wall.y1b = -yscale1 * yfloor + display_mode.h / 2;
+            for_draw.wall.y2t = -yscale2 * yceil + game->line_horiz;
+            for_draw.wall.y1t = -yscale1 * yceil + game->line_horiz;
+            for_draw.wall.y2b = -yscale2 * yfloor + game->line_horiz;
+            for_draw.wall.y1b = -yscale1 * yfloor + game->line_horiz;
             if (*((sectors + for_draw.curr_sector)->neighbors + i) >= 0)
             {
                 if (*((sectors + for_draw.curr_sector)->neighbors + i) != for_draw.last_sector)
@@ -291,10 +291,10 @@ void    draw_sector(t_game *game,
                     for_next_draw.wall = for_draw.wall;
                     y2ceil = (sectors + *((sectors + for_draw.curr_sector)->neighbors + i))->ceil - player->pos.z;
                     y2floor = (sectors + *((sectors + for_draw.curr_sector)->neighbors + i))->floor - player->pos.z;
-                    for_next_draw.window.y1t = -yscale1 * y2ceil + display_mode.h / 2;
-                    for_next_draw.window.y1b = -yscale1 * y2floor + display_mode.h / 2;
-                    for_next_draw.window.y2t = -yscale2 * y2ceil + display_mode.h / 2;
-                    for_next_draw.window.y2b = -yscale2 * y2floor + display_mode.h / 2;
+                    for_next_draw.window.y1t = -yscale1 * y2ceil + game->line_horiz;
+                    for_next_draw.window.y1b = -yscale1 * y2floor + game->line_horiz;
+                    for_next_draw.window.y2t = -yscale2 * y2ceil + game->line_horiz;
+                    for_next_draw.window.y2b = -yscale2 * y2floor + game->line_horiz;
                     for_next_draw.window.x1 = for_next_draw.wall.x1;
                     for_next_draw.window.x2 = for_next_draw.wall.x2;
                     for_next_draw.curr_sector = *((sectors + for_draw.curr_sector)->neighbors + i);

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/25 13:29:38 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/25 13:57:54 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ typedef struct		s_game
 	t_keystate		keystate;	
 	t_gif			gif[2];
 	int				complexity;
+	int				line_horiz;
 }					t_game;
 
 void    			start_menu_render(t_game *game, int *loop);

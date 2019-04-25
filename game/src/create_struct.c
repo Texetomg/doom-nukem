@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/25 11:53:01 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/25 13:58:30 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ static void set_initial_values(t_game *game)
 	game->tab_menu.strings[0] = "Continue";
 	game->tab_menu.strings[1] = "New game";
 	game->tab_menu.strings[2] = "Exit";
+	game->line_horiz = 400;
 }
 
 /* static void load_images()	*/
