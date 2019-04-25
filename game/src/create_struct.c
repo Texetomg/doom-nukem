@@ -62,7 +62,6 @@ static void	init_sdl(t_game *game)
     }
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
 	game->sprites.texture = SDL_LoadBMP("imgs/cat.bmp");
-//	game->start_menu.image = IMG_Load("imgs/destiny/normal.jpg");
 }
 
 static void load_sounds(t_game *game)
