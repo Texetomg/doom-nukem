@@ -6,13 +6,13 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/18 16:13:19 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/25 13:33:43 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 #include <stdio.h>
-static void    move(vec2 *points, t_sector *sectors, t_player *player, double x, double y)
+static void    move(t_game *game, vec2 *points, t_sector *sectors, t_player *player, double x, double y)
 {
 	double	new_x;
 	double	new_y;
@@ -46,16 +46,20 @@ static void    move(vec2 *points, t_sector *sectors, t_player *player, double x,
 				if (player->knees > (sectors + *((sectors + player->curr_sector)->neighbors + i))->floor &&
 					player->pos.z < (sectors + *((sectors + player->curr_sector)->neighbors + i))->ceil)
 				{
-					//добавить проверку других стен
-					player->curr_sector = *((sectors + player->curr_sector)->neighbors + i);
-					player->pos.x = new_x;
-					player->pos.y = new_y;
-					if (player->foots < (sectors + player->curr_sector)->floor)
+					if (inside_sector(game, new_x, new_y, *(sectors + *((sectors + player->curr_sector)->neighbors + i))) != 0)
 					{
-						player->pos.z = (sectors + player->curr_sector)->floor + 0.5;
-						player->z_accel = 0;
+						player->curr_sector = *((sectors + player->curr_sector)->neighbors + i);
+						player->pos.x = new_x;
+						player->pos.y = new_y;
+						if (player->foots < (sectors + player->curr_sector)->floor)
+						{
+							player->pos.z = (sectors + player->curr_sector)->floor + 0.5;
+							player->z_accel = 0;
+						}
+						return ;
 					}
-					return ;
+					else
+						flag = 1;
 				}
 				else
 					flag = 1;
@@ -104,7 +108,8 @@ SDL_Event	key_hooks(t_player *player, SDL_DisplayMode display_mode, t_keystate *
 	return (e);
 }
 
-void	        player_move(SDL_DisplayMode display_mode,
+void	        player_move(t_game *game,
+							SDL_DisplayMode display_mode,
 							vec2int *mouse,
 							SDL_Window *window,
 							t_sounds sounds,
@@ -137,25 +142,25 @@ void	        player_move(SDL_DisplayMode display_mode,
 			menu_status->main = 0;
 		}
 		if (keystate->forward && (!keystate->right && !keystate->left))
-			move(points, sectors, player, direct.x, direct.y);
+			move(game, points, sectors, player, direct.x, direct.y);
 		if (keystate->back && (!keystate->right && !keystate->left))
-			move(points, sectors, player, -direct.x, -direct.y);
+			move(game, points, sectors, player, -direct.x, -direct.y);
 		if (keystate->right && (!keystate->forward && !keystate->back))
-			move(points, sectors, player, direct.y, -direct.x);
+			move(game, points, sectors, player, direct.y, -direct.x);
 		if (keystate->left && (!keystate->forward && !keystate->back))
-			move(points, sectors, player, -direct.y, direct.x);
+			move(game, points, sectors, player, -direct.y, direct.x);
 		if (keystate->forward && keystate->right)
-			move(points, sectors, player, curve.y, -curve.x);
+			move(game, points, sectors, player, curve.y, -curve.x);
 		if (keystate->forward && keystate->left)
-			move(points, sectors, player, curve.x, curve.y);
+			move(game, points, sectors, player, curve.x, curve.y);
 		if (keystate->back && keystate->right)
-			move(points, sectors, player, -curve.x, -curve.y);
+			move(game, points, sectors, player, -curve.x, -curve.y);
 		if (keystate->back && keystate->left)
-			move(points, sectors, player, -curve.y, curve.x);
+			move(game, points, sectors, player, -curve.y, curve.x);
 		if (keystate->jump && player->foots == (sectors + player->curr_sector)->floor)
 		{
 			player->z_accel = 0.1;
-			move(points, sectors, player, 0, 0);
+			move(game, points, sectors, player, 0, 0);
 		}
 		if (keystate->ctrl)
 		{

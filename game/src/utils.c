@@ -6,11 +6,37 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/23 16:41:38 by thorker          ###   ########.fr       */
+/*   Updated: 2019/04/25 13:32:58 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+
+int				inside_sector(t_game *game, double x, double y, t_sector sector)
+{
+	vec2	f_point;
+	vec2	s_point;
+	int		i;
+
+	i = 0;
+	while (i < sector.count_wall)
+	{
+		f_point = *(game->points + *(sector.index_points + i));
+		if (i == sector.count_wall - 1)
+			s_point = *(game->points + *(sector.index_points));
+		else
+			s_point = *(game->points + *(sector.index_points + i + 1));
+
+		s_point.x = s_point.x - f_point.x;
+		s_point.y = s_point.y - f_point.y;
+		f_point.x = x - f_point.x;
+		f_point.y = y - f_point.y;
+		if (cross_product(f_point, s_point) < 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 //поварачивает точки в систему координат игрока
 void            give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points)
