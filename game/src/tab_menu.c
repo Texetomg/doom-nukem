@@ -12,25 +12,18 @@
 
 #include "doom-nukem.h"
 
-void    tab_menu_render(t_game *game, int *loop)
+static void key_hook(t_game *game, int **loop)
 {
-	int i = 0;
-	int new_str = 10;
-	SDL_Event e;
-	game->tab_menu.dest.h = 80;
-	game->tab_menu.dest.w = 120;
-	game->tab_menu.dest.x = game->screen->w / 100 * 65;
-	game->tab_menu.dest.y = game->screen->h / 100 * 5;
-	game->tab_menu.image[1] = NULL;
-	game->tab_menu.image[2] = NULL;
-	set_color(&game->start_menu.text_color, 255, 255, 0);
-	draw_image(game, 0, game->tab_menu.image);
-	while (SDL_PollEvent(&e))
+    SDL_Event e;
+
+    while (SDL_PollEvent(&e))
 	{
 		if(e.type == SDL_KEYDOWN)
 		{
-			if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT || (e.key.keysym.sym == SDLK_RETURN && game->tab_menu.text_pos == 2))
-				*loop = 0;
+			if (e.key.keysym.sym == SDLK_ESCAPE ||
+                e.type == SDL_QUIT ||
+                (e.key.keysym.sym == SDLK_RETURN && game->tab_menu.text_pos == 2))
+				**loop = 0;
 			if (e.key.keysym.sym == SDLK_TAB)
 			{
 				game->menu_status.tab = 0;
@@ -53,6 +46,22 @@ void    tab_menu_render(t_game *game, int *loop)
 				game->tab_menu.text_pos ++;
 		}
 	}
+}
+
+void    tab_menu_render(t_game *game, int *loop)
+{
+	int i = 0;
+	int new_str = 10;
+	
+	game->tab_menu.dest.h = 80;
+	game->tab_menu.dest.w = 120;
+	game->tab_menu.dest.x = game->screen->w / 100 * 65;
+	game->tab_menu.dest.y = game->screen->h / 100 * 5;
+	game->tab_menu.image[1] = NULL;
+	game->tab_menu.image[2] = NULL;
+	set_color(&game->start_menu.text_color, 255, 255, 0);
+	draw_image(game, 0, game->tab_menu.image);
+    key_hook(game, &loop);
 	game->tab_menu.dest.y = game->screen->h / 100 * new_str;
 	new_str += 5;
 	while (i < 3)

@@ -42,11 +42,46 @@ void	draw_image(t_game *game, int i, SDL_Surface *image[])
 	}
 }
 
+static void arrows(t_game *game, int pos)
+{
+	game->start_menu.text_pos += pos;
+	Mix_HaltChannel(-1);
+	Mix_PlayChannel( -1, game->start_menu.clap[game->start_menu.text_pos - 1], 0);
+}
+
+static void key_hook(t_game *game, int **loop)
+{
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{
+		if(e.type == SDL_KEYDOWN)
+		{
+			if (e.key.keysym.sym == SDLK_UP && game->start_menu.text_pos > 1)
+				arrows(game, -1);
+			if (e.key.keysym.sym == SDLK_DOWN && game->start_menu.text_pos < 4)
+				arrows(game, 1);
+			if (e.key.keysym.sym == SDLK_ESCAPE ||
+				e.type == SDL_QUIT ||
+				(e.key.keysym.sym == SDLK_RETURN && game->start_menu.text_pos == 4))
+				**loop = 0;
+			if (e.key.keysym.sym == SDLK_RETURN &&
+				game->start_menu.text_pos != 0 &&
+				game->start_menu.text_pos != 4)
+			{
+				game->complexity = game->start_menu.text_pos;
+				game->menu_status.start = 0;
+				game->menu_status.main = 1;
+				Mix_HaltMusic();
+			}
+		}
+	}
+}
+
 void    start_menu_render(t_game *game, int *loop)
 {
 	int i = 0;
 	int new_str = 10;
-	SDL_Event e;
+	
 	game->start_menu.dest.h = 80;
 	game->start_menu.dest.w = 120;
 	
@@ -54,34 +89,7 @@ void    start_menu_render(t_game *game, int *loop)
 	draw_image(game, game->start_menu.text_pos, game->start_menu.image);
 	game->start_menu.dest.x = game->screen->w / 100 * 65;
 	game->start_menu.dest.y = game->screen->h / 100 * 5;
-	while (SDL_PollEvent(&e))
-	{
-		if(e.type == SDL_KEYDOWN)
-		{
-			if (e.key.keysym.sym == SDLK_UP && game->start_menu.text_pos > 1)
-			{
-				game->start_menu.text_pos --;
-				Mix_HaltChannel(-1);
-				Mix_PlayChannel( -1, game->start_menu.clap[game->start_menu.text_pos - 1], 0);
-			}
-			if (e.key.keysym.sym == SDLK_DOWN && game->start_menu.text_pos <= 4)
-			{
-				game->start_menu.text_pos ++;
-				Mix_HaltChannel(-1);
-				Mix_PlayChannel( -1, game->start_menu.clap[game->start_menu.text_pos - 1], 0);
-			}
-			if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT || (e.key.keysym.sym == SDLK_RETURN && game->start_menu.text_pos == 4))
-				*loop = 0;
-			if (e.key.keysym.sym == SDLK_RETURN && game->start_menu.text_pos != 0 && game->start_menu.text_pos != 4)
-			{
-				game->complexity = game->start_menu.text_pos;
-				game->menu_status.start = 0;
-				game->menu_status.main = 1;
-				Mix_HaltMusic();
-			}
-
-		}
-	}
+	key_hook(game, &loop);
 	game->start_menu.dest.y = game->screen->h / 100 * new_str;
 	new_str += 5;
 	while (i < 5)
@@ -96,5 +104,4 @@ void    start_menu_render(t_game *game, int *loop)
 		new_str += 5;
 		i++;
 	}
-	//print_text(game->screen, ft_itoa(game->start_menu.text_pos), "font.otf", 46, game->start_menu.color, game->start_menu.dest);
 }
