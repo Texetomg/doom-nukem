@@ -146,10 +146,7 @@ void    draw_floor(t_game *game, t_draw for_draw, double dz)
 
 //отрисовывает стену
 static void    draw_wall(t_game *game,
-                         SDL_DisplayMode display_mode,
-                         SDL_Surface *texture,
                          t_draw for_draw,
-                         SDL_Surface *screen,
                          double x1,
                          double x2,
                          double y1,
@@ -167,7 +164,7 @@ static void    draw_wall(t_game *game,
     i = (int)for_draw.wall.x1;
     if (i < 0)
         i = 0;
-    while (i < for_draw.wall.x2 && i < display_mode.w)
+    while (i < for_draw.wall.x2 && i < game->display_mode.w)
     {
         yt_wall = (int)(for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
         yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
@@ -176,13 +173,13 @@ static void    draw_wall(t_game *game,
         else
             k = yt_wall;
 		a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
-		x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * texture->w;
+		x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2) * game->texture->w;
         while (k < yb_wall && k < game->display_mode.h)
         {
-            y = (double)(k - yt_wall) / (yb_wall - yt_wall) * texture->h;
+            y = (double)(k - yt_wall) / (yb_wall - yt_wall) * game->texture->h;
             if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
-                    color = ((int*)texture->pixels)[y * texture->w + x];
-            ((int*)screen->pixels)[k * display_mode.w + i] = color;
+                    color = ((int*)game->texture->pixels)[y * game->texture->w + x];
+            ((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
             k++;
         }
         i++;
@@ -230,15 +227,7 @@ static void    pre_draw_sector(SDL_Surface *screen,
 
 
 //рекурсивная функция, которая отрисовывает сектор;
-void    draw_sector(t_game *game,
-                    t_gif *gif,
-                    SDL_Surface *texture,
-                    SDL_Surface *screen,
-                    t_player *player,
-                    SDL_DisplayMode display_mode,
-                    t_sector *sectors,
-                    vec2 *points_cam,
-                    t_draw for_draw)
+void    draw_sector(t_game *game, t_draw for_draw)
 {
     int i;
     t_draw    for_next_draw;
@@ -254,13 +243,13 @@ void    draw_sector(t_game *game,
     double x1a, x2a;
     double y1, y2;
     i = 0;
-    while (i < (sectors + for_draw.curr_sector)->count_wall)
+    while (i < (game->sectors + for_draw.curr_sector)->count_wall)
     {
-        first_point = *(points_cam + *((sectors + for_draw.curr_sector)->index_points + i));
-        if (i == (sectors + for_draw.curr_sector)->count_wall - 1)
-            second_point = *(points_cam + *((sectors + for_draw.curr_sector)->index_points));
+        first_point = *(game->points_cam + *((game->sectors + for_draw.curr_sector)->index_points + i));
+        if (i == (game->sectors + for_draw.curr_sector)->count_wall - 1)
+            second_point = *(game->points_cam + *((game->sectors + for_draw.curr_sector)->index_points));
         else
-            second_point = *(points_cam + *((sectors + for_draw.curr_sector)->index_points + i + 1));
+            second_point = *(game->points_cam + *((game->sectors + for_draw.curr_sector)->index_points + i + 1));
         if (first_point.x < 0 && second_point.x < 0)
         {
             i++;
@@ -274,39 +263,39 @@ void    draw_sector(t_game *game,
             x2a = (-second_point.y - x1) / (x2 - x1);
             y1 = first_point.x;
             y2 = second_point.x;
-            yceil = (sectors + for_draw.curr_sector)->ceil - player->pos.z;
-            yfloor = (sectors + for_draw.curr_sector)->floor - player->pos.z;
-            yscale1 =  display_mode.h / 2 / first_point.x;
-            yscale2 =  display_mode.h / 2 / second_point.x;
-            for_draw.wall.x1 = -first_point.y * (display_mode.w / 2) / first_point.x + display_mode.w / 2;
-            for_draw.wall.x2 = -second_point.y * (display_mode.w / 2) / second_point.x + display_mode.w / 2;
+            yceil = (game->sectors + for_draw.curr_sector)->ceil - game->player.pos.z;
+            yfloor = (game->sectors + for_draw.curr_sector)->floor - game->player.pos.z;
+            yscale1 =  game->display_mode.h / 2 / first_point.x;
+            yscale2 =  game->display_mode.h / 2 / second_point.x;
+            for_draw.wall.x1 = -first_point.y * (game->display_mode.w / 2) / first_point.x + game->display_mode.w / 2;
+            for_draw.wall.x2 = -second_point.y * (game->display_mode.w / 2) / second_point.x + game->display_mode.w / 2;
             for_draw.wall.y2t = -yscale2 * yceil + game->line_horiz;
             for_draw.wall.y1t = -yscale1 * yceil + game->line_horiz;
             for_draw.wall.y2b = -yscale2 * yfloor + game->line_horiz;
             for_draw.wall.y1b = -yscale1 * yfloor + game->line_horiz;
-            if (*((sectors + for_draw.curr_sector)->neighbors + i) >= 0)
+            if (*((game->sectors + for_draw.curr_sector)->neighbors + i) >= 0)
             {
-                if (*((sectors + for_draw.curr_sector)->neighbors + i) != for_draw.last_sector)
+                if (*((game->sectors + for_draw.curr_sector)->neighbors + i) != for_draw.last_sector)
                 {
                     for_next_draw.wall = for_draw.wall;
-                    y2ceil = (sectors + *((sectors + for_draw.curr_sector)->neighbors + i))->ceil - player->pos.z;
-                    y2floor = (sectors + *((sectors + for_draw.curr_sector)->neighbors + i))->floor - player->pos.z;
+                    y2ceil = (game->sectors + *((game->sectors + for_draw.curr_sector)->neighbors + i))->ceil - game->player.pos.z;
+                    y2floor = (game->sectors + *((game->sectors + for_draw.curr_sector)->neighbors + i))->floor - game->player.pos.z;
                     for_next_draw.window.y1t = -yscale1 * y2ceil + game->line_horiz;
                     for_next_draw.window.y1b = -yscale1 * y2floor + game->line_horiz;
                     for_next_draw.window.y2t = -yscale2 * y2ceil + game->line_horiz;
                     for_next_draw.window.y2b = -yscale2 * y2floor + game->line_horiz;
                     for_next_draw.window.x1 = for_next_draw.wall.x1;
                     for_next_draw.window.x2 = for_next_draw.wall.x2;
-                    for_next_draw.curr_sector = *((sectors + for_draw.curr_sector)->neighbors + i);
+                    for_next_draw.curr_sector = *((game->sectors + for_draw.curr_sector)->neighbors + i);
                     for_next_draw.last_sector = for_draw.curr_sector;
                     for_next_draw.fov_left = first_point;
                     for_next_draw.fov_right = second_point;
-                    draw_sector(game, gif, texture, screen, player, display_mode, sectors, points_cam, for_next_draw);
-                    pre_draw_sector(screen, display_mode, for_next_draw);
+                    draw_sector(game, for_next_draw);
+                    pre_draw_sector(game->screen, game->display_mode, for_next_draw);
                 }
             }
             else
-                draw_wall(game, display_mode, texture, for_draw, screen, x1a, x2a, y1, y2);
+                draw_wall(game, for_draw, x1a, x2a, y1, y2);
             draw_floor(game, for_draw, -yfloor);
             draw_ceil(game, for_draw, yceil);
         }

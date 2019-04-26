@@ -28,7 +28,7 @@ static int		bright(int color, double bri)
 	return (color);
 }
 
-static void	draw_wall_x(SDL_Surface *screen, SDL_DisplayMode display_mode, vec2 first_point, vec2 second_point, int color)
+static void	draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
 	//ft_putendl("draw_wall_x");
 	int	x;
@@ -40,16 +40,16 @@ static void	draw_wall_x(SDL_Surface *screen, SDL_DisplayMode display_mode, vec2 
 	y = first_point.y + grad * (x - first_point.x);
 	while (x < second_point.x)
 	{
-		if (x >= 0 && x < display_mode.w / 10 && y >= 0 && y < DISPMODH10)
-			((int*)screen->pixels)[(int)y * display_mode.w + x] = bright(color, y - (int)y);
-		if (x >= 0 && x < display_mode.w / 10 && y > -1 && y < DISPMODH10 - 1)
-			((int*)screen->pixels)[((int)y + 1) * display_mode.w + x] = bright(color, 1 - (y - (int)y));
+		if (x >= 0 && x < game->pre_calc.dispmodw10 && y >= 0 && y < game->pre_calc.dispmodh10)
+			((int*)game->screen->pixels)[(int)y * game->display_mode.w + x] = bright(color, y - (int)y);
+		if (x >= 0 && x < game->pre_calc.dispmodw10 && y > -1 && y < game->pre_calc.dispmodh10 - 1)
+			((int*)game->screen->pixels)[((int)y + 1) * game->display_mode.w + x] = bright(color, 1 - (y - (int)y));
 		x++;
 		y += grad;
 	}
 }
 
-static void	draw_wall_y(SDL_Surface *screen, SDL_DisplayMode display_mode, vec2 first_point, vec2 second_point, int color)
+static void	draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
 	//ft_putendl("draw_wall_y");
 	int	y;
@@ -61,17 +61,17 @@ static void	draw_wall_y(SDL_Surface *screen, SDL_DisplayMode display_mode, vec2 
 	x = first_point.x + grad * (y - first_point.y);
 	while (y < second_point.y)
 	{
-		if (x >= 0 && x < display_mode.w / 10 && y >= 0 && y < DISPMODH10)
-			((int*)screen->pixels)[y * display_mode.w + (int)x] = bright(color, x - (int)x);
-		if (x > -1 && x < display_mode.w / 10 - 1 && y >= 0 && y < DISPMODH10)
-			((int*)screen->pixels)[ y * display_mode.w + (int)x + 1] = bright(color, 1 - (x - (int)x));
+		if (x >= 0 && x < game->pre_calc.dispmodw10 && y >= 0 && y < game->pre_calc.dispmodh10)
+			((int*)game->screen->pixels)[y * game->display_mode.w + (int)x] = bright(color, x - (int)x);
+		if (x > -1 && x < game->pre_calc.dispmodw10 - 1 && y >= 0 && y < game->pre_calc.dispmodh10)
+			((int*)game->screen->pixels)[ y * game->display_mode.w + (int)x + 1] = bright(color, 1 - (x - (int)x));
 		y++;
 		x += grad;
 	}
 }
 
 
-static void	draw_2dsector(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int curr_sector)
+static void	draw_2dsector(t_game *game, int curr_sector)
 {
 	//ft_putendl("draw_2dsector");
 	double for_swap;
@@ -79,17 +79,17 @@ static void	draw_2dsector(SDL_Surface *screen, SDL_DisplayMode display_mode, t_s
 	vec2	first_point;
 	vec2	second_point;
 	i = 0;
-	while (i < (sectors + curr_sector)->count_wall)
+	while (i < (game->sectors + curr_sector)->count_wall)
 	{
-		first_point = *(points_cam + *((sectors + curr_sector)->index_points + i));
-		if (i == (sectors + curr_sector)->count_wall - 1)
-			second_point = *(points_cam + *((sectors + curr_sector)->index_points));
+		first_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points + i));
+		if (i == (game->sectors + curr_sector)->count_wall - 1)
+			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points));
 		else
-			second_point = *(points_cam + *((sectors + curr_sector)->index_points + i + 1));
-		first_point.x = first_point.x * 20  + DISPMODW20;
-		first_point.y = -first_point.y * 20 + DISPMODH20;
-		second_point.x = second_point.x * 20 + DISPMODW20;
-		second_point.y = -second_point.y * 20 +  DISPMODH20;
+			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points + i + 1));
+		first_point.x = first_point.x * 20  + game->pre_calc.dispmodw20;
+		first_point.y = -first_point.y * 20 + game->pre_calc.dispmodh20;
+		second_point.x = second_point.x * 20 + game->pre_calc.dispmodw20;
+		second_point.y = -second_point.y * 20 +  game->pre_calc.dispmodh20;
 		if (fabs(first_point.x - second_point.x) > fabs(first_point.y - second_point.y))
 		{
 			if (first_point.x > second_point.x)
@@ -101,7 +101,7 @@ static void	draw_2dsector(SDL_Surface *screen, SDL_DisplayMode display_mode, t_s
 				first_point.y = second_point.y;
 				second_point.y = for_swap;
 			}
-			draw_wall_x(screen, display_mode, first_point, second_point, 0);
+			draw_wall_x(game, first_point, second_point, 0);
 		}
 		else
 		{
@@ -114,32 +114,30 @@ static void	draw_2dsector(SDL_Surface *screen, SDL_DisplayMode display_mode, t_s
 				first_point.y = second_point.y;
 				second_point.y = for_swap;
 			}
-			draw_wall_y(screen, display_mode, first_point, second_point, 0);
+			draw_wall_y(game, first_point, second_point, 0);
 		}
 		i++;
 	}
 }
 // переделать минимапу
-void	draw_minimap(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int count_sectors)
+void	draw_minimap(t_game *game)
 {
-	//ft_putendl("draw_minimap");
 	int i;
 	vec2 left_fov;
 	vec2 right_fov;
 	vec2 pos0;
 	i = 0;
-	while (i < count_sectors)
+	while (i < game->count_sectors)
 	{
-		//draw_2dsector(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int curr_sector)
-		draw_2dsector(screen, display_mode, sectors, points_cam, i);
+		draw_2dsector(game, i);
 		i++;
 	}
-	pos0.x = DISPMODW20;
-	pos0.y = DISPMODH20;
-	left_fov.x = DISPMODW20 + 5 * 20;
-	right_fov.x = DISPMODW20 + 5 * 20;
-	left_fov.y = DISPMODH20 - 5 * 20;
-	right_fov.y = DISPMODH20 + 5 * 20;
-	draw_wall_x(screen, display_mode, pos0, left_fov, 0xFFFFFF);
-	draw_wall_x(screen, display_mode, pos0, right_fov, 0xFFFFFF);
+	pos0.x = game->pre_calc.dispmodw20;
+	pos0.y = game->pre_calc.dispmodh20;
+	left_fov.x = game->pre_calc.dispmodw20 + 5 * 20;
+	right_fov.x = game->pre_calc.dispmodw20 + 5 * 20;
+	left_fov.y = game->pre_calc.dispmodh20 - 5 * 20;
+	right_fov.y = game->pre_calc.dispmodh20 + 5 * 20;
+	draw_wall_x(game, pos0, left_fov, 0xFFFFFF);
+	draw_wall_x(game, pos0, right_fov, 0xFFFFFF);
 }
