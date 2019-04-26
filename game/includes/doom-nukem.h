@@ -26,6 +26,15 @@
 # define COLOR_WALL 0xDA70D6
 # define COLOR_BETW 0xAA0000
 # define STEP 0.05
+# define SCREENW3 screen->w / 3
+# define SCREENW2 screen->w / 2
+# define SCREENH3 screen->h / 3
+# define SCREENW10045 screen->w / 100 * 45
+# define SCREENH10065 screen->h / 100 * 65
+# define SPRITESW2 sprites.w / 2
+# define SPRITESH2 sprites.h / 2
+# define DISPMODH2 display_mode.h / 2
+# define DISPMODW2 display_mode.w / 2
 
 typedef struct		s_gif
 {

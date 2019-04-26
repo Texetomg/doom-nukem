@@ -53,15 +53,15 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif)
 	int		new_y = 0;
 	int		color;
 
-	while (y < screen->h / 3)
+	while (y < SCREENH3)
 	{
-		new_y = (double)y / (screen->h / 3) * (*(gif[1].array + ((int)(gif[1].curr_frame))))->h;
-		while (x < screen->w / 3)
+		new_y = (double)y / (SCREENH3) * (*(gif[1].array + ((int)(gif[1].curr_frame))))->h;
+		while (x < SCREENW3)
 		{
-			new_x = (double)x / (screen->w / 3) * (*(gif[1].array + gif[1].curr_frame))->w;
+			new_x = (double)x / (SCREENW3) * (*(gif[1].array + gif[1].curr_frame))->w;
 			color = ((int*)((*(gif[1].array + ((int)(gif[1].curr_frame))))->pixels))[new_y * (*(gif[1].array + ((int)(gif[1].curr_frame))))->w + new_x];
 			if (color != 0x000000)
-				((int*)(screen->pixels))[(int)(y + screen->h / 100 * 65) * screen->w + x + (screen->w / 100 * 45)] = color;
+				((int*)(screen->pixels))[(int)(y + SCREENH10065) * screen->w + x + (SCREENW10045)] = color;
 			x++;
 		}
 		x = 0;
@@ -79,17 +79,17 @@ static void		draw_sprites(SDL_Surface *screen, t_sector *sectors, t_sprites spri
 	(void)sectors;
 	sprites.new_pos.x = (sprites.pos.y - player.pos.y) * sin(player.angle) + (sprites.pos.x - player.pos.x) * cos(player.angle);
 	sprites.new_pos.y = (sprites.pos.y - player.pos.y) * cos(player.angle) - (sprites.pos.x - player.pos.x) * sin(player.angle);
-	sprites.shift = (-sprites.new_pos.y / sprites.new_pos.x) * (screen->w / 2) + screen->w / 2;
+	sprites.shift = (-sprites.new_pos.y / sprites.new_pos.x) * (SCREENW2) + SCREENW2;
 	sprites.h = 200 / sprites.new_pos.x;
 	sprites.w = 200 / sprites.new_pos.x;
-	(y = display_mode.h / 2 - sprites.h / 2) < 0 ? y = 0 : y;
-	while (y <= display_mode.h / 2 + sprites.h / 2 && y < display_mode.h)
+	(y = DISPMODH2 - SPRITESH2) < 0 ? y = 0 : y;
+	while (y <= DISPMODH2 + SPRITESH2 && y < display_mode.h)
 	{
-		(x = (sprites.shift ) - sprites.w / 2) < 0 ? x = 0 : x;
-		new_y = ((double)y - display_mode.h / 2 + sprites.h / 2) / ((display_mode.h / 2 + sprites.h / 2) - (display_mode.h / 2 - sprites.h / 2)) * sprites.texture->h;
-		while (x < (sprites.shift) + sprites.w / 2 && x < display_mode.w)
+		(x = (sprites.shift ) - SPRITESW2) < 0 ? x = 0 : x;
+		new_y = ((double)y - DISPMODH2 + SPRITESH2) / ((DISPMODH2 + SPRITESH2) - (DISPMODH2 - SPRITESH2)) * sprites.texture->h;
+		while (x < (sprites.shift) + SPRITESW2 && x < display_mode.w)
 		{
-			new_x = ((double)x - ((sprites.shift ) - sprites.w / 2)) / (((sprites.shift) + sprites.w / 2) - ((sprites.shift) - sprites.w / 2)) * sprites.texture->w;
+			new_x = ((double)x - ((sprites.shift ) - SPRITESW2)) / (((sprites.shift) + SPRITESW2) - ((sprites.shift) - SPRITESW2)) * sprites.texture->w;
 			if (y >= 0 && y < screen->h && x >= 0 && x < screen->w )
 			{
 				color = ((int*)(sprites.texture->pixels))[sprites.texture->w * new_y + new_x];
@@ -152,7 +152,7 @@ int			main(void)
 			if( Mix_PlayingMusic() == 0 )
 				Mix_PlayMusic(game->sounds.music, -1);
 			player_move(game, game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, &game->menu_status);
-			SDL_WarpMouseInWindow(game->window, game->display_mode.w / 2, game->display_mode.h / 2);
+			SDL_WarpMouseInWindow(game->window, game->DISPMODW2, game->DISPMODH2);
 			get_pos_z(&game->player, game->sectors);
 			draw_3d_wall(game, game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
 			draw_sprites(game->screen, game->sectors, game->sprites, game->player, game->display_mode);

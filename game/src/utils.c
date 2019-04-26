@@ -57,9 +57,7 @@ void    get_pos_z(t_player *player, t_sector *sectors )
     if (player->z_accel > 0)
     {
         if (player->pos.z + player->z_accel  >= (sectors + player->curr_sector)->ceil)
-        {
             player->z_accel = 0;
-        }
         else
         {
             player->pos.z += player->z_accel;
@@ -68,9 +66,7 @@ void    get_pos_z(t_player *player, t_sector *sectors )
         
     }
     else if (player->z_accel == 0 && player->foots > (sectors + player->curr_sector)->floor)
-    {
         player->z_accel -= ACCEL;
-    }
     else if (player->z_accel < 0)
     {
         if (player->foots + player->z_accel < (sectors + player->curr_sector)->floor)

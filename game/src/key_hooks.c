@@ -100,8 +100,8 @@ SDL_Event	key_hooks(t_game *game, t_player *player, SDL_DisplayMode display_mode
 	while (SDL_PollEvent(&e))
 	{
 		
-		player->angle -= 3.14 / 600 * (mouse->x - display_mode.w / 2);
-		new_horizon = game->line_horiz - 2 * (mouse->y - display_mode.h / 2);
+		player->angle -= 3.14 / 600 * (mouse->x - DISPMODW2);
+		new_horizon = game->line_horiz - 2 * (mouse->y - DISPMODH2);
 		if (new_horizon >= 0 && new_horizon < display_mode.h)
 			game->line_horiz = new_horizon;
 		if (e.type == SDL_KEYDOWN)
