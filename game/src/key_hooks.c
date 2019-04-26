@@ -136,60 +136,55 @@ void	        player_move(t_game *game,
 	direct.y = STEP * sin(player->angle);
 	curve.x = STEP * (cos(player->angle) * 0.7 - sin(player->angle) * 0.7);
 	curve.y = STEP * (sin(player->angle) * 0.7 + cos(player->angle) * 0.7);
-	if (menu_status->start == 0) //???????
+	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
 	{
-		if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
-		{
-			Mix_HaltChannel(-1);
-			Mix_PlayChannel( -1, sounds.bang, 0);
-			if (gif[1].curr_frame == 0)
-				keystate->mouse_l = 1;
-		}
-		if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
-			*loop = 0;
-		if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_TAB)
-		{
-			menu_status->tab = 1;
-			menu_status->main = 0;
-		}
-		if (keystate->forward && (!keystate->right && !keystate->left))
-			move(game, points, sectors, player, direct.x, direct.y);
-		if (keystate->back && (!keystate->right && !keystate->left))
-			move(game, points, sectors, player, -direct.x, -direct.y);
-		if (keystate->right && (!keystate->forward && !keystate->back))
-			move(game, points, sectors, player, direct.y, -direct.x);
-		if (keystate->left && (!keystate->forward && !keystate->back))
-			move(game, points, sectors, player, -direct.y, direct.x);
-		if (keystate->forward && keystate->right)
-			move(game, points, sectors, player, curve.y, -curve.x);
-		if (keystate->forward && keystate->left)
-			move(game, points, sectors, player, curve.x, curve.y);
-		if (keystate->back && keystate->right)
-			move(game, points, sectors, player, -curve.x, -curve.y);
-		if (keystate->back && keystate->left)
-			move(game, points, sectors, player, -curve.y, curve.x);
-		if (keystate->jump && player->foots == (sectors + player->curr_sector)->floor)
-		{
-			player->z_accel = 0.1;
-			move(game, points, sectors, player, 0, 0);
-		}
-		if (keystate->ctrl)
-		{
-			if (keystate->ctrl_flag == 0)
-				player->pos.z -= 0.2;
-			keystate->ctrl_flag = 1;
-			player->b_foots = 0.3;
-			player->b_knees = 0.1;
-		}
-		if (!keystate->ctrl)
-		{
-			if (keystate->ctrl_flag == 1 && player->pos.z + 0.2 <  ((sectors + player->curr_sector)->ceil))
-				player->pos.z += 0.2;
-			keystate->ctrl_flag = 0;
-			player->b_foots = 0.5;
-			player->b_knees = 0.3;
-		}
-		//if (SDL_GetRelativeMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
-		
+		Mix_HaltChannel(-1);
+		Mix_PlayChannel( -1, sounds.bang, 0);
+		if (gif[1].curr_frame == 0)
+			keystate->mouse_l = 1;
+	}
+	if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
+		*loop = 0;
+	if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_TAB)
+	{
+		menu_status->tab = 1;
+		menu_status->main = 0;
+	}
+	if (keystate->forward && (!keystate->right && !keystate->left))
+		move(game, points, sectors, player, direct.x, direct.y);
+	if (keystate->back && (!keystate->right && !keystate->left))
+		move(game, points, sectors, player, -direct.x, -direct.y);
+	if (keystate->right && (!keystate->forward && !keystate->back))
+		move(game, points, sectors, player, direct.y, -direct.x);
+	if (keystate->left && (!keystate->forward && !keystate->back))
+		move(game, points, sectors, player, -direct.y, direct.x);
+	if (keystate->forward && keystate->right)
+		move(game, points, sectors, player, curve.y, -curve.x);
+	if (keystate->forward && keystate->left)
+		move(game, points, sectors, player, curve.x, curve.y);
+	if (keystate->back && keystate->right)
+		move(game, points, sectors, player, -curve.x, -curve.y);
+	if (keystate->back && keystate->left)
+		move(game, points, sectors, player, -curve.y, curve.x);
+	if (keystate->jump && player->foots == (sectors + player->curr_sector)->floor)
+	{
+		player->z_accel = 0.1;
+		move(game, points, sectors, player, 0, 0);
+	}
+	if (keystate->ctrl)
+	{
+		if (keystate->ctrl_flag == 0)
+			player->pos.z -= 0.2;
+		keystate->ctrl_flag = 1;
+		player->b_foots = 0.3;
+		player->b_knees = 0.1;
+	}
+	if (!keystate->ctrl)
+	{
+		if (keystate->ctrl_flag == 1 && player->pos.z + 0.2 <  ((sectors + player->curr_sector)->ceil))
+			player->pos.z += 0.2;
+		keystate->ctrl_flag = 0;
+		player->b_foots = 0.5;
+		player->b_knees = 0.3;
 	}
 }

@@ -43,7 +43,6 @@ static void read_gif(t_gif *gif, char *str, int index, int frame, char* extensio
 //инициализация sdl
 static void	init_sdl(t_game *game)
 {
-	
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:	
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
@@ -167,7 +166,6 @@ static void set_initial_values(t_game *game)
 	set_color(&game->hud.color, 255, 255, 0);
 	set_hood(game);
 	game->line_horiz = 400;
-	
 }
 
 t_game	*create_struct(void)
@@ -182,6 +180,5 @@ t_game	*create_struct(void)
 	load_sounds(game);
 	load_images(game);
 	set_initial_values(game);
-	
 	return (game);
 }

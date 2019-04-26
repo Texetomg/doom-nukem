@@ -211,5 +211,6 @@ vec3    			get_floor(t_game *game, int x, int y, double dz);
 void     			cross(vec2 *first_point, vec2 second_point, vec2 fov);
 int             	intersection(vec2 *first_point, vec2 *second_point, vec2 left_fov, vec2 right_fov);
 void           		give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points);
-int             inside_sector(t_game *game, double x, double y, t_sector sector);
+int             	inside_sector(t_game *game, double x, double y, t_sector sector);
+void				draw_image(t_game *game, int i, SDL_Surface *image[]);
 #endif
