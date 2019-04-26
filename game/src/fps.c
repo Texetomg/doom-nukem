@@ -30,6 +30,6 @@ void    put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time)
 {
     char *fps;
     fps = ft_itoa(count_fps(time));
-	print_text(screen, fps, "font.otf", 46, hud.color, hud.fps_dest);
+	print_text(screen, fps, "../font/font.otf", 46, hud.color, hud.fps_dest);
 	free(fps);
 }

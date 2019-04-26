@@ -56,6 +56,9 @@ re:
 	make fclean
 	make
 
+frame:
+	cp -r ../framework ~/Library/Frameworks
+
 git_%: clean
 	git add --all
 	git status

@@ -71,7 +71,7 @@ void    tab_menu_render(t_game *game, int *loop)
 		else
 			set_color(&game->tab_menu.text_color, 0, 255, 0);
 			
-		print_text(game->screen, game->tab_menu.strings[i], "font.otf", 46, game->tab_menu.text_color, game->tab_menu.dest);
+		print_text(game->screen, game->tab_menu.strings[i], "../font/font.otf", 46, game->tab_menu.text_color, game->tab_menu.dest);
 		game->tab_menu.dest.y = game->screen->h / 100 * new_str;
 		new_str += 5;
 		i++;

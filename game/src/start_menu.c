@@ -99,7 +99,7 @@ void    start_menu_render(t_game *game, int *loop)
 		else
 			set_color(&game->start_menu.text_color, 0, 255, 0);
 			
-		print_text(game->screen, game->start_menu.strings[i], "font.otf", 46, game->start_menu.text_color, game->start_menu.dest);
+		print_text(game->screen, game->start_menu.strings[i], "../font/font.otf", 46, game->start_menu.text_color, game->start_menu.dest);
 		game->start_menu.dest.y = game->screen->h / 100 * new_str;
 		new_str += 5;
 		i++;
