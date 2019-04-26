@@ -26,18 +26,6 @@
 # define COLOR_WALL 0xDA70D6
 # define COLOR_BETW 0xAA0000
 # define STEP 0.05
-# define SCREENW3 screen->w / 3
-# define SCREENW2 screen->w / 2
-# define SCREENH3 screen->h / 3
-# define SCREENW10045 screen->w / 100 * 45
-# define SCREENH10065 screen->h / 100 * 65
-# define SPRITESW2 sprites.w / 2
-# define SPRITESH2 sprites.h / 2
-# define DISPMODH2 display_mode.h / 2
-# define DISPMODW2 display_mode.w / 2
-# define DISPMODH10 display_mode.h / 10
-# define DISPMODW20 display_mode.w / 20
-# define DISPMODH20 display_mode.h / 20
 
 typedef struct		s_gif
 {
@@ -225,7 +213,7 @@ double   			cross_product(vec2 first_point, vec2 second_point);
 void				draw_minimap(t_game *game);
 void    			put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
-void				player_move(t_game *game, SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop, t_menu_status *menu_status);
+void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
 void    			get_pos_z(t_player *player, t_sector *sectors );
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);

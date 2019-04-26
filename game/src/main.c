@@ -141,7 +141,7 @@ int			main(void)
 		{	
 			if( Mix_PlayingMusic() == 0 )
 				Mix_PlayMusic(game->sounds.music, -1);
-			player_move(game, game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, &game->menu_status);
+			player_move(game, &loop);
 			SDL_WarpMouseInWindow(game->window, game->pre_calc.dispmodw2, game->pre_calc.dispmodh2);
 			get_pos_z(&game->player, game->sectors);
 			draw_3d_wall(game);

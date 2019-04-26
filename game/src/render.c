@@ -265,10 +265,10 @@ void    draw_sector(t_game *game, t_draw for_draw)
             y2 = second_point.x;
             yceil = (game->sectors + for_draw.curr_sector)->ceil - game->player.pos.z;
             yfloor = (game->sectors + for_draw.curr_sector)->floor - game->player.pos.z;
-            yscale1 =  game->display_mode.h / 2 / first_point.x;
-            yscale2 =  game->display_mode.h / 2 / second_point.x;
-            for_draw.wall.x1 = -first_point.y * (game->display_mode.w / 2) / first_point.x + game->display_mode.w / 2;
-            for_draw.wall.x2 = -second_point.y * (game->display_mode.w / 2) / second_point.x + game->display_mode.w / 2;
+            yscale1 =  game->pre_calc.dispmodh2  / first_point.x;
+            yscale2 =  game->pre_calc.dispmodh2  / second_point.x;
+            for_draw.wall.x1 = -first_point.y * (game->pre_calc.dispmodw2 ) / first_point.x + game->pre_calc.dispmodw2 ;
+            for_draw.wall.x2 = -second_point.y * (game->pre_calc.dispmodw2 ) / second_point.x + game->pre_calc.dispmodw2 ;
             for_draw.wall.y2t = -yscale2 * yceil + game->line_horiz;
             for_draw.wall.y1t = -yscale1 * yceil + game->line_horiz;
             for_draw.wall.y2b = -yscale2 * yfloor + game->line_horiz;
