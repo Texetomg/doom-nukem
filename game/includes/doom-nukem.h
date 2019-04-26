@@ -35,6 +35,9 @@
 # define SPRITESH2 sprites.h / 2
 # define DISPMODH2 display_mode.h / 2
 # define DISPMODW2 display_mode.w / 2
+# define DISPMODH10 display_mode.h / 10
+# define DISPMODW20 display_mode.w / 20
+# define DISPMODH20 display_mode.h / 20
 
 typedef struct		s_gif
 {

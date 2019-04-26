@@ -40,9 +40,9 @@ static void	draw_wall_x(SDL_Surface *screen, SDL_DisplayMode display_mode, vec2 
 	y = first_point.y + grad * (x - first_point.x);
 	while (x < second_point.x)
 	{
-		if (x >= 0 && x < display_mode.w / 10 && y >= 0 && y < display_mode.h / 10)
+		if (x >= 0 && x < display_mode.w / 10 && y >= 0 && y < DISPMODH10)
 			((int*)screen->pixels)[(int)y * display_mode.w + x] = bright(color, y - (int)y);
-		if (x >= 0 && x < display_mode.w / 10 && y > -1 && y < display_mode.h / 10 - 1)
+		if (x >= 0 && x < display_mode.w / 10 && y > -1 && y < DISPMODH10 - 1)
 			((int*)screen->pixels)[((int)y + 1) * display_mode.w + x] = bright(color, 1 - (y - (int)y));
 		x++;
 		y += grad;
@@ -61,9 +61,9 @@ static void	draw_wall_y(SDL_Surface *screen, SDL_DisplayMode display_mode, vec2 
 	x = first_point.x + grad * (y - first_point.y);
 	while (y < second_point.y)
 	{
-		if (x >= 0 && x < display_mode.w / 10 && y >= 0 && y < display_mode.h / 10)
+		if (x >= 0 && x < display_mode.w / 10 && y >= 0 && y < DISPMODH10)
 			((int*)screen->pixels)[y * display_mode.w + (int)x] = bright(color, x - (int)x);
-		if (x > -1 && x < display_mode.w / 10 - 1 && y >= 0 && y < display_mode.h / 10)
+		if (x > -1 && x < display_mode.w / 10 - 1 && y >= 0 && y < DISPMODH10)
 			((int*)screen->pixels)[ y * display_mode.w + (int)x + 1] = bright(color, 1 - (x - (int)x));
 		y++;
 		x += grad;
@@ -86,10 +86,10 @@ static void	draw_2dsector(SDL_Surface *screen, SDL_DisplayMode display_mode, t_s
 			second_point = *(points_cam + *((sectors + curr_sector)->index_points));
 		else
 			second_point = *(points_cam + *((sectors + curr_sector)->index_points + i + 1));
-		first_point.x = first_point.x * 20  + display_mode.w / 20;
-		first_point.y = -first_point.y * 20 + display_mode.h / 20;
-		second_point.x = second_point.x * 20 + display_mode.w / 20;
-		second_point.y = -second_point.y * 20 +  display_mode.h / 20;
+		first_point.x = first_point.x * 20  + DISPMODW20;
+		first_point.y = -first_point.y * 20 + DISPMODH20;
+		second_point.x = second_point.x * 20 + DISPMODW20;
+		second_point.y = -second_point.y * 20 +  DISPMODH20;
 		if (fabs(first_point.x - second_point.x) > fabs(first_point.y - second_point.y))
 		{
 			if (first_point.x > second_point.x)
@@ -134,12 +134,12 @@ void	draw_minimap(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *s
 		draw_2dsector(screen, display_mode, sectors, points_cam, i);
 		i++;
 	}
-	pos0.x = display_mode.w / 20;
-	pos0.y = display_mode.h / 20;
-	left_fov.x = display_mode.w / 20 + 5 * 20;
-	right_fov.x = display_mode.w / 20 + 5 * 20;
-	left_fov.y = display_mode.h / 20 - 5 * 20;
-	right_fov.y = display_mode.h / 20 + 5 * 20;
+	pos0.x = DISPMODW20;
+	pos0.y = DISPMODH20;
+	left_fov.x = DISPMODW20 + 5 * 20;
+	right_fov.x = DISPMODW20 + 5 * 20;
+	left_fov.y = DISPMODH20 - 5 * 20;
+	right_fov.y = DISPMODH20 + 5 * 20;
 	draw_wall_x(screen, display_mode, pos0, left_fov, 0xFFFFFF);
 	draw_wall_x(screen, display_mode, pos0, right_fov, 0xFFFFFF);
 }
