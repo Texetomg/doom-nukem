@@ -138,6 +138,13 @@ void	        player_move(t_game *game,
 	curve.y = STEP * (sin(player->angle) * 0.7 + cos(player->angle) * 0.7);
 	if (menu_status->start == 0) //???????
 	{
+		if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
+		{
+			Mix_HaltChannel(-1);
+			Mix_PlayChannel( -1, sounds.bang, 0);
+			if (gif[1].curr_frame == 0)
+				keystate->mouse_l = 1;
+		}
 		if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 			*loop = 0;
 		if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_TAB)
@@ -183,12 +190,6 @@ void	        player_move(t_game *game,
 			player->b_knees = 0.3;
 		}
 		//if (SDL_GetRelativeMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
-		if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
-		{
-			Mix_HaltChannel(-1);
-			Mix_PlayChannel( -1, sounds.bang, 0);
-			if (gif[1].curr_frame == 0)
-				keystate->mouse_l = 1;
-		}
+		
 	}
 }
