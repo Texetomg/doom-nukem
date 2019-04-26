@@ -20,7 +20,7 @@
 # include <SDL_image.h>
 # include <sys/time.h>
 # define HIGH 0.5
-# define ACCEL 0.0005
+# define ACCEL 0.005
 # define COLOR_CEIL 0x87CEEB
 # define COLOR_FLOOR 0x008080
 # define COLOR_WALL 0xDA70D6

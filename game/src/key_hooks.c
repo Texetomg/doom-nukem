@@ -166,9 +166,9 @@ void	        player_move(t_game *game,
 		move(game, points, sectors, player, -curve.x, -curve.y);
 	if (keystate->back && keystate->left)
 		move(game, points, sectors, player, -curve.y, curve.x);
-	if (keystate->jump && player->foots == (sectors + player->curr_sector)->floor)
+	if (keystate->jump && (fabs(player->foots - (sectors + player->curr_sector)->floor)) < 0.000001)
 	{
-		player->z_accel = 0.1;
+		player->z_accel = 0.06;
 		move(game, points, sectors, player, 0, 0);
 	}
 	if (keystate->ctrl)

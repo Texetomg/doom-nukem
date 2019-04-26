@@ -85,7 +85,7 @@ void    get_pos_z(t_player *player, t_sector *sectors )
         }
     }
 
-    player->foots = player->pos.z - player->b_foots;
+    player->foots = player->pos.z - 0.5;
     player->knees = player->pos.z - player->b_knees;
 }
 
