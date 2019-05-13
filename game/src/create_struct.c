@@ -166,6 +166,19 @@ static void set_initial_values(t_game *game)
 	set_color(&game->hud.color, 255, 255, 0);
 	set_hood(game);
 	game->line_horiz = 400;
+	game->pre_calc.screenw3 = game->screen->w / 3;
+	game->pre_calc.screenw2 = game->screen->w / 2;
+	game->pre_calc.screenh3 = game->screen->h / 3;
+	game->pre_calc.screenw10045 = game->screen->w / 100 * 45;
+	game->pre_calc.screenh10065 = game->screen->h / 100 * 65;
+	game->pre_calc.spritesw2 = game->sprites.w / 2;
+	game->pre_calc.spritesh2 = game->sprites.h / 2;
+	game->pre_calc.dispmodh2 = game->display_mode.h / 2;
+	game->pre_calc.dispmodw2 = game->display_mode.w / 2;
+	game->pre_calc.dispmodw10 = game->display_mode.w / 10;
+	game->pre_calc.dispmodh10 = game->display_mode.h / 10;
+	game->pre_calc.dispmodw20 = game->display_mode.w / 20;
+	game->pre_calc.dispmodh20 = game->display_mode.h / 20;
 }
 
 t_game	*create_struct(void)

@@ -13,16 +13,7 @@
 #include "doom-nukem.h"
 
 //запускает отрисовку всех стен
-static void	draw_3d_wall(t_game *game, SDL_Surface *screen,
-							SDL_Surface *texture,
-							vec2 *points,
-							int count_points,
-							vec2 *points_cam,
-							SDL_DisplayMode display_mode,
-							t_player *player,
-							t_sector *sectors,
-							int count_sectors,
-							t_gif *gif)
+static void	draw_3d_wall(t_game *game)
 {
 	t_draw	for_draw;
 	
@@ -32,20 +23,20 @@ static void	draw_3d_wall(t_game *game, SDL_Surface *screen,
 	for_draw.fov_right.x = 5;
 	for_draw.fov_right.y = -5;
 	for_draw.window.x1 = 0;
-	for_draw.window.x2 = display_mode.w;
-	for_draw.window.y1b = display_mode.h;
+	for_draw.window.x2 = game->display_mode.w;
+	for_draw.window.y1b = game->display_mode.h;
 	for_draw.window.y1t = 0;
-	for_draw.window.y2b = display_mode.h;
+	for_draw.window.y2b = game->display_mode.h;
 	for_draw.window.y2t = 0;
 	for_draw.last_sector = -2;
-	for_draw.curr_sector = player->curr_sector;
+	for_draw.curr_sector = game->player.curr_sector;
 
-	give_points_cam(points_cam, points, player, count_points);
-	draw_sector(game, gif, texture, screen, player, display_mode, sectors, points_cam, for_draw);
-	draw_minimap(screen, display_mode, sectors, points_cam, count_sectors);
+	give_points_cam(game->points_cam, game->points, &game->player, game->count_points);
+	draw_sector(game, for_draw);
+	draw_minimap(game);
 }
 //отрисовка рук/оружия 
-static void		draw_hands(SDL_Surface *screen, t_gif *gif)
+static void		draw_hands(SDL_Surface *screen, t_gif *gif, t_pre_calc pre_calc)
 {
 	int		x = 0;
 	int		y = 0;
@@ -53,15 +44,15 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif)
 	int		new_y = 0;
 	int		color;
 
-	while (y < SCREENH3)
+	while (y < pre_calc.screenh3 )
 	{
-		new_y = (double)y / (SCREENH3) * (*(gif[1].array + ((int)(gif[1].curr_frame))))->h;
-		while (x < SCREENW3)
+		new_y = (double)y / (pre_calc.screenh3 ) * (*(gif[1].array + ((int)(gif[1].curr_frame))))->h;
+		while (x < pre_calc.screenw3 )
 		{
-			new_x = (double)x / (SCREENW3) * (*(gif[1].array + gif[1].curr_frame))->w;
+			new_x = (double)x / (pre_calc.screenw3 ) * (*(gif[1].array + gif[1].curr_frame))->w;
 			color = ((int*)((*(gif[1].array + ((int)(gif[1].curr_frame))))->pixels))[new_y * (*(gif[1].array + ((int)(gif[1].curr_frame))))->w + new_x];
 			if (color != 0x000000)
-				((int*)(screen->pixels))[(int)(y + SCREENH10065) * screen->w + x + (SCREENW10045)] = color;
+				((int*)(screen->pixels))[(int)(y + pre_calc.screenh10065) * screen->w + x + (pre_calc.screenw10045)] = color;
 			x++;
 		}
 		x = 0;
@@ -69,31 +60,30 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif)
 	}
 }
 
-static void		draw_sprites(SDL_Surface *screen, t_sector *sectors, t_sprites sprites, t_player player, SDL_DisplayMode display_mode)
+static void		draw_sprites(t_game *game)
 {
 	int y;
 	int x;
 	int		new_x = 0;
 	int		new_y = 0;
 	int color;
-	(void)sectors;
-	sprites.new_pos.x = (sprites.pos.y - player.pos.y) * sin(player.angle) + (sprites.pos.x - player.pos.x) * cos(player.angle);
-	sprites.new_pos.y = (sprites.pos.y - player.pos.y) * cos(player.angle) - (sprites.pos.x - player.pos.x) * sin(player.angle);
-	sprites.shift = (-sprites.new_pos.y / sprites.new_pos.x) * (SCREENW2) + SCREENW2;
-	sprites.h = 200 / sprites.new_pos.x;
-	sprites.w = 200 / sprites.new_pos.x;
-	(y = DISPMODH2 - SPRITESH2) < 0 ? y = 0 : y;
-	while (y <= DISPMODH2 + SPRITESH2 && y < display_mode.h)
+	game->sprites.new_pos.x = (game->sprites.pos.y - game->player.pos.y) * sin(game->player.angle) + (game->sprites.pos.x - game->player.pos.x) * cos(game->player.angle);
+	game->sprites.new_pos.y = (game->sprites.pos.y - game->player.pos.y) * cos(game->player.angle) - (game->sprites.pos.x - game->player.pos.x) * sin(game->player.angle);
+	game->sprites.shift = (-game->sprites.new_pos.y / game->sprites.new_pos.x) * (game->pre_calc.screenw2) + game->pre_calc.screenw2;
+	game->sprites.h = 200 / game->sprites.new_pos.x;
+	game->sprites.w = 200 / game->sprites.new_pos.x;
+	(y = game->pre_calc.dispmodh2 - game->pre_calc.spritesh2) < 0 ? y = 0 : y;
+	while (y <= game->pre_calc.dispmodh2 + game->pre_calc.spritesh2 && y < game->display_mode.h)
 	{
-		(x = (sprites.shift ) - SPRITESW2) < 0 ? x = 0 : x;
-		new_y = ((double)y - DISPMODH2 + SPRITESH2) / ((DISPMODH2 + SPRITESH2) - (DISPMODH2 - SPRITESH2)) * sprites.texture->h;
-		while (x < (sprites.shift) + SPRITESW2 && x < display_mode.w)
+		(x = (game->sprites.shift ) - game->pre_calc.spritesw2) < 0 ? x = 0 : x;
+		new_y = ((double)y - game->pre_calc.dispmodh2 + game->pre_calc.spritesh2) / ((game->pre_calc.dispmodh2 + game->pre_calc.spritesh2) - (game->pre_calc.dispmodh2 - game->pre_calc.spritesh2)) * game->sprites.texture->h;
+		while (x < (game->sprites.shift) + game->pre_calc.spritesw2 && x < game->display_mode.w)
 		{
-			new_x = ((double)x - ((sprites.shift ) - SPRITESW2)) / (((sprites.shift) + SPRITESW2) - ((sprites.shift) - SPRITESW2)) * sprites.texture->w;
-			if (y >= 0 && y < screen->h && x >= 0 && x < screen->w )
+			new_x = ((double)x - ((game->sprites.shift ) - game->pre_calc.spritesw2)) / (((game->sprites.shift) + game->pre_calc.spritesw2) - ((game->sprites.shift) - game->pre_calc.spritesw2)) * game->sprites.texture->w;
+			if (y >= 0 && y < game->screen->h && x >= 0 && x < game->screen->w )
 			{
-				color = ((int*)(sprites.texture->pixels))[sprites.texture->w * new_y + new_x];
-				((int*)(screen->pixels))[(int)(screen->w * y + (int)(x))] = color;
+				color = ((int*)(game->sprites.texture->pixels))[game->sprites.texture->w * new_y + new_x];
+				((int*)(game->screen->pixels))[(int)(game->screen->w * y + (int)(x))] = color;
 			}
 			x++;
 		}
@@ -151,12 +141,12 @@ int			main(void)
 		{	
 			if( Mix_PlayingMusic() == 0 )
 				Mix_PlayMusic(game->sounds.music, -1);
-			player_move(game, game->display_mode, &game->mouse, game->window, game->sounds, game->gif, &game->keystate, game->points, game->sectors, &game->player, &loop, &game->menu_status);
-			SDL_WarpMouseInWindow(game->window, game->DISPMODW2, game->DISPMODH2);
+			player_move(game, &loop);
+			SDL_WarpMouseInWindow(game->window, game->pre_calc.dispmodw2, game->pre_calc.dispmodh2);
 			get_pos_z(&game->player, game->sectors);
-			draw_3d_wall(game, game->screen, game->texture, game->points, game->count_points, game->points_cam, game->display_mode, &game->player, game->sectors, game->count_sectors, game->gif);
-			draw_sprites(game->screen, game->sectors, game->sprites, game->player, game->display_mode);
-			draw_hands(game->screen, game->gif);
+			draw_3d_wall(game);
+			draw_sprites(game);
+			draw_hands(game->screen, game->gif, game->pre_calc);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
 		}

@@ -26,18 +26,6 @@
 # define COLOR_WALL 0xDA70D6
 # define COLOR_BETW 0xAA0000
 # define STEP 0.05
-# define SCREENW3 screen->w / 3
-# define SCREENW2 screen->w / 2
-# define SCREENH3 screen->h / 3
-# define SCREENW10045 screen->w / 100 * 45
-# define SCREENH10065 screen->h / 100 * 65
-# define SPRITESW2 sprites.w / 2
-# define SPRITESH2 sprites.h / 2
-# define DISPMODH2 display_mode.h / 2
-# define DISPMODW2 display_mode.w / 2
-# define DISPMODH10 display_mode.h / 10
-# define DISPMODW20 display_mode.w / 20
-# define DISPMODH20 display_mode.h / 20
 
 typedef struct		s_gif
 {
@@ -173,9 +161,26 @@ typedef struct 		s_menu_status
 	int				main;
 }					t_menu_status;
 
+typedef struct 		s_pre_calc
+{
+	int screenw3;
+	int screenw2;
+	int screenh3;
+	int screenw10045;
+	int screenh10065;
+	int spritesw2;
+	int spritesh2;
+	int dispmodh2;
+	int dispmodw2;
+	int dispmodw10;
+	int dispmodh10;
+	int dispmodw20;
+	int dispmodh20; 
+} 					t_pre_calc;
 
 typedef struct		s_game
 {
+	t_pre_calc		pre_calc;
 	t_hud			hud;
 	t_sounds		sounds;
 	t_player		player;
@@ -205,10 +210,10 @@ void    			start_menu_render(t_game *game, int *loop);
 void    			tab_menu_render(t_game *game, int *loop);
 t_game  			*create_struct(void);
 double   			cross_product(vec2 first_point, vec2 second_point);
-void				draw_minimap(SDL_Surface *screen, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, int count_sectors);
+void				draw_minimap(t_game *game);
 void    			put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time);
 void				read_map(char *name, t_game *game);
-void				player_move(t_game *game, SDL_DisplayMode display_mode, vec2int *mouse, SDL_Window *window, t_sounds sounds, t_gif *gif, t_keystate *keystate, vec2 *points, t_sector *sectors, t_player *player, int *loop, t_menu_status *menu_status);
+void				player_move(t_game *game, int *loop);
 void				change_wall(t_wall *cam_wall);
 void    			get_pos_z(t_player *player, t_sector *sectors );
 SDL_Texture* 		load_image(char *file, SDL_Renderer *ren);
@@ -217,7 +222,7 @@ void				clean_buffer(char **buffer);
 void    			free_SDL(t_game *game);
 void    			print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest);
 void				set_color(SDL_Color *color, int r, int g, int b);
-void    			draw_sector(t_game *game, t_gif *gif, SDL_Surface *texture, SDL_Surface *screen,t_player *player, SDL_DisplayMode display_mode, t_sector *sectors, vec2 *points_cam, t_draw for_draw);
+void    			draw_sector(t_game *game, t_draw for_draw);
 vec3    			get_ceil(t_game *game, int x, int y, double dz);
 vec3    			get_floor(t_game *game, int x, int y, double dz);
 void     			cross(vec2 *first_point, vec2 second_point, vec2 fov);
