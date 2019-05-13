@@ -154,7 +154,7 @@ static void load_images(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.png")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.face[0] = IMG_Load("imgs/hud/doom.png")))
+	if (!(game->hud.face[2] = IMG_Load("imgs/hud/doom.png")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
