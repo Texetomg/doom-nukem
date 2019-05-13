@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/25 14:57:15 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/13 15:08:29 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,22 @@ static void		draw_sprites(t_game *game)
 	int		new_x = 0;
 	int		new_y = 0;
 	int color;
+	int bot;
+	int top;
 	game->sprites.new_pos.x = (game->sprites.pos.y - game->player.pos.y) * sin(game->player.angle) + (game->sprites.pos.x - game->player.pos.x) * cos(game->player.angle);
 	game->sprites.new_pos.y = (game->sprites.pos.y - game->player.pos.y) * cos(game->player.angle) - (game->sprites.pos.x - game->player.pos.x) * sin(game->player.angle);
 	game->sprites.shift = (-game->sprites.new_pos.y / game->sprites.new_pos.x) * (game->pre_calc.screenw2) + game->pre_calc.screenw2;
-	game->sprites.h = 200 / game->sprites.new_pos.x;
+	bot = -(0 - game->player.pos.z) * game->display_mode.h / 2 / game->sprites.new_pos.x + game->line_horiz;
+	top = -(0.5 - game->player.pos.z) * game->display_mode.h / 2/ game->sprites.new_pos.x + game->line_horiz;
 	game->sprites.w = 200 / game->sprites.new_pos.x;
-	(y = game->pre_calc.dispmodh2 - game->pre_calc.spritesh2) < 0 ? y = 0 : y;
-	while (y <= game->pre_calc.dispmodh2 + game->pre_calc.spritesh2 && y < game->display_mode.h)
+	(y = top) < 0 ? y = 0 : y;
+	while (y <= bot && y < game->display_mode.h)
 	{
-		(x = (game->sprites.shift ) - game->pre_calc.spritesw2) < 0 ? x = 0 : x;
-		new_y = ((double)y - game->pre_calc.dispmodh2 + game->pre_calc.spritesh2) / ((game->pre_calc.dispmodh2 + game->pre_calc.spritesh2) - (game->pre_calc.dispmodh2 - game->pre_calc.spritesh2)) * game->sprites.texture->h;
-		while (x < (game->sprites.shift) + game->pre_calc.spritesw2 && x < game->display_mode.w)
+		(x = (game->sprites.shift ) - game->sprites.w / 2) < 0 ? x = 0 : x;
+		new_y = (double)(y - top) / (bot - top) * game->sprites.texture->h;
+		while (x < (game->sprites.shift) + game->sprites.w / 2 && x < game->display_mode.w)
 		{
-			new_x = ((double)x - ((game->sprites.shift ) - game->pre_calc.spritesw2)) / (((game->sprites.shift) + game->pre_calc.spritesw2) - ((game->sprites.shift) - game->pre_calc.spritesw2)) * game->sprites.texture->w;
+			new_x = ((double)x - ((game->sprites.shift ) - game->sprites.w / 2)) / (((game->sprites.shift) + game->sprites.w / 2) - ((game->sprites.shift) - game->sprites.w / 2)) * game->sprites.texture->w;
 			if (y >= 0 && y < game->screen->h && x >= 0 && x < game->screen->w )
 			{
 				color = ((int*)(game->sprites.texture->pixels))[game->sprites.texture->w * new_y + new_x];

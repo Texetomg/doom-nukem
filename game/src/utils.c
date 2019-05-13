@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/25 13:32:58 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/13 13:21:45 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ void            give_points_cam(vec2 *points_cam, vec2 *points, t_player *player
 }
 
 void    get_pos_z(t_player *player, t_sector *sectors )
-{  
+{	
     if (player->z_accel > 0)
     {
         if (player->pos.z + player->z_accel  >= (sectors + player->curr_sector)->ceil)
+		{
             player->z_accel = 0;
+		}
         else
         {
             player->pos.z += player->z_accel;
@@ -65,22 +67,24 @@ void    get_pos_z(t_player *player, t_sector *sectors )
         }
         
     }
-    else if (player->z_accel == 0 && player->foots > (sectors + player->curr_sector)->floor)
-        player->z_accel -= ACCEL;
+    else if (player->z_accel == 0)
+	{
+			if (player->foots > (sectors + player->curr_sector)->floor)
+        		player->z_accel -= ACCEL;
+	}
     else if (player->z_accel < 0)
     {
-        if (player->foots + player->z_accel < (sectors + player->curr_sector)->floor)
-        {
-            player->z_accel = 0;
-            player->pos.z = (sectors + player->curr_sector)->floor + player->b_foots;
-        }
-        else
-        {
-            player->pos.z += player->z_accel;
-            player->z_accel -= ACCEL;   
-        }
+        	if (player->foots + player->z_accel < (sectors + player->curr_sector)->floor)
+        	{
+        	    player->z_accel = 0;
+        	    player->pos.z = (sectors + player->curr_sector)->floor + player->b_foots;
+        	}
+        	else
+        	{
+        	    player->pos.z += player->z_accel;
+        	    player->z_accel -= ACCEL;   
+        	}
     }
-
     player->foots = player->pos.z - 0.5;
     player->knees = player->pos.z - player->b_knees;
 }
