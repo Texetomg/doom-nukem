@@ -141,6 +141,7 @@ typedef	struct 		s_hud
 {
 	SDL_Color		color;
 	SDL_Rect		fps_dest;
+	SDL_Surface		*face[3];
 }					t_hud;
 
 typedef	struct 		s_menu
@@ -230,4 +231,5 @@ int             	intersection(vec2 *first_point, vec2 *second_point, vec2 left_f
 void           		give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points);
 int             	inside_sector(t_game *game, double x, double y, t_sector sector);
 void				draw_image(t_game *game, int i, SDL_Surface *image[]);
+void 				draw_player_icon(SDL_Surface *screen, SDL_Surface *face);
 #endif

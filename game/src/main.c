@@ -40,7 +40,7 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif, t_pre_calc pre_calc)
 {
 	int		x = 0;
 	int		y = 0;
-	int		new_x = 0;
+	int		new_x = 0; 
 	int		new_y = 0;
 	int		color;
 
@@ -52,7 +52,7 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif, t_pre_calc pre_calc)
 			new_x = (double)x / (pre_calc.screenw3 ) * (*(gif[1].array + gif[1].curr_frame))->w;
 			color = ((int*)((*(gif[1].array + ((int)(gif[1].curr_frame))))->pixels))[new_y * (*(gif[1].array + ((int)(gif[1].curr_frame))))->w + new_x];
 			if (color != 0x000000)
-				((int*)(screen->pixels))[(int)(y + pre_calc.screenh10065) * screen->w + x + (pre_calc.screenw10045)] = color;
+				((int*)(screen->pixels))[(int)(y + screen->h - pre_calc.screenh3) * screen->w + x + screen->w / 2 - screen->w / 3 / 2] = color;
 			x++;
 		}
 		x = 0;
@@ -147,10 +147,12 @@ int			main(void)
 			draw_3d_wall(game);
 			draw_sprites(game);
 			draw_hands(game->screen, game->gif, game->pre_calc);
+			draw_player_icon(game->screen, game->hud.face[2]);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
 		}
 		put_fps(game->screen, game->hud, &game->time);
+		
 		SDL_UpdateWindowSurface(game->window);
 		
 	}

@@ -119,6 +119,7 @@ static void	draw_2dsector(t_game *game, int curr_sector)
 		i++;
 	}
 }
+
 // переделать минимапу
 void	draw_minimap(t_game *game)
 {
