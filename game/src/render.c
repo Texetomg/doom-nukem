@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/13 14:05:32 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/13 14:13:06 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,8 @@ static void    draw_wall(t_game *game,
 			else
 				y = (y - (int)y + 1) * game->texture->h;
             if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
-                    color = ((int*)texture->pixels)[(int)y * texture->w + (int)x];
-            ((int*)screen->pixels)[k * display_mode.w + i] = color;
+                    color = ((int*)game->texture->pixels)[(int)y * game->texture->w + (int)x];
+            ((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
             k++;
         }
         i++;
@@ -256,22 +256,22 @@ void    draw_sector(t_game *game, t_draw for_draw)
 	double y1a, y2a;
 	double x1_b4, x2_b4;
 	i = 0;
-    while (i < (sectors + for_draw.curr_sector)->count_wall)
+    while (i < (game->sectors + for_draw.curr_sector)->count_wall)
     {
-        first_point = *(points_cam + *((sectors + for_draw.curr_sector)->index_points + i));
-		x1 = (game->points + *((sectors + for_draw.curr_sector)->index_points + i))->x;
-		y1 = (game->points + *((sectors + for_draw.curr_sector)->index_points + i))->y;
-        if (i == (sectors + for_draw.curr_sector)->count_wall - 1)
+        first_point = *(game->points_cam + *((game->sectors + for_draw.curr_sector)->index_points + i));
+		x1 = (game->points + *((game->sectors + for_draw.curr_sector)->index_points + i))->x;
+		y1 = (game->points + *((game->sectors + for_draw.curr_sector)->index_points + i))->y;
+        if (i == (game->sectors + for_draw.curr_sector)->count_wall - 1)
 		{
-			x2 = (game->points + *((sectors + for_draw.curr_sector)->index_points))->x;
-			y2 = (game->points + *((sectors + for_draw.curr_sector)->index_points))->y;
-            second_point = *(points_cam + *((sectors + for_draw.curr_sector)->index_points));
+			x2 = (game->points + *((game->sectors + for_draw.curr_sector)->index_points))->x;
+			y2 = (game->points + *((game->sectors + for_draw.curr_sector)->index_points))->y;
+            second_point = *(game->points_cam + *((game->sectors + for_draw.curr_sector)->index_points));
 		}
         else
 		{
-			x2 = (game->points + *((sectors + for_draw.curr_sector)->index_points + i + 1))->x;
-			y2 = (game->points + *((sectors + for_draw.curr_sector)->index_points + i + 1))->y;
-            second_point = *(points_cam + *((sectors + for_draw.curr_sector)->index_points + i + 1));
+			x2 = (game->points + *((game->sectors + for_draw.curr_sector)->index_points + i + 1))->x;
+			y2 = (game->points + *((game->sectors + for_draw.curr_sector)->index_points + i + 1))->y;
+            second_point = *(game->points_cam + *((game->sectors + for_draw.curr_sector)->index_points + i + 1));
 		}
         if (first_point.x < 0 && second_point.x < 0)
         {
@@ -299,12 +299,12 @@ void    draw_sector(t_game *game, t_draw for_draw)
 				x1a = -x1a;
 				x2a = -x2a;
 			}
-            yceil = (sectors + for_draw.curr_sector)->ceil - player->pos.z;
-            yfloor = (sectors + for_draw.curr_sector)->floor - player->pos.z;
-            yscale1 =  display_mode.h / 2 / first_point.x;
-			yscale2 =  display_mode.h / 2 / second_point.x;
-            for_draw.wall.x1 = -first_point.y * (display_mode.w / 2) / first_point.x + display_mode.w / 2;
-            for_draw.wall.x2 = -second_point.y * (display_mode.w / 2) / second_point.x + display_mode.w / 2;
+			yceil = (game->sectors + for_draw.curr_sector)->ceil - game->player.pos.z;
+            yfloor = (game->sectors + for_draw.curr_sector)->floor - game->player.pos.z;
+            yscale1 =  game->display_mode.h / 2 / first_point.x;
+			yscale2 =  game->display_mode.h / 2 / second_point.x;
+            for_draw.wall.x1 = -first_point.y * (game->display_mode.w / 2) / first_point.x + game->display_mode.w / 2;
+            for_draw.wall.x2 = -second_point.y * (game->display_mode.w / 2) / second_point.x + game->display_mode.w / 2;
             for_draw.wall.y2t = -yscale2 * yceil + game->line_horiz;
             for_draw.wall.y1t = -yscale1 * yceil + game->line_horiz;
             for_draw.wall.y2b = -yscale2 * yfloor + game->line_horiz;
@@ -331,7 +331,7 @@ void    draw_sector(t_game *game, t_draw for_draw)
                 }
             }
             else
-                draw_wall(game, display_mode, texture, for_draw, screen, x1a, x2a, y1a, y2a, (sectors + for_draw.curr_sector)->ceil, (sectors + for_draw.curr_sector)->floor);
+                draw_wall(game, for_draw, x1a, x2a, y1a, y2a, (game->sectors + for_draw.curr_sector)->ceil, (game->sectors + for_draw.curr_sector)->floor);
             draw_floor(game, for_draw, -yfloor);
             draw_ceil(game, for_draw, yceil);
         }
