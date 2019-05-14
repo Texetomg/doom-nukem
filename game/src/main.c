@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/14 15:40:26 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 20:46:34 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif, t_pre_calc pre_calc)
 	}
 }
 
-void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite)
+void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright)
 {
 	int		y;
 	int		x;
@@ -103,7 +103,7 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite)
 			if (new_y >= 0 && new_y < sprite.texture->h && new_x >= 0 && new_x < sprite.texture->w)
 			{
 				color = ((int*)sprite.texture->pixels)[new_y * sprite.texture->w + new_x];
-				((int*)game->screen->pixels)[y * game->display_mode.w + x] = color;
+				((int*)game->screen->pixels)[y * game->display_mode.w + x] = ft_bright(color, bright);
 			}
 			y++;
 		}

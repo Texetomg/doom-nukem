@@ -6,15 +6,35 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/14 15:34:07 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 21:40:01 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+
+int	ft_bright(int color, double bright)
+{
+	int r;
+	int g;
+	int b;
+	int new_color;
+	int rMask = 0xFF0000;
+	int gMask = 0xFF00;
+	int bMask = 0xFF;
+
+	r = (color & rMask) >> 16;
+	r = r * bright;
+	g = (color & gMask) >> 8;
+	g = g * bright;
+	b = (color & bMask);
+	b = b * bright;
+	new_color = r * 256 * 256 + g * 256 + b;
+	return (new_color);
+}
 /*
  * Отрисовывает потолок
  */
-void    draw_ceil(t_game *game, t_draw for_draw, double dz)
+void    draw_ceil(t_game *game, t_draw for_draw, double dz, double bright)
 {
     int i;
     int k;
@@ -70,7 +90,7 @@ void    draw_ceil(t_game *game, t_draw for_draw, double dz)
             if (x > 0 && x < game->texture->w && y > 0 && y < game->texture->h)
             {
                 color = ((int*)game->texture->pixels)[((int)y) * game->texture->w + ((int)x)];
-                ((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
+                ((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
             }
             k++;
         }
@@ -80,7 +100,7 @@ void    draw_ceil(t_game *game, t_draw for_draw, double dz)
 /*
  * Отрисовывает пол
  */
-void    draw_floor(t_game *game, t_draw for_draw, double dz)
+void    draw_floor(t_game *game, t_draw for_draw, double dz, double bright)
 {
     int i;
     int k;
@@ -136,7 +156,7 @@ void    draw_floor(t_game *game, t_draw for_draw, double dz)
             if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
             {
                 color = ((int*)game->texture->pixels)[((int)y) * game->texture->w + ((int)x)];
-                ((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
+                ((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
             }
             k++;
         }
@@ -152,7 +172,8 @@ static void    draw_wall(t_game *game,
                          double y1,
                          double y2,
 						 double ceil,
-						 double floor)
+						 double floor,
+						 double bright)
 {
     int i;
     int k;
@@ -189,8 +210,10 @@ static void    draw_wall(t_game *game,
 			else
 				y = (y - (int)y + 1) * game->texture->h;
             if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
-                    color = ((int*)game->texture->pixels)[(int)y * game->texture->w + (int)x];
-            ((int*)game->screen->pixels)[k * game->display_mode.w + i] = color;
+			{
+                color = ((int*)game->texture->pixels)[(int)y * game->texture->w + (int)x];
+            	((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
+			}
             k++;
         }
         i++;
@@ -200,7 +223,8 @@ static void    draw_wall(t_game *game,
 //отрисовывет промежутки между потолком/полом и сектором. И пол и потолок портала.
 static void    pre_draw_sector(SDL_Surface *screen,
                                SDL_DisplayMode display_mode,
-                               t_draw for_draw)
+                               t_draw for_draw,
+							   double bright)
 {
     int i;
     int k;
@@ -228,7 +252,7 @@ static void    pre_draw_sector(SDL_Surface *screen,
             if (k < yt_window || k > yb_window)
             {
                 color = COLOR_BETW;
-                ((int*)screen->pixels)[k * display_mode.w + i] = color;
+                ((int*)screen->pixels)[k * display_mode.w + i] = ft_bright(color, bright);
             }
             k++;
         }
@@ -328,13 +352,13 @@ void    draw_sector(t_game *game, t_draw for_draw)
                     for_next_draw.fov_left = first_point;
                     for_next_draw.fov_right = second_point;
                     draw_sector(game, for_next_draw);
-                    pre_draw_sector(game->screen, game->display_mode, for_next_draw);
+                    pre_draw_sector(game->screen, game->display_mode, for_next_draw, (game->sectors + for_draw.curr_sector)->brightness);
                 }
             }
             else
-                draw_wall(game, for_draw, x1a, x2a, y1a, y2a, (game->sectors + for_draw.curr_sector)->ceil, (game->sectors + for_draw.curr_sector)->floor);
-            draw_floor(game, for_draw, -yfloor);
-            draw_ceil(game, for_draw, yceil);
+                draw_wall(game, for_draw, x1a, x2a, y1a, y2a, (game->sectors + for_draw.curr_sector)->ceil, (game->sectors + for_draw.curr_sector)->floor, (game->sectors + for_draw.curr_sector)->brightness);
+            draw_floor(game, for_draw, -yfloor, (game->sectors + for_draw.curr_sector)->brightness);
+            draw_ceil(game, for_draw, yceil, (game->sectors + for_draw.curr_sector)->brightness);
         }
         i++;
     }
@@ -343,7 +367,7 @@ void    draw_sector(t_game *game, t_draw for_draw)
 	{
 		if ((game->sprites + k)->sector == for_draw.curr_sector)
 		{
-			draw_sprites(game, for_draw, *(game->sprites + k));
+			draw_sprites(game, for_draw, *(game->sprites + k), (game->sectors + for_draw.curr_sector)->brightness);
 		}
 		k++;
 	}

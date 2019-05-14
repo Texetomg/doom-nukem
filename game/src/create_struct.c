@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/14 15:32:28 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 20:37:25 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,5 +204,12 @@ t_game	*create_struct(void)
 	load_sounds(game);
 	load_images(game);
 	set_initial_values(game);
+	int i;
+	i = 0;
+	while (i < 5)
+	{
+		printf("%f\n",(game->sectors + i)->brightness);
+		i++;
+	}
 	return (game);
 }

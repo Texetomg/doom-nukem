@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/14 15:29:36 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 20:44:12 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef struct		s_sector
 	int				*neighbors;
 	int				*index_points;
 	int				count_wall;
+	double			brightness;
 }					t_sector;
 
 typedef	struct 		s_keystate
@@ -206,8 +207,8 @@ typedef struct		s_game
 	int				complexity;
 	int				line_horiz;
 }					t_game;
-
-void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite);
+int					ft_bright(int color, double bright);
+void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright);
 void           		give_sprites_cam(t_game *game);
 void    			start_menu_render(t_game *game, int *loop);
 void    			tab_menu_render(t_game *game, int *loop);
