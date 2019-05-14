@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/14 15:19:23 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 15:40:26 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite)
 			y = t_window;
 		else
 			y = top;
-		while (y < bot && y < b_window && game->display_mode.h)
+		while (y < bot && y < b_window && y < game->display_mode.h)
 		{
 			new_y = (double)(y - top) / (bot - top) * sprite.texture->h;
 			if (new_y >= 0 && new_y < sprite.texture->h && new_x >= 0 && new_x < sprite.texture->w)
