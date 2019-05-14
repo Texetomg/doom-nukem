@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/13 13:21:45 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 15:19:49 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,20 @@ void            give_points_cam(vec2 *points_cam, vec2 *points, t_player *player
         (points_cam + i)->y = ((points + i)->y - player->pos.y) * cos(player->angle) - ((points + i)->x - player->pos.x) * sin(player->angle);
         i++;
     }
+}
+
+void			give_sprites_cam(t_game *game)
+{
+	int i;
+	
+	i = 0;
+	while (i < game->count_sprites)
+	{
+		(game->sprites + i)->pos_in_cam.x = ((game->sprites + i)->pos.y - game->player.pos.y) * sin(game->player.angle) + ((game->sprites + i)->pos.x - game->player.pos.x) * cos(game->player.angle);
+		(game->sprites + i)->pos_in_cam.y = ((game->sprites + i)->pos.y - game->player.pos.y) * cos(game->player.angle) - ((game->sprites + i)->pos.x - game->player.pos.x) * sin(game->player.angle);
+		(game->sprites + i)->pos_in_cam.z = (game->sprites + i)->pos.z - game->player.pos.z;
+		i++;
+	}
 }
 
 void    get_pos_z(t_player *player, t_sector *sectors )

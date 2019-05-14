@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/13 15:08:29 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 15:19:23 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	draw_3d_wall(t_game *game)
 	for_draw.curr_sector = game->player.curr_sector;
 
 	give_points_cam(game->points_cam, game->points, &game->player, game->count_points);
+	give_sprites_cam(game);
 	draw_sector(game, for_draw);
 	draw_minimap(game);
 }
@@ -60,37 +61,53 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif, t_pre_calc pre_calc)
 	}
 }
 
-static void		draw_sprites(t_game *game)
+void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite)
 {
-	int y;
-	int x;
-	int		new_x = 0;
-	int		new_y = 0;
+	int		y;
+	int		x;
+	int		x_start;
+	int		x_end;
+	int		new_x;
+	int		new_y;
 	int color;
 	int bot;
 	int top;
-	game->sprites.new_pos.x = (game->sprites.pos.y - game->player.pos.y) * sin(game->player.angle) + (game->sprites.pos.x - game->player.pos.x) * cos(game->player.angle);
-	game->sprites.new_pos.y = (game->sprites.pos.y - game->player.pos.y) * cos(game->player.angle) - (game->sprites.pos.x - game->player.pos.x) * sin(game->player.angle);
-	game->sprites.shift = (-game->sprites.new_pos.y / game->sprites.new_pos.x) * (game->pre_calc.screenw2) + game->pre_calc.screenw2;
-	bot = -(0 - game->player.pos.z) * game->display_mode.h / 2 / game->sprites.new_pos.x + game->line_horiz;
-	top = -(0.5 - game->player.pos.z) * game->display_mode.h / 2/ game->sprites.new_pos.x + game->line_horiz;
-	game->sprites.w = 200 / game->sprites.new_pos.x;
-	(y = top) < 0 ? y = 0 : y;
-	while (y <= bot && y < game->display_mode.h)
+	int t_window;
+	int b_window;
+
+	x_start = -sprite.pos_in_cam.y * game->display_mode.w / 2 / sprite.pos_in_cam.x + game->display_mode.w / 2 - sprite.width / 2 / sprite.pos_in_cam.x;
+	x_end = x_start + sprite.width / sprite.pos_in_cam.x;
+	bot = -(sprite.pos_in_cam.z - sprite.heigth) * game->display_mode.h / 2 / sprite.pos_in_cam.x + game->line_horiz;
+	top = -(sprite.pos_in_cam.z) * game->display_mode.h / 2/ sprite.pos_in_cam.x + game->line_horiz;
+	
+	if (x_start < 0)
+		x = 0;
+	else if (x_start < for_draw.window.x1)
+		x = for_draw.window.x1;
+	else
+		x = x_start;
+	while (x < x_end && x < for_draw.window.x2 && x < game->display_mode.w)
 	{
-		(x = (game->sprites.shift ) - game->sprites.w / 2) < 0 ? x = 0 : x;
-		new_y = (double)(y - top) / (bot - top) * game->sprites.texture->h;
-		while (x < (game->sprites.shift) + game->sprites.w / 2 && x < game->display_mode.w)
+		t_window = (int)(for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * ((double)x - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
+		b_window = (int)(for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * ((double)x - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
+		new_x = (double)(x - x_start) / (x_end - x_start) * sprite.texture->w;
+		if (top < 0)
+			y = 0;
+		else if (top < t_window)
+			y = t_window;
+		else
+			y = top;
+		while (y < bot && y < b_window && game->display_mode.h)
 		{
-			new_x = ((double)x - ((game->sprites.shift ) - game->sprites.w / 2)) / (((game->sprites.shift) + game->sprites.w / 2) - ((game->sprites.shift) - game->sprites.w / 2)) * game->sprites.texture->w;
-			if (y >= 0 && y < game->screen->h && x >= 0 && x < game->screen->w )
+			new_y = (double)(y - top) / (bot - top) * sprite.texture->h;
+			if (new_y >= 0 && new_y < sprite.texture->h && new_x >= 0 && new_x < sprite.texture->w)
 			{
-				color = ((int*)(game->sprites.texture->pixels))[game->sprites.texture->w * new_y + new_x];
-				((int*)(game->screen->pixels))[(int)(game->screen->w * y + (int)(x))] = color;
+				color = ((int*)sprite.texture->pixels)[new_y * sprite.texture->w + new_x];
+				((int*)game->screen->pixels)[y * game->display_mode.w + x] = color;
 			}
-			x++;
+			y++;
 		}
-		y++;
+		x++;
 	}
 }
 
@@ -148,7 +165,6 @@ int			main(void)
 			SDL_WarpMouseInWindow(game->window, game->pre_calc.dispmodw2, game->pre_calc.dispmodh2);
 			get_pos_z(&game->player, game->sectors);
 			draw_3d_wall(game);
-			draw_sprites(game);
 			draw_hands(game->screen, game->gif, game->pre_calc);
 			draw_player_icon(game->screen, game->hud.face[2]);
 			//запуск гифок
