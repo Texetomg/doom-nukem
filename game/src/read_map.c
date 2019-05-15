@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 18:18:57 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/05/14 20:17:50 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ static void	define_sector(t_sector *sector, char **line)
 		i++;
 	}
 	clean_buffer(buffer);
+	sector->brightness = (double)ft_atoi(line[4]) / 100;
 }
 
 

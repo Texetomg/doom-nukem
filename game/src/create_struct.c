@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/26 13:03:16 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 20:37:25 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ static void	init_sdl(t_game *game)
         check_error_n_exit(1,(char*)SDL_GetError());
     }
 	game->texture = SDL_LoadBMP("imgs/cat.bmp");
-	game->sprites.texture = SDL_LoadBMP("imgs/cat.bmp");
 }
 
 static void set_player(t_game *game)
@@ -106,10 +105,22 @@ static void set_menu(t_game *game)
 
 static void	set_sprites(t_game *game)
 {
-	game->sprites.pos.x = 1;
-	game->sprites.pos.y = -2;
-	game->sprites.pos.z = 0;
-	game->sprites.sector = 1;
+	game->count_sprites = 2;
+	game->sprites = (t_sprites*)malloc(sizeof(t_sprites) * game->count_sprites);
+	(game->sprites)->pos.x = 0;
+	(game->sprites)->pos.y = 0;
+	(game->sprites)->heigth = 0.5;
+	(game->sprites)->width = game->display_mode.w / 10;
+	(game->sprites)->pos.z = 0.6;
+	(game->sprites)->sector = 0;
+	(game->sprites)->texture = *(game->gif)->array;
+	(game->sprites + 1)->pos.x = 1;
+	(game->sprites + 1)->pos.y = -2;
+	(game->sprites + 1)->heigth = 0.5;
+	(game->sprites + 1)->width = game->display_mode.w / 10;
+	(game->sprites + 1)->pos.z = 0.5;
+	(game->sprites + 1)->sector = 1;
+	(game->sprites + 1)->texture = *((game->gif)->array + 20);
 }
 
 static void	set_hood(t_game *game)
@@ -173,8 +184,6 @@ static void set_initial_values(t_game *game)
 	game->pre_calc.screenh3 = game->screen->h / 3;
 	game->pre_calc.screenw10045 = game->screen->w / 100 * 45;
 	game->pre_calc.screenh10065 = game->screen->h / 100 * 65;
-	game->pre_calc.spritesw2 = game->sprites.w / 2;
-	game->pre_calc.spritesh2 = game->sprites.h / 2;
 	game->pre_calc.dispmodh2 = game->display_mode.h / 2;
 	game->pre_calc.dispmodw2 = game->display_mode.w / 2;
 	game->pre_calc.dispmodw10 = game->display_mode.w / 10;
@@ -195,5 +204,12 @@ t_game	*create_struct(void)
 	load_sounds(game);
 	load_images(game);
 	set_initial_values(game);
+	int i;
+	i = 0;
+	while (i < 5)
+	{
+		printf("%f\n",(game->sectors + i)->brightness);
+		i++;
+	}
 	return (game);
 }

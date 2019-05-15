@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/26 14:18:42 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/14 20:44:12 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef struct		s_sector
 	int				*neighbors;
 	int				*index_points;
 	int				count_wall;
+	double			brightness;
 }					t_sector;
 
 typedef	struct 		s_keystate
@@ -130,10 +131,9 @@ typedef struct 		s_sprites
 {
 	vec3			pos;
 	int				sector;
-	int				w;
-	int				h;
-	vec3			new_pos;
-	double			shift;
+	double			heigth;
+	double			width;
+	vec3			pos_in_cam;
 	SDL_Surface 	*texture;
 }					t_sprites;
 
@@ -185,7 +185,7 @@ typedef struct		s_game
 	t_hud			hud;
 	t_sounds		sounds;
 	t_player		player;
-	t_sprites		sprites;
+	t_sprites		*sprites;
 	vec2			*points;
 	t_sector		*sectors;
 	SDL_Window		*window;
@@ -201,12 +201,15 @@ typedef struct		s_game
 	int				count_points;
 	vec2   			*points_cam;
 	int				count_sectors;
+	int				count_sprites;
 	t_keystate		keystate;	
 	t_gif			gif[2];
 	int				complexity;
 	int				line_horiz;
 }					t_game;
-
+int					ft_bright(int color, double bright);
+void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright);
+void           		give_sprites_cam(t_game *game);
 void    			start_menu_render(t_game *game, int *loop);
 void    			tab_menu_render(t_game *game, int *loop);
 t_game  			*create_struct(void);
