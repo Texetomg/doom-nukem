@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/14 20:44:12 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/15 14:38:33 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,17 @@ typedef struct		s_vec3
 	double			z;
 }					vec3;
 
+typedef	struct		s_sprite_wall
+{
+	double			top;
+	double			bot;
+	double			right;
+	double			left;
+	SDL_Surface     *texture;
+	struct s_sprite_wall *next;
+	int				wall;
+}					t_sprite_wall;
+
 typedef struct		s_player
 {
 	vec3			pos;
@@ -107,6 +118,7 @@ typedef struct		s_sector
 	int				*index_points;
 	int				count_wall;
 	double			brightness;
+	t_sprite_wall	*sprite_wall;
 }					t_sector;
 
 typedef	struct 		s_keystate

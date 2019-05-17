@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/14 21:40:01 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/17 15:36:57 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,10 @@ static void    draw_wall(t_game *game,
                          double y2,
 						 double ceil,
 						 double floor,
-						 double bright)
+						 double bright,
+						 double perc1,
+						 double perc2,
+						 t_sprite_wall *sprite_wall)
 {
     int i;
     int k;
@@ -183,7 +186,11 @@ static void    draw_wall(t_game *game,
     double x;
     double y;
     double a;
-    
+	int right_border;
+	int top_border;
+	int bot_border;
+	int left_border;
+	double new_y1, new_y2;
     i = (int)for_draw.wall.x1;
     if (i < 0)
         i = 0;
@@ -204,20 +211,66 @@ static void    draw_wall(t_game *game,
         while (k < yb_wall && k < game->display_mode.h)
         {
 			a = (double)(k - (int)yt_wall) / ((int)yb_wall - (int)yt_wall);
-            y = -((1 - a) * ceil + a * floor);
+           	y = -((1 - a) * ceil + a * floor);
 			if (y > 0)
 				y = (y - (int)y) * game->texture->h;
 			else
 				y = (y - (int)y + 1) * game->texture->h;
-            if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
+			if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
 			{
-                color = ((int*)game->texture->pixels)[(int)y * game->texture->w + (int)x];
-            	((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
+				color = ((int*)game->texture->pixels)[(int)y * game->texture->w + (int)x];
+				((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
 			}
             k++;
         }
         i++;
     }
+	if (sprite_wall == 0)
+		return ;
+	a = (sprite_wall->left - perc1) / (perc2 - perc1);
+	x = ((1 - a) * x1 + a * x2);
+	a = (x / y1 - x1 / y1) / (x2 / y2 - x / y2 + x / y1 - x1 / y1);
+	new_y1 = 1 / ((1 - a) / y1 + a / y2);
+	left_border = for_draw.wall.x1 + (for_draw.wall.x2 - for_draw.wall.x1) * a;
+	a = (sprite_wall->right - perc1) / (perc2 - perc1);
+	x = ((1 - a) * x1 + a * x2);
+	a = (x / y1 - x1 / y1) / (x2 / y2 - x / y2 + x / y1 - x1 / y1);
+	new_y2 = 1 / ((1 - a) / y1 + a / y2);
+	right_border = for_draw.wall.x1 + (for_draw.wall.x2 - for_draw.wall.x1) * a;
+	ft_putnbrln(100 * perc1);
+	ft_putnbrln(100 * perc2);
+	ft_putnbrln(left_border);
+	ft_putnbrln(right_border);
+	if (left_border < 0)
+		i = 0;
+	else if ( left_border < for_draw.wall.x1)
+		i = for_draw.wall.x1;
+	else
+		i = left_border;
+	while (i < right_border && i < game->display_mode.w && i < for_draw.wall.x2)
+	{
+		yt_wall = (int)(for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
+		yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
+		top_border = yt_wall + (yb_wall - yt_wall) * sprite_wall->top;
+		bot_border = yt_wall + (yb_wall - yt_wall) * sprite_wall->bot;
+		if (top_border < 0)
+			k = 0;
+		else
+			k = top_border;
+		a = ((double)i - left_border) / (right_border - left_border);
+		x = a * sprite_wall->texture->w / new_y2 / ((1 - a) / new_y1 + a / new_y2);
+		while (k < bot_border && k < game->display_mode.h)
+		{
+			y = ((double)k - top_border) / (bot_border - top_border) * sprite_wall->texture->h;
+			if (x >= 0 && x < sprite_wall->texture->w && y >= 0 && y < sprite_wall->texture->h)
+			{
+				color = ((int*)sprite_wall->texture->pixels)[(int)y * sprite_wall->texture->w + (int)x];
+				((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
+			}
+			k++;
+		}
+		i++;
+	}
 }
 
 //отрисовывет промежутки между потолком/полом и сектором. И пол и потолок портала.
@@ -280,6 +333,7 @@ void    draw_sector(t_game *game, t_draw for_draw)
 	double y1a, y2a;
 	double x1_b4, x2_b4;
 	int k;
+	double perc1, perc2;
 	i = 0;
     while (i < (game->sectors + for_draw.curr_sector)->count_wall)
     {
@@ -305,8 +359,12 @@ void    draw_sector(t_game *game, t_draw for_draw)
         }
 		x1_b4 = -first_point.y;
 		x2_b4 = -second_point.y;
+		y1a = first_point.x;
+		y2a = second_point.x;
         if (intersection(&first_point, &second_point, for_draw.fov_left, for_draw.fov_right) > 0)
         {
+			perc1 = (-first_point.y - x1_b4) / (x2_b4 - x1_b4);
+			perc2 = (-second_point.y - x1_b4) / (x2_b4 - x1_b4);
 			y1a = first_point.x;
 			y2a = second_point.x;
 			if (fabs(x1 - x2) > fabs(y1 - y2))
@@ -356,8 +414,13 @@ void    draw_sector(t_game *game, t_draw for_draw)
                 }
             }
             else
-                draw_wall(game, for_draw, x1a, x2a, y1a, y2a, (game->sectors + for_draw.curr_sector)->ceil, (game->sectors + for_draw.curr_sector)->floor, (game->sectors + for_draw.curr_sector)->brightness);
-            draw_floor(game, for_draw, -yfloor, (game->sectors + for_draw.curr_sector)->brightness);
+			{
+				if (for_draw.curr_sector == 0 && i == 0)
+					draw_wall(game, for_draw, x1a, x2a, y1a, y2a, (game->sectors + for_draw.curr_sector)->ceil, (game->sectors + for_draw.curr_sector)->floor, (game->sectors + for_draw.curr_sector)->brightness, perc1, perc2,  game->sectors->sprite_wall);
+            	else
+					draw_wall(game, for_draw, x1a, x2a, y1a, y2a, (game->sectors + for_draw.curr_sector)->ceil, (game->sectors + for_draw.curr_sector)->floor, (game->sectors + for_draw.curr_sector)->brightness, perc1, perc2,  0);
+			}
+			draw_floor(game, for_draw, -yfloor, (game->sectors + for_draw.curr_sector)->brightness);
             draw_ceil(game, for_draw, yceil, (game->sectors + for_draw.curr_sector)->brightness);
         }
         i++;
