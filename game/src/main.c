@@ -169,6 +169,7 @@ int			main(void)
 			draw_player_icon(game->screen, game->hud.face[2]);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
+			//talker();
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		
