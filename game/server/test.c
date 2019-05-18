@@ -35,7 +35,7 @@ int main(void)
     char s[INET6_ADDRSTRLEN];
 
     memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_UNSPEC; // если нужен только IPv4, замените на AF_INET
+    hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_DGRAM;
     hints.ai_flags = AI_PASSIVE; // использовать мой IP
 
