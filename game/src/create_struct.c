@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/14 20:37:25 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/16 16:29:34 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,18 @@ static void set_initial_values(t_game *game)
 	game->pre_calc.dispmodh20 = game->display_mode.h / 20;
 }
 
+void	add_sprites_wall(t_game *game)
+{
+	game->sectors->sprite_wall = (t_sprite_wall*)malloc(sizeof(t_sprite_wall));
+	game->sectors->sprite_wall->top = 0.5;
+	game->sectors->sprite_wall->bot = 0.9;
+	game->sectors->sprite_wall->right = 0.87;
+	game->sectors->sprite_wall->left = 0.3;
+	game->sectors->sprite_wall->wall = 0;
+	game->sectors->sprite_wall->texture = *((game->gif)->array + 30);
+	game->sectors->sprite_wall->next = 0;
+}
+
 t_game	*create_struct(void)
 {
 	t_game	*game;
@@ -204,12 +216,6 @@ t_game	*create_struct(void)
 	load_sounds(game);
 	load_images(game);
 	set_initial_values(game);
-	int i;
-	i = 0;
-	while (i < 5)
-	{
-		printf("%f\n",(game->sectors + i)->brightness);
-		i++;
-	}
+	add_sprites_wall(game);
 	return (game);
 }
