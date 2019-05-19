@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/19 12:56:31 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/19 13:34:43 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ int			main(void)
 			draw_player_icon(game->screen, game->hud.face[2]);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
+			//talker();
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		

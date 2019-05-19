@@ -247,4 +247,5 @@ void           		give_points_cam(vec2 *points_cam, vec2 *points, t_player *playe
 int             	inside_sector(t_game *game, double x, double y, t_sector sector);
 void				draw_image(t_game *game, int i, SDL_Surface *image[]);
 void 				draw_player_icon(SDL_Surface *screen, SDL_Surface *face);
+int					talker();
 #endif
