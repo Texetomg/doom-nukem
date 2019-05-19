@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/17 15:36:57 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/19 13:33:58 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ static void    draw_wall(t_game *game,
 	int bot_border;
 	int left_border;
 	double new_y1, new_y2;
+	double left_img, right_img;
     i = (int)for_draw.wall.x1;
     if (i < 0)
         i = 0;
@@ -227,20 +228,34 @@ static void    draw_wall(t_game *game,
     }
 	if (sprite_wall == 0)
 		return ;
-	a = (sprite_wall->left - perc1) / (perc2 - perc1);
+	if (sprite_wall->left < perc1)
+	{
+		a = 0;
+		left_img = (perc1 - sprite_wall->left) / (sprite_wall->right - sprite_wall->left);
+	}
+	else
+	{
+		a = (sprite_wall->left - perc1) / (perc2 - perc1);
+		left_img = 0;
+	}
 	x = ((1 - a) * x1 + a * x2);
 	a = (x / y1 - x1 / y1) / (x2 / y2 - x / y2 + x / y1 - x1 / y1);
 	new_y1 = 1 / ((1 - a) / y1 + a / y2);
 	left_border = for_draw.wall.x1 + (for_draw.wall.x2 - for_draw.wall.x1) * a;
-	a = (sprite_wall->right - perc1) / (perc2 - perc1);
+	if (sprite_wall->right > perc2)
+	{
+		a = 1;
+		right_img = (perc2 - sprite_wall->left) / (sprite_wall->right - sprite_wall->left);
+	}
+	else
+	{
+		a = (sprite_wall->right - perc1) / (perc2 - perc1);
+		right_img = 1;
+	}
 	x = ((1 - a) * x1 + a * x2);
 	a = (x / y1 - x1 / y1) / (x2 / y2 - x / y2 + x / y1 - x1 / y1);
 	new_y2 = 1 / ((1 - a) / y1 + a / y2);
 	right_border = for_draw.wall.x1 + (for_draw.wall.x2 - for_draw.wall.x1) * a;
-	ft_putnbrln(100 * perc1);
-	ft_putnbrln(100 * perc2);
-	ft_putnbrln(left_border);
-	ft_putnbrln(right_border);
 	if (left_border < 0)
 		i = 0;
 	else if ( left_border < for_draw.wall.x1)
@@ -258,7 +273,7 @@ static void    draw_wall(t_game *game,
 		else
 			k = top_border;
 		a = ((double)i - left_border) / (right_border - left_border);
-		x = a * sprite_wall->texture->w / new_y2 / ((1 - a) / new_y1 + a / new_y2);
+		x = (((1 - a) * left_img / new_y1 + a * right_img / new_y2 )/ ((1 - a) / new_y1 + a / new_y2) )* sprite_wall->texture->w;
 		while (k < bot_border && k < game->display_mode.h)
 		{
 			y = ((double)k - top_border) / (bot_border - top_border) * sprite_wall->texture->h;
