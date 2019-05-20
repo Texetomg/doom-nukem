@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/15 14:38:33 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/20 13:48:18 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,7 @@ typedef struct		s_game
 	t_gif			gif[2];
 	int				complexity;
 	int				line_horiz;
+	SDL_Surface     *skybox;
 }					t_game;
 int					ft_bright(int color, double bright);
 void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright);

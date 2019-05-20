@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/19 13:33:58 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/20 12:21:05 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,7 +436,8 @@ void    draw_sector(t_game *game, t_draw for_draw)
 					draw_wall(game, for_draw, x1a, x2a, y1a, y2a, (game->sectors + for_draw.curr_sector)->ceil, (game->sectors + for_draw.curr_sector)->floor, (game->sectors + for_draw.curr_sector)->brightness, perc1, perc2,  0);
 			}
 			draw_floor(game, for_draw, -yfloor, (game->sectors + for_draw.curr_sector)->brightness);
-            draw_ceil(game, for_draw, yceil, (game->sectors + for_draw.curr_sector)->brightness);
+            if (for_draw.curr_sector != 0)
+				draw_ceil(game, for_draw, yceil, (game->sectors + for_draw.curr_sector)->brightness);
         }
         i++;
     }

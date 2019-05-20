@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/19 13:34:43 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/20 14:00:31 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,55 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double brigh
 	}
 }
 
+void			draw_skybox(t_game *game)
+{
+	double left_border;
+	double right_border;
+	double a;
+	int x;
+	int y;
+	int x_texture;
+	int y_texture;
+	int color;
+	double top;
+	double bot;
+	a = fmod(fabs(game->player.angle + 3.14 / 4), 3.14 * 2);
+	if (game->player.angle + 3.14 / 4 < 0)
+	{
+		left_border = a / (3.14 * 2);
+	}
+	else
+		left_border = (3.14 * 2 - a) / (3.14 * 2);
+	a = fmod(fabs(game->player.angle - 3.14 / 4), 3.14 * 2);
+	if (game->player.angle - 3.14 / 4 < 0)
+	{
+		right_border = a / (3.14 * 2);
+	}
+	else
+		right_border = (3.14 * 2 - a) / (3.14 * 2);
+	if (left_border > right_border)
+		right_border = right_border + 1;
+	x = 0;
+	bot = ((double)game->display_mode.h - game->line_horiz + game->display_mode.h / 2 + game->display_mode.h / 2) / (game->display_mode.h * 2);
+	top = ((double)game->display_mode.h - game->line_horiz - game->display_mode.h / 2 + game->display_mode.h / 2) / (game->display_mode.h * 2);
+	ft_putnbrln(top * 100);
+	ft_putnbrln(bot * 100);
+	while (x < game->display_mode.w)
+	{
+		a = left_border + (right_border - left_border) * ((double)x / game->display_mode.w);
+		x_texture = (a - (int)a) * game->skybox->w;
+		y = 0;
+		while ( y < game->display_mode.h)
+		{
+			y_texture = (top + (bot - top) * ((double)y / game->display_mode.h)) * game->skybox->h;
+			color = ((int*)game->skybox->pixels)[y_texture * game->skybox->w + x_texture];
+			((int*)game->screen->pixels)[y * game->display_mode.w + x] = color;
+			y++;
+		}
+		x++;
+	}
+}
+
 static void		gif_loop(t_gif *gif, t_keystate *keystate, int *k)
 {
 	if(keystate->mouse_l == 1)
@@ -164,6 +213,7 @@ int			main(void)
 			player_move(game, &loop);
 			SDL_WarpMouseInWindow(game->window, game->pre_calc.dispmodw2, game->pre_calc.dispmodh2);
 			get_pos_z(&game->player, game->sectors);
+			draw_skybox(game);
 			draw_3d_wall(game);
 			draw_hands(game->screen, game->gif, game->pre_calc);
 			draw_player_icon(game->screen, game->hud.face[2]);

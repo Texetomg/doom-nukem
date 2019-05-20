@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/16 16:29:34 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/19 15:36:17 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ static void load_images(t_game *game)
 	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.png")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->hud.face[2] = IMG_Load("imgs/hud/doom.png")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->skybox = IMG_Load("imgs/sky.jpg")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
