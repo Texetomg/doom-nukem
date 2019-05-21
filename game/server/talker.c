@@ -1,3 +1,7 @@
+/*
+** talker.c -- a datagram "client" demo
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -9,7 +13,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define SERVERPORT "9034"    // порт для соединения
+#define SERVERPORT "4950"    // порт для соединения
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +23,7 @@ int main(int argc, char *argv[])
     int numbytes;
 
     if (argc != 3) {
-        fprintf(stderr,"usage: talker hostname message\n");
+        fprintf(stderr,"usage: talker hostname messagen");
         exit(1);
     }
 
@@ -27,8 +31,8 @@ int main(int argc, char *argv[])
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_DGRAM;
 
-    if ((rv = getaddrinfo("192.168.21.55", SERVERPORT, &hints, &servinfo)) != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+    if ((rv = getaddrinfo(argv[1], SERVERPORT, &hints, &servinfo)) != 0) {
+        fprintf(stderr, "getaddrinfo: %sn", gai_strerror(rv));
         return 1;
     }
 
@@ -44,7 +48,7 @@ int main(int argc, char *argv[])
     }
 
     if (p == NULL) {
-        fprintf(stderr, "talker: failed to bind socket\n");
+        fprintf(stderr, "talker: failed to bind socketn");
         return 2;
     }
 
@@ -56,7 +60,7 @@ int main(int argc, char *argv[])
 
     freeaddrinfo(servinfo);
 
-    printf("talker: sent %d bytes to %s\n", numbytes, argv[1]);
+    printf("talker: sent %d bytes to %sn", numbytes, argv[1]);
     close(sockfd);
 
     return 0;
