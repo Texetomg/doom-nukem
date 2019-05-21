@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/20 13:48:18 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/20 22:20:24 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ typedef	struct 		s_sounds
 {
 	Mix_Music		*music;
 	Mix_Chunk		*bang;
+	Mix_Chunk       *bang1;
 }					t_sounds;
 
 typedef struct 		s_sprites
@@ -219,6 +220,9 @@ typedef struct		s_game
 	int				complexity;
 	int				line_horiz;
 	SDL_Surface     *skybox;
+	SDL_Surface     *aim;
+	int				rifle_state;
+	int				rifle_angle;
 }					t_game;
 int					ft_bright(int color, double bright);
 void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright);

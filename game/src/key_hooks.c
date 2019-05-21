@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/20 13:37:18 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/20 21:56:40 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,12 @@ void	        player_move(t_game *game, int *loop)
 	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
 	{
 		Mix_HaltChannel(-1);
-		Mix_PlayChannel( -1, game->sounds.bang, 0);
+		if (game->rifle_state == 0)
+			Mix_PlayChannel( -1, game->sounds.bang, 0);
+		else
+			Mix_PlayChannel( -1, game->sounds.bang1, 0);
+		game->rifle_angle = game->player.angle;
+		game->rifle_state = 0;
 		if (game->gif[1].curr_frame == 0)
 			game->keystate.mouse_l = 1;
 	}

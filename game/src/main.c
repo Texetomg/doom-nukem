@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/20 14:00:31 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/20 22:21:09 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif, t_pre_calc pre_calc)
 			new_x = (double)x / (pre_calc.screenw3 ) * (*(gif[1].array + gif[1].curr_frame))->w;
 			color = ((int*)((*(gif[1].array + ((int)(gif[1].curr_frame))))->pixels))[new_y * (*(gif[1].array + ((int)(gif[1].curr_frame))))->w + new_x];
 			if (color != 0x000000)
-				((int*)(screen->pixels))[(int)(y + screen->h - pre_calc.screenh3) * screen->w + x + screen->w / 2 - screen->w / 3 / 2] = color;
+				((int*)(screen->pixels))[(int)(y + screen->h - pre_calc.screenh3) * screen->w + x + screen->w / 2] = color;
 			x++;
 		}
 		x = 0;
@@ -61,6 +61,30 @@ static void		draw_hands(SDL_Surface *screen, t_gif *gif, t_pre_calc pre_calc)
 	}
 }
 
+void		draw_aim(t_game *game)
+{
+	int x;
+	int y;
+	int new_x;
+	int new_y;
+	int color;
+
+	x = game->display_mode.w / 2 - game->display_mode.w / 20;
+	while (x < game->display_mode.w / 2 + game->display_mode.w / 20)
+	{
+		new_x = ((double)x - game->display_mode.w / 2 + game->display_mode.w / 20) / (game->display_mode.w / 10) * game->aim->w;
+		y = game->display_mode.h / 2 - game->display_mode.h / 20;
+		while (y < game->display_mode.h / 2 + game->display_mode.h / 20)
+		{
+			new_y = ((double)y - game->display_mode.h / 2 + game->display_mode.h / 20) / (game->display_mode.h / 10) * game->aim->h;
+			color = ((int*)game->aim->pixels)[new_y * game->aim->w + new_x];
+			if (color != 0)
+				((int*)(game->screen->pixels))[y * game->display_mode.w + x] = color;
+			y++;
+		}
+		x++;
+	}
+}
 void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright)
 {
 	int		y;
@@ -142,8 +166,6 @@ void			draw_skybox(t_game *game)
 	x = 0;
 	bot = ((double)game->display_mode.h - game->line_horiz + game->display_mode.h / 2 + game->display_mode.h / 2) / (game->display_mode.h * 2);
 	top = ((double)game->display_mode.h - game->line_horiz - game->display_mode.h / 2 + game->display_mode.h / 2) / (game->display_mode.h * 2);
-	ft_putnbrln(top * 100);
-	ft_putnbrln(bot * 100);
 	while (x < game->display_mode.w)
 	{
 		a = left_border + (right_border - left_border) * ((double)x / game->display_mode.w);
@@ -181,6 +203,14 @@ static void		gif_loop(t_gif *gif, t_keystate *keystate, int *k)
 	else
 		*k += 1;
 }
+void		check_rifle_state(t_game *game)
+{
+	if (game->rifle_state != 1)
+	{
+		if (fabs(game->rifle_angle - game->player.angle) > 3.14 * 2)
+			game->rifle_state = 1;
+	}
+}
 
 int			main(void)
 {
@@ -210,12 +240,14 @@ int			main(void)
 		{	
 			if( Mix_PlayingMusic() == 0 )
 				Mix_PlayMusic(game->sounds.music, -1);
+			check_rifle_state(game);
 			player_move(game, &loop);
 			SDL_WarpMouseInWindow(game->window, game->pre_calc.dispmodw2, game->pre_calc.dispmodh2);
 			get_pos_z(&game->player, game->sectors);
 			draw_skybox(game);
 			draw_3d_wall(game);
 			draw_hands(game->screen, game->gif, game->pre_calc);
+			draw_aim(game);
 			draw_player_icon(game->screen, game->hud.face[2]);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);

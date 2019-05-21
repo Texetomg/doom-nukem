@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/19 15:36:17 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/20 21:55:18 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,9 @@ static void load_sounds(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->sounds.music = Mix_LoadMUS( "sounds/Sdc.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->sounds.bang = Mix_LoadWAV( "sounds/gunshot.mp3" )))
+	if (!(game->sounds.bang = Mix_LoadWAV( "sounds/quite_rifle.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->sounds.bang1 = Mix_LoadWAV( "sounds/not_quite_rifle.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->start_menu.clap[0] = Mix_LoadWAV( "sounds/loli.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
@@ -152,7 +154,7 @@ static void load_sounds(t_game *game)
 static void load_images(t_game *game)
 {
 	read_gif(game->gif, "imgs/gif1/", 0, 40, ".bmp");
-	read_gif(game->gif, "imgs/hands/", 1, 3, ".png");
+	read_gif(game->gif, "imgs/rifle/", 1, 2, ".png");
 	if (!(game->start_menu.image[0] = IMG_Load("imgs/start_menu/0.jpg")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->start_menu.image[1] = IMG_Load("imgs/start_menu/1.jpg")))
@@ -168,6 +170,8 @@ static void load_images(t_game *game)
 	if (!(game->hud.face[2] = IMG_Load("imgs/hud/doom.png")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->skybox = IMG_Load("imgs/sky.jpg")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->aim = IMG_Load("imgs/cross_aim.png")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
@@ -192,6 +196,8 @@ static void set_initial_values(t_game *game)
 	game->pre_calc.dispmodh10 = game->display_mode.h / 10;
 	game->pre_calc.dispmodw20 = game->display_mode.w / 20;
 	game->pre_calc.dispmodh20 = game->display_mode.h / 20;
+	game->rifle_state = 0;
+	game->rifle_angle = game->player.angle;
 }
 
 void	add_sprites_wall(t_game *game)
