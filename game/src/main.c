@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/21 17:35:52 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/21 18:09:43 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ int			main(void)
 	/*client*/
 	int sockfd; 
     char buffer[MAXLINE]; 
-    char *hello = "Hello from client"; 
+    char *hello = "Hello from client2"; 
     struct sockaddr_in     servaddr; 
   
     // Creating socket file descriptor 
