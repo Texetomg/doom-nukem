@@ -221,6 +221,29 @@ int			main(void)
 	loop = 1;		
 	k = -3;
 	
+	/*client*/
+	int sockfd; 
+    char buffer[MAXLINE]; 
+    char *hello = "Hello from client"; 
+    struct sockaddr_in     servaddr; 
+  
+    // Creating socket file descriptor 
+    if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
+        perror("socket creation failed"); 
+        exit(EXIT_FAILURE); 
+    } 
+  
+    memset(&servaddr, 0, sizeof(servaddr)); 
+      
+    // Filling server information 
+    servaddr.sin_family = AF_INET; 
+    servaddr.sin_port = htons(PORT); 
+    servaddr.sin_addr.s_addr = INADDR_ANY; 
+      
+    int n;
+    unsigned int len; 
+    /*client*/
+
 	while (loop)
 	{
 
@@ -251,7 +274,19 @@ int			main(void)
 			draw_player_icon(game->screen, game->hud.face[2]);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
-			//talker();
+
+			/*client*/
+			sendto(sockfd, (const char *)hello, strlen(hello), 
+        	0, (const struct sockaddr *) &servaddr,  
+            sizeof(servaddr)); 
+    		printf("Hello message sent.\n"); 
+          
+    		n = recvfrom(sockfd, (char *)buffer, MAXLINE,  
+                MSG_WAITALL, (struct sockaddr *) &servaddr, 
+                &len); 
+    		buffer[n] = '\0'; 
+    		printf("Server : %s\n", buffer); 
+			/*client*/
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		
