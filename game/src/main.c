@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/21 18:09:43 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/21 18:10:15 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ int			main(void)
 	game = create_struct();
 	loop = 1;		
 	k = -3;
-	
+
 	/*client*/
 	int sockfd; 
     char buffer[MAXLINE]; 
@@ -238,7 +238,7 @@ int			main(void)
     // Filling server information 
     servaddr.sin_family = AF_INET; 
     servaddr.sin_port = htons(PORT); 
-    servaddr.sin_addr.s_addr = INADDR_ANY; 
+    servaddr.sin_addr.s_addr = inet_addr("192.168.30.45") ;
       
     int n;
     unsigned int len; 
@@ -280,7 +280,6 @@ int			main(void)
         	0, (const struct sockaddr *) &servaddr,  
             sizeof(servaddr)); 
     		printf("Hello message sent.\n"); 
-          
     		n = recvfrom(sockfd, (char *)buffer, MAXLINE,  
                 MSG_WAITALL, (struct sockaddr *) &servaddr, 
                 &len); 
@@ -294,6 +293,7 @@ int			main(void)
 		
 	}
 	//закрытие sdl
+	close(sockfd);
 	free_SDL(game);
 	return (0);
 }
