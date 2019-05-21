@@ -140,6 +140,7 @@ int main(void)
                         close(i); // bye!
                         FD_CLR(i, &master); // удаляем из мастер-сета
                     } else {
+                         write (1, "1", 1);
                         // у нас есть какие-то данные от клиента
                         for(j = 0; j <= fdmax; j++) {
                             // отсылаем данные всем!
@@ -148,9 +149,6 @@ int main(void)
                                 if (j != listener && j != i) {
                                     if (send(j, buf, nbytes, 0) == -1) {
                                         perror("send");
-                                    } else 
-                                    {
-                                        write (1, "1", 1);
                                     }
                                 }
                             }

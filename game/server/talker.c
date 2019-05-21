@@ -13,7 +13,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define SERVERPORT "4950"    // порт для соединения
+#define SERVERPORT "9034"    // порт для соединения
 
 int main(int argc, char *argv[])
 {

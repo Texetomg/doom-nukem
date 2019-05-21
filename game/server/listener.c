@@ -9,7 +9,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define MYPORT "9000"    // порт, к которому будет соединяться клиент
+#define MYPORT "4950"    // порт, к которому будет соединяться клиент
 
 #define MAXBUFLEN 100
 
@@ -40,7 +40,7 @@ int main(void)
     hints.ai_flags = AI_PASSIVE; // использовать мой IP
 
     if ((rv = getaddrinfo(NULL, MYPORT, &hints, &servinfo)) != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        fprintf(stderr, "getaddrinfo: %sn", gai_strerror(rv));
         return 1;
     }
 
@@ -57,17 +57,18 @@ int main(void)
             perror("listener: bind");
             continue;
         }
+
         break;
     }
 
     if (p == NULL) {
-        fprintf(stderr, "listener: failed to bind socket\n");
+        fprintf(stderr, "listener: failed to bind socketn");
         return 2;
     }
 
     freeaddrinfo(servinfo);
 
-    printf("listener: waiting to recvfrom...\n");
+    printf("listener: waiting to recvfrom...n");
 
     addr_len = sizeof their_addr;
     if ((numbytes = recvfrom(sockfd, buf, MAXBUFLEN-1 , 0,
@@ -76,13 +77,13 @@ int main(void)
         exit(1);
     }
 
-    printf("listener: got packet from %s\n",
+    printf("listener: got packet from %sn",
         inet_ntop(their_addr.ss_family,
             get_in_addr((struct sockaddr *)&their_addr),
             s, sizeof s));
-    printf("listener: packet is %d bytes long\n", numbytes);
+    printf("listener: packet is %d bytes longn", numbytes);
     buf[numbytes] = ' ';
-    printf("listener: packet contains %s\n", buf);
+    printf("listener: packet contains %s \n", buf);
 
     close(sockfd);
 
