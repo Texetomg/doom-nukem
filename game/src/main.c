@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/25 14:49:12 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/25 15:59:59 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,7 @@ int			main(void)
         return 2;
     }
 
+	vec3 buf;
 	while (loop)
 	{
 		if (game->menu_status.start == 1)
@@ -296,9 +297,10 @@ int			main(void)
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
 			/*client*/
-			numbytes = send(sockfd, (t_game *)&game->player.pos, sizeof(vec3), 0);
+			numbytes = send(sockfd, &(game->player.pos), sizeof(vec3), 0);
 			printf("client: sent %d bytes to %s\n", numbytes, SERVERIP);
-			numbytes = recv(sockfd, &(game->sprites)->pos, sizeof(vec3), 1);
+			numbytes = recv(sockfd, &buf, sizeof(vec3), 1);
+			ft_putnbr(buf.x);
 			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
 			/*client*/
 			
