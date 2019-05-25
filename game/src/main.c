@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/25 15:59:59 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/25 16:52:41 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ int			main(void)
 			numbytes = send(sockfd, &(game->player.pos), sizeof(vec3), 0);
 			printf("client: sent %d bytes to %s\n", numbytes, SERVERIP);
 			numbytes = recv(sockfd, &buf, sizeof(vec3), 1);
-			ft_putnbr(buf.x);
+			ft_putnbr(buf.x * 1000);
 			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
 			/*client*/
 			
