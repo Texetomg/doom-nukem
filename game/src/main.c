@@ -258,6 +258,7 @@ int			main(void)
             perror("client: connect");
             continue;
         }
+		
         break;
     }
 	/* client */
@@ -266,7 +267,6 @@ int			main(void)
         return 2;
     }
 
-	vec3 buf;
 	while (loop)
 	{
 		if (game->menu_status.start == 1)
@@ -299,9 +299,9 @@ int			main(void)
 			/*client*/
 			numbytes = send(sockfd, &(game->player.pos), sizeof(vec3), 0);
 			printf("client: sent %d bytes to %s\n", numbytes, SERVERIP);
-			numbytes = recv(sockfd, &buf, sizeof(vec3), 1);
-			ft_putnbr(buf.x);
-
+			if ((numbytes = recv(sockfd, &(game->sprites->pos), numbytes, MSG_DONTWAIT)) < 0){
+				perror("sraka");
+			}
 			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
 			/*client*/
 			

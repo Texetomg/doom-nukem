@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #define PORT "9034"   // порт, который мы слушаем
-
+#include "../../libft/libft.h"
 
 typedef struct		s_vec3
 {
@@ -145,11 +145,12 @@ int main(void)
                     } else {
                         // у нас есть какие-то данные от клиента
                         for(j = 0; j <= fdmax; j++) {
-                            printf ("%f", buf.x);
+                            
                             // отсылаем данные всем!
                             if (FD_ISSET(j, &master)) {
                                 // кроме слушающего сокета и клиента, от которого данные пришли
                                 if (j != listener && j != i) {
+                                   
                                     if (send(j, &buf, nbytes, 0) == -1) {
                                         perror("send");
                                     }
