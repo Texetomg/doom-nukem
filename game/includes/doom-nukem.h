@@ -84,7 +84,6 @@ typedef struct 		s_img_size
 	int				w;
 }					t_img_size;
 
-
 typedef struct		s_vec3
 {
 	double			x;
@@ -246,6 +245,7 @@ typedef struct		s_game
 	int				rifle_state;
 	int				rifle_angle;
 }					t_game;
+
 int					ft_bright(int color, double bright);
 void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright);
 void           		give_sprites_cam(t_game *game);

@@ -1,3 +1,7 @@
+/*
+** selectserver.c -- сервер многопользовательского чата
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,24 +12,25 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define PORT "9034"   // порт, который мы слушаем
+#define PORT "51000"   // порт, который мы слушаем
 
 // получаем sockaddr, IPv4 или IPv6:
-void *get_in_addr(struct sockaddr *sa)
+void *get_in_addr(struct sockaddr_in *sa)
 {
-    if (sa->sa_family == AF_INET) {
+    if (sa->sin_family == AF_INET) {
         return &(((struct sockaddr_in*)sa)->sin_addr);
     }
 
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
+struct sockaddr_in cliaddr;
 
 int main(void)
 {
     fd_set master;    // главный сет дескрипторов
     fd_set read_fds;  // временный сет дескрипторов для select()
     int fdmax;        // макс. число дескрипторов
-
+ unsigned int clilen;
     int listener;     // дескриптор слушающего сокета
     int newfd;        // дескриптор для новых соединений после accept()
     struct sockaddr_storage remoteaddr; // адрес клиента
@@ -73,7 +78,7 @@ int main(void)
 
     // если мы попали сюда, значит мы не смогли забиндить сокет
     if (p == NULL) {
-        fprintf(stderr, "selectserver: failed to bindn");
+        fprintf(stderr, "selectserver: failed to bind\n");
         exit(2);
     }
 
@@ -93,14 +98,17 @@ int main(void)
 
     // главный цикл
     for(;;) {
+       
+        clilen = sizeof(cliaddr);
         read_fds = master; // копируем его
         if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) {
+            
             perror("select");
             exit(4);
         }
-
         // проходим через существующие соединения, ищем данные для чтения
         for(i = 0; i <= fdmax; i++) {
+            
             if (FD_ISSET(i, &read_fds)) { // есть!
                 if (i == listener) {
                     // обрабатываем новые соединения
@@ -125,7 +133,7 @@ int main(void)
                     }
                 } else {
                     // обрабатываем данные клиента
-                    if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0) {
+                    if ((nbytes = recvfrom(i, buf, sizeof buf, 0, (struct sockaddr *) &cliaddr, &clilen)) <= 0) {
                         // получена ошибка или соединение закрыто клиентом
                         if (nbytes == 0) {
                             // соединение закрыто
@@ -138,13 +146,11 @@ int main(void)
                     } else {
                         // у нас есть какие-то данные от клиента
                         for(j = 0; j <= fdmax; j++) {
-
                             // отсылаем данные всем!
                             if (FD_ISSET(j, &master)) {
                                 // кроме слушающего сокета и клиента, от которого данные пришли
                                 if (j != listener && j != i) {
-                                    
-                                    if (send(j, buf, nbytes, 0) == -1) {
+                                    if (sendto(j, buf, nbytes, 0,(struct sockaddr *) &cliaddr, clilen) == -1) {
                                         perror("send");
                                     }
                                 }

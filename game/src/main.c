@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/25 12:40:58 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/25 14:49:12 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,11 +234,12 @@ int			main(void)
 	loop = 1;		
 	k = -3;
 
-	/*client*/
-	/*
+	/*client
 	int sockfd; 
-    char buffer[MAXLINE]; 
-    char *hello = "Hello from client2"; 
+    //char buffer[MAXLINE]; 
+    //char *hello = "Hello from client123"; 
+	vec3 player1;
+	vec3 player2;
     struct sockaddr_in     servaddr; 
   
     // Creating socket file descriptor 
@@ -256,12 +257,10 @@ int			main(void)
       
     int n;
     unsigned int len; 
-	*/
-    /*client*/
+    client*/
 
 	while (loop)
 	{
-
 		if (game->menu_status.start == 1)
 		{
 			if( Mix_PlayingMusic() == 0 )
@@ -290,17 +289,17 @@ int			main(void)
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
 
-			/*client*/
-			/*sendto(sockfd, (const char *)hello, strlen(hello), 
+			/*client
+			player1 = game->player.pos;
+			sendto(sockfd, (struct vec3 *)&player1, sizeof(vec3), 
         	0, (const struct sockaddr *) &servaddr,  
             sizeof(servaddr)); 
-    		printf("Hello message sent.\n"); 
-    		n = recvfrom(sockfd, (char *)buffer, MAXLINE,  
-                MSG_WAITALL, (struct sockaddr *) &servaddr, 
+    		printf("Client : %3f\n", player1.x); 
+    		n = recvfrom(sockfd, (struct vec3 *)&player2, sizeof(vec3),  
+                1, (struct sockaddr *) &servaddr, 
                 &len); 
-    		buffer[n] = '\0'; 
-    		printf("Server : %s\n", buffer);*/
-			/*client*/
+    		printf("Server : %3f\n", player2.x);
+			client*/
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		
