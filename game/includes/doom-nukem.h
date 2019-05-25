@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/20 22:20:24 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/23 03:15:25 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,14 @@ typedef	struct 		s_sounds
 	Mix_Chunk       *bang1;
 }					t_sounds;
 
+typedef struct		s_angle_sprite
+{
+	double			start_angle;
+	double			end_angle;
+	SDL_Surface		*texture;
+	struct s_angle_sprite *next;
+}					t_angle_sprite;
+
 typedef struct 		s_sprites
 {
 	vec3			pos;
@@ -159,7 +167,9 @@ typedef struct 		s_sprites
 	double			heigth;
 	double			width;
 	vec3			pos_in_cam;
-	SDL_Surface 	*texture;
+	double			angle;
+	double			angle_in_cam;
+	t_angle_sprite	*angle_sprite;
 }					t_sprites;
 
 typedef	struct 		s_hud

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/21 18:05:35 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/23 03:14:36 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,28 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->width = game->display_mode.w / 10;
 	(game->sprites)->pos.z = 0.6;
 	(game->sprites)->sector = 0;
-	(game->sprites)->texture = *(game->gif)->array;
+	(game->sprites)->angle = 0;
+	(game->sprites)->angle_sprite = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
+	(game->sprites)->angle_sprite->start_angle = 3.14;
+	(game->sprites)->angle_sprite->end_angle = 3.14 * 2;
+	(game->sprites)->angle_sprite->texture = *(game->gif)->array;
+	(game->sprites)->angle_sprite->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
+	(game->sprites)->angle_sprite->next->start_angle = 0;
+	(game->sprites)->angle_sprite->next->end_angle = 3.14;
+	(game->sprites)->angle_sprite->next->next = 0;
+	(game->sprites)->angle_sprite->next->texture = *((game->gif)->array + 20);
 	(game->sprites + 1)->pos.x = 1;
 	(game->sprites + 1)->pos.y = -2;
 	(game->sprites + 1)->heigth = 0.5;
 	(game->sprites + 1)->width = game->display_mode.w / 10;
 	(game->sprites + 1)->pos.z = 0.5;
 	(game->sprites + 1)->sector = 1;
-	(game->sprites + 1)->texture = *((game->gif)->array + 20);
+	(game->sprites + 1)->angle = 3.14 / 2;
+	(game->sprites + 1)->angle_sprite = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
+	(game->sprites + 1)->angle_sprite->start_angle = -3.14;
+	(game->sprites + 1)->angle_sprite->end_angle = 3.14;
+	(game->sprites + 1)->angle_sprite->next = 0;
+	(game->sprites + 1)->angle_sprite->texture = *((game->gif)->array + 10);
 }
 
 static void	set_hood(t_game *game)

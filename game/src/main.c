@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/21 18:10:15 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/23 03:15:48 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,20 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double brigh
 	int top;
 	int t_window;
 	int b_window;
+	SDL_Surface *texture;
+	t_angle_sprite *angle_sprite;
 
+	angle_sprite = sprite.angle_sprite;
+	texture = sprite.angle_sprite->texture;
+	while (angle_sprite != 0)
+	{
+		if (sprite.angle_in_cam > angle_sprite->start_angle && sprite.angle_in_cam < angle_sprite->end_angle)
+		{
+			texture = angle_sprite->texture;
+			break;
+		}
+		angle_sprite = angle_sprite->next;
+	}
 	x_start = -sprite.pos_in_cam.y * game->display_mode.w / 2 / sprite.pos_in_cam.x + game->display_mode.w / 2 - sprite.width / 2 / sprite.pos_in_cam.x;
 	x_end = x_start + sprite.width / sprite.pos_in_cam.x;
 	bot = -(sprite.pos_in_cam.z - sprite.heigth) * game->display_mode.h / 2 / sprite.pos_in_cam.x + game->line_horiz;
@@ -114,7 +127,7 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double brigh
 	{
 		t_window = (int)(for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * ((double)x - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
 		b_window = (int)(for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * ((double)x - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
-		new_x = (double)(x - x_start) / (x_end - x_start) * sprite.texture->w;
+		new_x = (double)(x - x_start) / (x_end - x_start) * texture->w;
 		if (top < 0)
 			y = 0;
 		else if (top < t_window)
@@ -123,10 +136,10 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double brigh
 			y = top;
 		while (y < bot && y < b_window && y < game->display_mode.h)
 		{
-			new_y = (double)(y - top) / (bot - top) * sprite.texture->h;
-			if (new_y >= 0 && new_y < sprite.texture->h && new_x >= 0 && new_x < sprite.texture->w)
+			new_y = (double)(y - top) / (bot - top) * texture->h;
+			if (new_y >= 0 && new_y < texture->h && new_x >= 0 && new_x < texture->w)
 			{
-				color = ((int*)sprite.texture->pixels)[new_y * sprite.texture->w + new_x];
+				color = ((int*)texture->pixels)[new_y * texture->w + new_x];
 				((int*)game->screen->pixels)[y * game->display_mode.w + x] = ft_bright(color, bright);
 			}
 			y++;
@@ -222,6 +235,7 @@ int			main(void)
 	k = -3;
 
 	/*client*/
+	/*
 	int sockfd; 
     char buffer[MAXLINE]; 
     char *hello = "Hello from client2"; 
@@ -242,6 +256,7 @@ int			main(void)
       
     int n;
     unsigned int len; 
+	*/
     /*client*/
 
 	while (loop)
@@ -276,7 +291,7 @@ int			main(void)
 			gif_loop(game->gif, &game->keystate, &k);
 
 			/*client*/
-			sendto(sockfd, (const char *)hello, strlen(hello), 
+			/*sendto(sockfd, (const char *)hello, strlen(hello), 
         	0, (const struct sockaddr *) &servaddr,  
             sizeof(servaddr)); 
     		printf("Hello message sent.\n"); 
@@ -284,7 +299,7 @@ int			main(void)
                 MSG_WAITALL, (struct sockaddr *) &servaddr, 
                 &len); 
     		buffer[n] = '\0'; 
-    		printf("Server : %s\n", buffer); 
+    		printf("Server : %s\n", buffer);*/
 			/*client*/
 		}
 		put_fps(game->screen, game->hud, &game->time);
@@ -293,7 +308,7 @@ int			main(void)
 		
 	}
 	//закрытие sdl
-	close(sockfd);
+	//close(sockfd);
 	free_SDL(game);
 	return (0);
 }
