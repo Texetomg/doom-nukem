@@ -224,7 +224,7 @@ int			main(void)
 	/*client*/
 	int sockfd; 
     char buffer[MAXLINE]; 
-    char *hello = "Hello from client"; 
+    char *hello = "Hello from client123"; 
     struct sockaddr_in     servaddr; 
   
     // Creating socket file descriptor 
