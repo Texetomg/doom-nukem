@@ -17,9 +17,9 @@ int main(int argc, char *argv[])
     struct addrinfo hints, *servinfo, *p;
     int rv;
     int numbytes;
-    int buf;
+    char buf[10];
     if (argc != 3) {
-        fprintf(stderr,"usage: talker hostname messagen");
+        fprintf(stderr,"usage: client hostname messagen");
         exit(1);
     }
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     for(p = servinfo; p != NULL; p = p->ai_next) {
         if ((sockfd = socket(p->ai_family, p->ai_socktype,
                 p->ai_protocol)) == -1) {
-            perror("talker: socket");
+            perror("client: socket");
             continue;
         }
         if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
@@ -48,21 +48,21 @@ int main(int argc, char *argv[])
     }
 
     if (p == NULL) {
-        fprintf(stderr, "talker: failed to bind socketn");
+        fprintf(stderr, "client: failed to bind socketn");
         return 2;
     }
     while (1) {
         if ((numbytes = send(sockfd, argv[2], strlen(argv[2]), 0) == -1)) {
-            perror("talker: sendto");
+            perror(": sendto");
             exit(1);
         }
-        if ((numbytes = recv(sockfd, (int *) &buf, sizeof(buf), 0)) == -1) {
+        if ((numbytes = recv(sockfd, buf, 9, 0)) == -1) {
             perror("recv");
             exit(1);
         }
         freeaddrinfo(servinfo);
 
-        printf("talker: sent %d bytes to %sn", numbytes, argv[1]);
+        printf("client: sent %d bytes to %sn", numbytes, argv[1]);
     }
     close(sockfd);
 

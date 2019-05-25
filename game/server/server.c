@@ -138,10 +138,12 @@ int main(void)
                     } else {
                         // у нас есть какие-то данные от клиента
                         for(j = 0; j <= fdmax; j++) {
+                            printf("%s", "123");
                             // отсылаем данные всем!
                             if (FD_ISSET(j, &master)) {
                                 // кроме слушающего сокета и клиента, от которого данные пришли
                                 if (j != listener && j != i) {
+                                    
                                     if (send(j, buf, nbytes, 0) == -1) {
                                         perror("send");
                                     }
