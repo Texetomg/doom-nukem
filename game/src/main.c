@@ -281,7 +281,7 @@ int			main(void)
             sizeof(servaddr)); 
     		printf("Hello message sent.\n"); 
     		n = recvfrom(sockfd, (char *)buffer, MAXLINE,  
-                MSG_WAITALL, (struct sockaddr *) &servaddr, 
+                1, (struct sockaddr *) &servaddr, 
                 &len); 
     		buffer[n] = '\0'; 
     		printf("Server : %s\n", buffer); 
