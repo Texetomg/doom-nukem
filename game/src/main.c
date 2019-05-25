@@ -233,31 +233,39 @@ int			main(void)
 	game = create_struct();
 	loop = 1;		
 	k = -3;
+	/* client */
+	int sockfd;
+    struct addrinfo hints, *servinfo, *p;
+    int rv;
+    int numbytes;
+    vec3 buf;
 
-	/*client
-	int sockfd; 
-    //char buffer[MAXLINE]; 
-    //char *hello = "Hello from client123"; 
-	vec3 player1;
-	vec3 player2;
-    struct sockaddr_in     servaddr; 
-  
-    // Creating socket file descriptor 
-    if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) { 
-        perror("socket creation failed"); 
-        exit(EXIT_FAILURE); 
-    } 
-  
-    memset(&servaddr, 0, sizeof(servaddr)); 
-      
-    // Filling server information 
-    servaddr.sin_family = AF_INET; 
-    servaddr.sin_port = htons(PORT); 
-    servaddr.sin_addr.s_addr = inet_addr("192.168.30.45") ;
-      
-    int n;
-    unsigned int len; 
-    client*/
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    if ((rv = getaddrinfo(SERVERIP, SERVERPORT, &hints, &servinfo)) != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        return 1;
+    }
+    // пробегаемся по результатам и создаём сокет
+    for(p = servinfo; p != NULL; p = p->ai_next) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype,
+                p->ai_protocol)) == -1) {
+            perror("client: socket");
+            continue;
+        }
+        if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+            close(sockfd);
+            perror("client: connect");
+            continue;
+        }
+        break;
+    }
+	/* client */
+    if (p == NULL) {
+        fprintf(stderr, "client: failed to bind socket\n");
+        return 2;
+    }
 
 	while (loop)
 	{
@@ -288,18 +296,18 @@ int			main(void)
 			draw_player_icon(game->screen, game->hud.face[2]);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
+			/*client*/
+			numbytes = send(sockfd, (t_game *)&game->player.pos, sizeof(vec3), 0);
+			printf("client: sent %d bytes to %s\n", numbytes, SERVERIP);
+			numbytes = recv(sockfd, &buf, sizeof(vec3), 1);
+			(game->sprites)->pos.x = buf.x;
+			(game->sprites)->pos.y = buf.y;
+			(game->sprites)->pos.z = buf.z;
+			// freeaddrinfo(servinfo);
 
-			/*client
-			player1 = game->player.pos;
-			sendto(sockfd, (struct vec3 *)&player1, sizeof(vec3), 
-        	0, (const struct sockaddr *) &servaddr,  
-            sizeof(servaddr)); 
-    		printf("Client : %3f\n", player1.x); 
-    		n = recvfrom(sockfd, (struct vec3 *)&player2, sizeof(vec3),  
-                1, (struct sockaddr *) &servaddr, 
-                &len); 
-    		printf("Server : %3f\n", player2.x);
-			client*/
+			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
+			/*client*/
+			
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		
