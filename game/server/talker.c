@@ -19,16 +19,16 @@ int main(int argc, char *argv[])
     int numbytes;
     char buf[10];
     if (argc != 3) {
-        fprintf(stderr,"usage: client hostname messagen");
+        fprintf(stderr,"usage: client hostname message\n");
         exit(1);
     }
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
-    hints.ai_socktype = SOCK_DGRAM;
+    hints.ai_socktype = SOCK_STREAM;
 
     if ((rv = getaddrinfo(argv[1], SERVERPORT, &hints, &servinfo)) != 0) {
-        fprintf(stderr, "getaddrinfo: %sn", gai_strerror(rv));
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
     }
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     }
 
     if (p == NULL) {
-        fprintf(stderr, "client: failed to bind socketn");
+        fprintf(stderr, "client: failed to bind socket\n");
         return 2;
     }
     while (1) {
@@ -56,13 +56,11 @@ int main(int argc, char *argv[])
             perror(": sendto");
             exit(1);
         }
-        if ((numbytes = recv(sockfd, buf, 9, 0)) == -1) {
-            perror("recv");
-            exit(1);
-        }
-        freeaddrinfo(servinfo);
+        printf("client: sent %d bytes to %s\n", numbytes, argv[1]);
+        numbytes = recv(sockfd, buf, 9, 0);
+       // freeaddrinfo(servinfo);
 
-        printf("client: sent %d bytes to %sn", numbytes, argv[1]);
+        printf("client: recv %d bytes from %s\n", numbytes, argv[1]);
     }
     close(sockfd);
 
