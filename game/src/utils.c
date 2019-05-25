@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/21 17:49:42 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/23 14:52:41 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,26 @@ void            give_points_cam(vec2 *points_cam, vec2 *points, t_player *player
 void			give_sprites_cam(t_game *game)
 {
 	int i;
-	
+	double angle;
+	double tangens;
+	double x;
+	double y;
 	i = 0;
 	while (i < game->count_sprites)
 	{
 		(game->sprites + i)->pos_in_cam.x = ((game->sprites + i)->pos.y - game->player.pos.y) * sin(game->player.angle) + ((game->sprites + i)->pos.x - game->player.pos.x) * cos(game->player.angle);
 		(game->sprites + i)->pos_in_cam.y = ((game->sprites + i)->pos.y - game->player.pos.y) * cos(game->player.angle) - ((game->sprites + i)->pos.x - game->player.pos.x) * sin(game->player.angle);
 		(game->sprites + i)->pos_in_cam.z = (game->sprites + i)->pos.z - game->player.pos.z;
+		y = -(game->sprites + i)->pos.y + game->player.pos.y;
+		x = -(game->sprites + i)->pos.x + game->player.pos.x;
+		tangens = x / y;
+		angle = atan(tangens);
+		(game->sprites + i)->angle_in_cam = angle;
+		angle = angle - (game->sprites + i)->angle;
+		if (angle < 0)
+			angle = angle + 3.14 * 2;
+		if (angle > 3.14 * 2)
+			angle = angle - 3.14 * 2;
 		i++;
 	}
 }
