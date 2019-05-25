@@ -296,9 +296,9 @@ int			main(void)
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
 			/*client*/
-			numbytes = send(sockfd, (t_game *)&game->player.pos, sizeof(vec3), 0);
+			numbytes = send(sockfd, &(game->player.pos), sizeof(vec3), 0);
 			printf("client: sent %d bytes to %s\n", numbytes, SERVERIP);
-			numbytes = recv(sockfd, &(game->sprites)->pos, sizeof(vec3), 1);
+			numbytes = recv(sockfd, &(game->sprites->pos), sizeof(vec3), 1);
 			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
 			/*client*/
 			

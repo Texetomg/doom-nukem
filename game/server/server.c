@@ -7,8 +7,15 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
-
 #define PORT "9034"   // порт, который мы слушаем
+
+
+typedef struct		s_vec3
+{
+	double			x;
+	double			y;
+	double			z;
+}					vec3;
 
 // получаем sockaddr, IPv4 или IPv6:
 void *get_in_addr(struct sockaddr *sa)
@@ -31,7 +38,7 @@ int main(void)
     struct sockaddr_storage remoteaddr; // адрес клиента
     socklen_t addrlen;
 
-    char buf[256];    // буфер для данных клиента
+    vec3 buf;    // буфер для данных клиента
     int nbytes;
 
     char remoteIP[INET6_ADDRSTRLEN];
@@ -125,7 +132,7 @@ int main(void)
                     }
                 } else {
                     // обрабатываем данные клиента
-                    if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0) {
+                    if ((nbytes = recv(i, &buf, sizeof(vec3), 0)) <= 0) {
                         // получена ошибка или соединение закрыто клиентом
                         if (nbytes == 0) {
                             // соединение закрыто
@@ -138,11 +145,12 @@ int main(void)
                     } else {
                         // у нас есть какие-то данные от клиента
                         for(j = 0; j <= fdmax; j++) {
+                            printf ("%f", buf.x);
                             // отсылаем данные всем!
                             if (FD_ISSET(j, &master)) {
                                 // кроме слушающего сокета и клиента, от которого данные пришли
                                 if (j != listener && j != i) {
-                                    if (send(j, buf, nbytes, 0) == -1) {
+                                    if (send(j, &buf, nbytes, 0) == -1) {
                                         perror("send");
                                     }
                                 }
