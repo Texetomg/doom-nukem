@@ -299,7 +299,7 @@ int			main(void)
 			/*client*/
 			numbytes = send(sockfd, &(game->player.pos), sizeof(vec3), 0);
 			printf("client: sent %d bytes to %s\n", numbytes, SERVERIP);
-			if ((numbytes = recv(sockfd, &(game->sprites->pos), numbytes, MSG_DONTWAIT)) < 0){
+			if ((numbytes = recv(sockfd, &(game->sprites->pos), numbytes, 1 | 0)) < 0){
 				perror("sraka");
 			}
 			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
