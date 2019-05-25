@@ -238,7 +238,6 @@ int			main(void)
     struct addrinfo hints, *servinfo, *p;
     int rv;
     int numbytes;
-    vec3 buf;
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
@@ -299,12 +298,7 @@ int			main(void)
 			/*client*/
 			numbytes = send(sockfd, (t_game *)&game->player.pos, sizeof(vec3), 0);
 			printf("client: sent %d bytes to %s\n", numbytes, SERVERIP);
-			numbytes = recv(sockfd, &buf, sizeof(vec3), 1);
-			(game->sprites)->pos.x = buf.x;
-			(game->sprites)->pos.y = buf.y;
-			(game->sprites)->pos.z = buf.z;
-			// freeaddrinfo(servinfo);
-
+			numbytes = recv(sockfd, &(game->sprites)->pos, sizeof(vec3), 1);
 			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
 			/*client*/
 			
