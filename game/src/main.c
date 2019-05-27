@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/25 16:56:32 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/27 15:09:16 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,7 @@ int			main(void)
     struct addrinfo hints, *servinfo, *p;
     int rv;
     int numbytes;
-
+	
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -262,13 +262,14 @@ int			main(void)
         break;
     }
 	/* client */
+	
     if (p == NULL) {
         fprintf(stderr, "client: failed to bind socket\n");
         return 2;
     }
-
 	while (loop)
 	{
+		Mix_SetPanning(0, 255, 255);
 		if (game->menu_status.start == 1)
 		{
 			if( Mix_PlayingMusic() == 0 )
@@ -297,11 +298,27 @@ int			main(void)
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
 			/*client*/
-			numbytes = send(sockfd, &(game->player.pos), sizeof(vec3), 0);
+			game->for_udp.pos = game->player.pos;
+			game->for_udp.angle = game->player.angle;
+			while (game->for_udp.angle < 0)
+				game->for_udp.angle = game->for_udp.angle + 3.14 * 2;
+			while (game->for_udp.angle > 3.14 * 2)
+				game->for_udp.angle = game->for_udp.angle - 3.14 * 2;
+			game->for_udp.sector = game->player.curr_sector;
+			numbytes = send(sockfd, &(game->for_udp), sizeof(t_for_udp), 0);
 			printf("client: sent %d bytes to %s\n", numbytes, SERVERIP);
-			if ((numbytes = recv(sockfd, &(game->sprites->pos), numbytes, MSG_DONTWAIT | 0)) < 0){
-				perror("sraka");
+			if ((numbytes = recv(sockfd, &(game->for_udp), numbytes, MSG_DONTWAIT | 0)) < 0){
+				perror("bogdan sraka");
 			}
+			if (numbytes != 0)
+			{
+				game->sprites->pos = game->for_udp.pos;
+				game->sprites->sector = game->for_udp.sector;
+				game->sprites->angle = game->for_udp.angle;
+				if (game->for_udp.sound != 0)
+					play_sound(game, game->for_udp.pos, game->for_udp.sound, -1);
+			}
+
 			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
 			/*client*/
 			

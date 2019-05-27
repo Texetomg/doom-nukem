@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/23 14:52:41 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/27 15:06:32 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void			give_sprites_cam(t_game *game)
 		x = -(game->sprites + i)->pos.x + game->player.pos.x;
 		tangens = x / y;
 		angle = atan(tangens);
+		if (x < 0)
+			angle = angle - 3.14;
 		(game->sprites + i)->angle_in_cam = angle;
 		angle = angle - (game->sprites + i)->angle;
 		if (angle < 0)

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/23 03:14:36 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/27 14:18:43 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ static void load_sounds(t_game *game)
 	if (!(game->start_menu.clap[2] = Mix_LoadWAV( "sounds/doom.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->start_menu.clap[3] = Mix_LoadWAV( "sounds/gay.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->sounds.step = Mix_LoadWAV( "sounds/step.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 

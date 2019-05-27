@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/23 03:15:25 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/27 15:07:38 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 
-# define SERVERIP "192.168.30.47"
+# define SERVERIP "192.168.30.46"
 # define SERVERPORT "9034" 
 # define MAXLINE 1024 
 
@@ -42,7 +42,7 @@
 # define COLOR_WALL 0xDA70D6
 # define COLOR_BETW 0xAA0000
 # define STEP 0.05
-
+# define STEP_SOUND 1
 typedef struct		s_gif
 {
 	int				frame;
@@ -153,6 +153,7 @@ typedef	struct 		s_sounds
 	Mix_Music		*music;
 	Mix_Chunk		*bang;
 	Mix_Chunk       *bang1;
+	Mix_Chunk		*step;
 }					t_sounds;
 
 typedef struct		s_angle_sprite
@@ -217,6 +218,14 @@ typedef struct 		s_pre_calc
 	int dispmodh20; 
 } 					t_pre_calc;
 
+typedef struct		s_for_udp
+{
+	vec3			pos;
+	int				sector;
+	double			angle;
+	int				sound;
+}					t_for_udp;
+
 typedef struct		s_game
 {
 	t_pre_calc		pre_calc;
@@ -248,8 +257,10 @@ typedef struct		s_game
 	SDL_Surface     *aim;
 	int				rifle_state;
 	int				rifle_angle;
+	t_for_udp		for_udp;
 }					t_game;
 
+void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);
 int					ft_bright(int color, double bright);
 void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright);
 void           		give_sprites_cam(t_game *game);

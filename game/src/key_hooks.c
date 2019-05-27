@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/20 21:56:40 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/27 14:48:35 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,21 +144,47 @@ void	        player_move(t_game *game, int *loop)
 		game->menu_status.main = 0;
 	}
 	if (game->keystate.forward && (!game->keystate.right && !game->keystate.left))
+	{
+		game->for_udp.sound = STEP_SOUND;
 		move(game, direct.x, direct.y);
-	if (game->keystate.back && (!game->keystate.right && !game->keystate.left))
+	}
+	else if (game->keystate.back && (!game->keystate.right && !game->keystate.left))
+	{
+		game->for_udp.sound = STEP_SOUND;
 		move(game, -direct.x, -direct.y);
-	if (game->keystate.right && (!game->keystate.forward && !game->keystate.back))
+	}
+	else if (game->keystate.right && (!game->keystate.forward && !game->keystate.back))
+	{
+		game->for_udp.sound = STEP_SOUND;
 		move(game, direct.y, -direct.x);
-	if (game->keystate.left && (!game->keystate.forward && !game->keystate.back))
+	}
+	else if (game->keystate.left && (!game->keystate.forward && !game->keystate.back))
+	{
+		game->for_udp.sound = STEP_SOUND;
 		move(game, -direct.y, direct.x);
-	if (game->keystate.forward && game->keystate.right)
+	}
+	else if (game->keystate.forward && game->keystate.right)
+	{
+		game->for_udp.sound = STEP_SOUND;
 		move(game, curve.y, -curve.x);
-	if (game->keystate.forward && game->keystate.left)
+	}
+	else if (game->keystate.forward && game->keystate.left)
+	{
+		game->for_udp.sound = STEP_SOUND;
 		move(game, curve.x, curve.y);
-	if (game->keystate.back && game->keystate.right)
+	}
+	else if (game->keystate.back && game->keystate.right)
+	{
+		game->for_udp.sound = STEP_SOUND;
 		move(game, -curve.x, -curve.y);
-	if (game->keystate.back && game->keystate.left)
+	}
+	else if (game->keystate.back && game->keystate.left)
+	{
+		game->for_udp.sound = STEP_SOUND;
 		move(game, -curve.y, curve.x);
+	}
+	else
+		game->for_udp.sound = 0;
 	if (game->keystate.jump && (fabs(game->player.foots - (game->sectors + game->player.curr_sector)->floor)) < 0.000001)
 	{
 		game->player.z_accel = 0.06;
