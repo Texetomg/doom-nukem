@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/27 15:09:16 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/27 15:19:48 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,23 +269,24 @@ int			main(void)
     }
 	while (loop)
 	{
-		Mix_SetPanning(0, 255, 255);
+		
 		if (game->menu_status.start == 1)
 		{
-			if( Mix_PlayingMusic() == 0 )
+			/*if( Mix_PlayingMusic() == 0 )
 				Mix_PlayMusic(game->start_menu.music, -1);
+				*/
 			start_menu_render(game, &loop);
 		}
 		if(game->menu_status.tab == 1)
 		{
-			if( Mix_PlayingMusic() == 0 )
-				Mix_PlayMusic(game->sounds.music, -1);
+			/*if( Mix_PlayingMusic() == 0 )
+				Mix_PlayMusic(game->sounds.music, -1);*/
 			tab_menu_render(game, &loop);
 		}
 		if (game->menu_status.main == 1)
 		{	
-			if( Mix_PlayingMusic() == 0 )
-				Mix_PlayMusic(game->sounds.music, -1);
+			/*if( Mix_PlayingMusic() == 0 )
+				Mix_PlayMusic(game->sounds.music, -1);*/
 			check_rifle_state(game);
 			player_move(game, &loop);
 			SDL_WarpMouseInWindow(game->window, game->pre_calc.dispmodw2, game->pre_calc.dispmodh2);
