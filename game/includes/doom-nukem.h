@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/27 15:28:42 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/27 15:54:50 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 
-# define SERVERIP "192.168.23.87"
+# define SERVERIP "192.168.20.58"
 # define SERVERPORT "9034" 
 # define MAXLINE 1024 
 
