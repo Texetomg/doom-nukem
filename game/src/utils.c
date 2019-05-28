@@ -6,11 +6,16 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/27 15:29:20 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/28 18:07:14 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+/*
+void			create_new_player(t_game *game, t_for_udp for_udp)
+{
+	//заполнить функцию
+}*/
 
 int				inside_sector(t_game *game, double x, double y, t_sector sector)
 {
@@ -54,30 +59,30 @@ void            give_points_cam(vec2 *points_cam, vec2 *points, t_player *player
 
 void			give_sprites_cam(t_game *game)
 {
-	int i;
 	double angle;
 	double tangens;
 	double x;
 	double y;
-	i = 0;
-	while (i < game->count_sprites)
+	t_sprite *sprite;
+	sprite = game->sprites;
+	while (sprite != 0)
 	{
-		(game->sprites + i)->pos_in_cam.x = ((game->sprites + i)->pos.y - game->player.pos.y) * sin(game->player.angle) + ((game->sprites + i)->pos.x - game->player.pos.x) * cos(game->player.angle);
-		(game->sprites + i)->pos_in_cam.y = ((game->sprites + i)->pos.y - game->player.pos.y) * cos(game->player.angle) - ((game->sprites + i)->pos.x - game->player.pos.x) * sin(game->player.angle);
-		(game->sprites + i)->pos_in_cam.z = (game->sprites + i)->pos.z - game->player.pos.z;
-		y = -(game->sprites + i)->pos.y + game->player.pos.y;
-		x = -(game->sprites + i)->pos.x + game->player.pos.x;
-		tangens = x / y;
+		(sprite)->pos_in_cam.x = ((sprite)->pos.y - game->player.pos.y) * sin(game->player.angle) + ((sprite)->pos.x - game->player.pos.x) * cos(game->player.angle);
+		(sprite)->pos_in_cam.y = ((sprite)->pos.y - game->player.pos.y) * cos(game->player.angle) - ((sprite)->pos.x - game->player.pos.x) * sin(game->player.angle);
+		(sprite)->pos_in_cam.z = (sprite)->pos.z - game->player.pos.z;
+		y = -(sprite)->pos.y + game->player.pos.y;
+		x = -(sprite)->pos.x + game->player.pos.x;
+		tangens = y / x;
 		angle = atan(tangens);
 		if (x < 0)
 			angle = angle - 3.14;
-		(game->sprites + i)->angle_in_cam = angle;
-		angle = angle - (game->sprites + i)->angle;
-		if (angle < 0)
+		angle = angle - (sprite)->angle;
+		while (angle < 0)
 			angle = angle + 3.14 * 2;
-		if (angle > 3.14 * 2)
+		while (angle > 3.14 * 2)
 			angle = angle - 3.14 * 2;
-		i++;
+		(sprite)->angle_in_cam = angle;
+		sprite = sprite->next;
 	}
 }
 

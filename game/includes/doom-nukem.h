@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/27 15:54:50 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/28 17:03:51 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,8 +164,9 @@ typedef struct		s_angle_sprite
 	struct s_angle_sprite *next;
 }					t_angle_sprite;
 
-typedef struct 		s_sprites
+typedef struct 		s_sprite
 {
+	int				id;
 	vec3			pos;
 	int				sector;
 	double			heigth;
@@ -174,7 +175,8 @@ typedef struct 		s_sprites
 	double			angle;
 	double			angle_in_cam;
 	t_angle_sprite	*angle_sprite;
-}					t_sprites;
+	struct s_sprite *next;
+}					t_sprite;
 
 typedef	struct 		s_hud
 {
@@ -232,7 +234,7 @@ typedef struct		s_game
 	t_hud			hud;
 	t_sounds		sounds;
 	t_player		player;
-	t_sprites		*sprites;
+	t_sprite		*sprites;
 	vec2			*points;
 	t_sector		*sectors;
 	SDL_Window		*window;
@@ -248,7 +250,6 @@ typedef struct		s_game
 	int				count_points;
 	vec2   			*points_cam;
 	int				count_sectors;
-	int				count_sprites;
 	t_keystate		keystate;	
 	t_gif			gif[2];
 	int				complexity;
@@ -262,7 +263,7 @@ typedef struct		s_game
 
 void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);
 int					ft_bright(int color, double bright);
-void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright);
+void        		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright);
 void           		give_sprites_cam(t_game *game);
 void    			start_menu_render(t_game *game, int *loop);
 void    			tab_menu_render(t_game *game, int *loop);

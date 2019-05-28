@@ -93,19 +93,23 @@ int main(void)
     fdmax = listener; // на данный момент это этот
 
     // главный цикл
-    for(;;) {
+    for(;;)
+	{
         read_fds = master; // копируем его
-        if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) {
+        if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1)
+		{
             perror("select");
             exit(4);
         }
 
         // проходим через существующие соединения, ищем данные для чтения
-        for(i = 0; i <= fdmax; i++) {
-            if (FD_ISSET(i, &read_fds)) { // есть!
-                if (i == listener) {
-                    // обрабатываем новые соединения
-                    addrlen = sizeof remoteaddr;
+        for(i = 0; i <= fdmax; i++)
+		{
+			if (FD_ISSET(i, &read_fds)) { // есть!
+				if (i == listener)
+				{
+					// обрабатываем новые соединения
+					addrlen = sizeof remoteaddr;
                     newfd = accept(listener,
                         (struct sockaddr *)&remoteaddr,
                         &addrlen);
@@ -124,7 +128,9 @@ int main(void)
                                 remoteIP, INET6_ADDRSTRLEN),
                             newfd);
                     }
-                } else {
+                }
+				else
+				{
                     // обрабатываем данные клиента
                     if ((nbytes = recv(i, &buf, sizeof(t_for_udp), 0)) <= 0) {
                         // получена ошибка или соединение закрыто клиентом

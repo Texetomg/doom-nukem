@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/27 15:29:45 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/28 18:04:50 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,8 +347,8 @@ void    draw_sector(t_game *game, t_draw for_draw)
     double y1, y2;
 	double y1a, y2a;
 	double x1_b4, x2_b4;
-	int k;
 	double perc1, perc2;
+	t_sprite	*sprite;
 	i = 0;
     while (i < (game->sectors + for_draw.curr_sector)->count_wall)
     {
@@ -441,13 +441,13 @@ void    draw_sector(t_game *game, t_draw for_draw)
         }
         i++;
     }
-	k = 0;
-	while (k < game->count_sprites)
+	sprite = game->sprites;
+	while (sprite != 0)
 	{
-		if ((game->sprites + k)->sector == for_draw.curr_sector)
+		if (sprite->sector == for_draw.curr_sector)
 		{
-			draw_sprites(game, for_draw, *(game->sprites + k), (game->sectors + for_draw.curr_sector)->brightness);
+			draw_sprites(game, for_draw, *sprite, (game->sectors + for_draw.curr_sector)->brightness);
 		}
-		k++;
+		sprite = sprite->next;
 	}
 }

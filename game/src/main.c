@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/27 15:19:48 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/28 05:10:13 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void		draw_aim(t_game *game)
 		x++;
 	}
 }
-void		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright)
+void		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright)
 {
 	int		y;
 	int		x;
@@ -311,7 +311,7 @@ int			main(void)
 			if ((numbytes = recv(sockfd, &(game->for_udp), numbytes, MSG_DONTWAIT | 0)) < 0){
 				perror("bogdan sraka");
 			}
-			if (numbytes != 0)
+			if (numbytes > 0)
 			{
 				game->sprites->pos = game->for_udp.pos;
 				game->sprites->sector = game->for_udp.sector;
