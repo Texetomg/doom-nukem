@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/28 17:03:51 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/28 18:52:30 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ typedef struct		s_sector
 	double			floor;
 	double			ceil;
 	int				*neighbors;
+	int				*grid;
 	int				*index_points;
 	int				count_wall;
 	double			brightness;

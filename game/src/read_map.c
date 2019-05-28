@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/14 20:17:50 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/28 19:03:46 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,20 @@ static void	define_sector(t_sector *sector, char **line)
 		i++;
 	}
 	clean_buffer(buffer);
-	sector->brightness = (double)ft_atoi(line[4]) / 100;
+	/*
+	 *      * костыль
+	 *           */
+	if ((sector->grid = (int*)malloc(sizeof(int) *  sector->count_wall)) == 0)
+		check_error_n_exit(1, "malloc error");
+	i = 0;
+	buffer = ft_strsplit(line[4], ' ');
+	while(i < sector->count_wall)
+	{
+		*(sector->grid + i) = ft_atoi(buffer[i]);
+		i++;
+	}
+	clean_buffer(buffer);
+	sector->brightness = (double)ft_atoi(line[5]) / 100;
 }
 
 
