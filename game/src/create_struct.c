@@ -200,7 +200,9 @@ static void load_images(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->skybox = IMG_Load("imgs/sky.jpg")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->aim = IMG_Load("imgs/cross_aim.png")))
+	if (!(game->hud.aim = IMG_Load("imgs/cross_aim.png")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.hp_bar = IMG_Load("imgs/hud/hp_bar.png")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 

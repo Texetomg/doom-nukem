@@ -19,29 +19,6 @@ void	set_color(SDL_Color *color, int r, int g, int b)
 	color->b = b;
 }
 
-void	draw_image(t_game *game, int i, SDL_Surface *image[])
-{
-	int	x = 0;
-	int	y = 0;
-	int new_x;
-	int new_y;
-	int color;
-
-	while (y < game->screen->h)
-	{
-		new_y = (double)y / game->screen->h * image[i]->h;
-		x = 0;
-		while (x < game->screen->w)
-		{
-			new_x = (double)x / game->screen->w * image[i]->w;
-			color = ((int*)(image[i]->pixels))[new_y * image[i]->w + new_x];
-			((int*)(game->screen->pixels))[y * game->screen->w + x] = color;
-			x++;
-		}
-		y++;
-	}
-}
-
 static void arrows(t_game *game, int pos)
 {
 	game->start_menu.text_pos += pos;
@@ -86,7 +63,7 @@ void    start_menu_render(t_game *game, int *loop)
 	game->start_menu.dest.w = 120;
 	
 	set_color(&game->start_menu.text_color, 255, 255, 0);
-	draw_image(game, game->start_menu.text_pos, game->start_menu.image);
+	draw_full_screen_img(game->screen, game->start_menu.image[game->start_menu.text_pos]);
 	game->start_menu.dest.x = game->screen->w / 100 * 65;
 	game->start_menu.dest.y = game->screen->h / 100 * 5;
 	key_hook(game, &loop);

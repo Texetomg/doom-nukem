@@ -36,55 +36,8 @@ static void	draw_3d_wall(t_game *game)
 	draw_sector(game, for_draw);
 	draw_minimap(game);
 }
-//отрисовка рук/оружия 
-static void		draw_hands(SDL_Surface *screen, t_gif *gif, t_pre_calc pre_calc)
-{
-	int		x = 0;
-	int		y = 0;
-	int		new_x = 0; 
-	int		new_y = 0;
-	int		color;
 
-	while (y < pre_calc.screenh3 )
-	{
-		new_y = (double)y / (pre_calc.screenh3 ) * (*(gif[1].array + ((int)(gif[1].curr_frame))))->h;
-		while (x < pre_calc.screenw3 )
-		{
-			new_x = (double)x / (pre_calc.screenw3 ) * (*(gif[1].array + gif[1].curr_frame))->w;
-			color = ((int*)((*(gif[1].array + ((int)(gif[1].curr_frame))))->pixels))[new_y * (*(gif[1].array + ((int)(gif[1].curr_frame))))->w + new_x];
-			if (color != 0x000000)
-				((int*)(screen->pixels))[(int)(y + screen->h - pre_calc.screenh3) * screen->w + x + screen->w / 2] = color;
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-}
 
-void		draw_aim(t_game *game)
-{
-	int x;
-	int y;
-	int new_x;
-	int new_y;
-	int color;
-
-	x = game->display_mode.w / 2 - game->display_mode.w / 20;
-	while (x < game->display_mode.w / 2 + game->display_mode.w / 20)
-	{
-		new_x = ((double)x - game->display_mode.w / 2 + game->display_mode.w / 20) / (game->display_mode.w / 10) * game->aim->w;
-		y = game->display_mode.h / 2 - game->display_mode.h / 20;
-		while (y < game->display_mode.h / 2 + game->display_mode.h / 20)
-		{
-			new_y = ((double)y - game->display_mode.h / 2 + game->display_mode.h / 20) / (game->display_mode.h / 10) * game->aim->h;
-			color = ((int*)game->aim->pixels)[new_y * game->aim->w + new_x];
-			if (color != 0)
-				((int*)(game->screen->pixels))[y * game->display_mode.w + x] = color;
-			y++;
-		}
-		x++;
-	}
-}
 void		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright)
 {
 	int		y;
@@ -250,12 +203,12 @@ int			main(void)
     for(p = servinfo; p != NULL; p = p->ai_next) {
         if ((sockfd = socket(p->ai_family, p->ai_socktype,
                 p->ai_protocol)) == -1) {
-            perror("client: socket");
+        //    perror("client: socket");
             continue;
         }
         if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
             close(sockfd);
-            perror("client: connect");
+        //    perror("client: connect");
             continue;
         }
 		
@@ -265,11 +218,10 @@ int			main(void)
 	
     if (p == NULL) {
         fprintf(stderr, "client: failed to bind socket\n");
-        return 2;
+       // return 2;
     }
 	while (loop)
 	{
-		
 		if (game->menu_status.start == 1)
 		{
 			/*if( Mix_PlayingMusic() == 0 )
@@ -293,9 +245,7 @@ int			main(void)
 			get_pos_z(&game->player, game->sectors);
 			draw_skybox(game);
 			draw_3d_wall(game);
-			draw_hands(game->screen, game->gif, game->pre_calc);
-			draw_aim(game);
-			draw_player_icon(game->screen, game->hud.face[2]);
+			draw_hud(game);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
 			/*client*/
@@ -319,15 +269,11 @@ int			main(void)
 				if (game->for_udp.sound != 0)
 					play_sound(game, game->for_udp.pos, game->for_udp.sound, -1);
 			}
-
 			printf("client: recv %d bytes from %s\n", numbytes, SERVERIP);
 			/*client*/
-			
 		}
 		put_fps(game->screen, game->hud, &game->time);
-		
 		SDL_UpdateWindowSurface(game->window);
-		
 	}
 	//закрытие sdl
 	//close(sockfd);

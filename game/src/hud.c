@@ -12,26 +12,55 @@
 
 #include "doom-nukem.h"
 
-void draw_player_icon(SDL_Surface *screen, SDL_Surface *face)
-{
-	int		x = 0;
-	int		y = 0;
-	int		new_x = 0;
-	int		new_y = 0;
-	int		color;
+static void draw_player_icon(SDL_Surface *screen, SDL_Surface *img){
+	vec2 start;
+	vec2 end;
 
-	while (y < screen->h / 5 )
-	{
-		new_y = (double)y / (screen->h / 5  ) * face->h;
-		while (x < screen->w / 5  )
-		{
-			new_x = (double)x / (screen->w / 5 ) * face->w;
-			color = ((int*)(face->pixels))[new_y * face->w + new_x];
-			if (color != 0x000000)
-				((int*)(screen->pixels))[(int)(y + screen->h - screen->h / 5) * screen->w + x ] = color;
-			x++;
-		}
-		x = 0;
-		y++;
-	}
+	start.x = 0;
+	start.y = screen->h / 100 * 85;
+	end.x = screen->w / 100 * 15;
+	end.y = screen->h;
+	draw_img(screen, img, start, end);
+}
+
+static void draw_aim(SDL_Surface *screen, SDL_Surface *img){
+	vec2 start;
+	vec2 end;
+
+	start.x = screen->w / 2 - screen->w / 50;
+	start.y = screen->h /2  - screen->h / 50;
+	end.x = screen->w / 2 + screen->w / 50;
+	end.y = screen->h / 2 + screen->h / 50;
+	draw_img(screen, img, start, end);
+}
+
+static void draw_hp_bar(SDL_Surface *screen, SDL_Surface *img){
+	vec2 start;
+	vec2 end;
+
+	start.x = screen->w / 100 * 15;
+	start.y = screen->h / 100 * 92;
+	end.x = screen->w / 100 * 30;
+	end.y = screen->h / 100 * 98;
+
+	draw_img(screen, img, start, end);
+}
+
+static void draw_hands(SDL_Surface *screen, SDL_Surface *img){
+	vec2 start;
+	vec2 end;
+
+	start.x = screen->w / 2;
+	start.y = screen->h / 2;
+	end.x = screen->w;
+	end.y = screen->h;
+
+	draw_img(screen, img, start, end);
+}
+
+void draw_hud(t_game *game){
+	draw_player_icon(game->screen, game->hud.face[2]);
+	draw_aim(game->screen, game->hud.aim);
+	draw_hp_bar(game->screen, game->hud.hp_bar);
+	draw_hands(game->screen, *(game->gif[1].array + game->gif[1].curr_frame));
 }

@@ -60,7 +60,7 @@ void    tab_menu_render(t_game *game, int *loop)
 	game->tab_menu.image[1] = NULL;
 	game->tab_menu.image[2] = NULL;
 	set_color(&game->start_menu.text_color, 255, 255, 0);
-	draw_image(game, 0, game->tab_menu.image);
+	draw_full_screen_img(game->screen, game->tab_menu.image[0]);
     key_hook(game, &loop);
 	game->tab_menu.dest.y = game->screen->h / 100 * new_str;
 	new_str += 5;
