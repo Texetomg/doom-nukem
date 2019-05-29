@@ -6,7 +6,7 @@
 /*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/23 03:08:26 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/28 19:08:03 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,8 @@ static void    draw_wall(t_game *game,
 static void    pre_draw_sector(SDL_Surface *screen,
                                SDL_DisplayMode display_mode,
                                t_draw for_draw,
-							   double bright)
+							   double bright,
+							   int grid)
 {
     int i;
     int k;
@@ -301,7 +302,8 @@ static void    pre_draw_sector(SDL_Surface *screen,
     double yb_window;
     double yt_window;
     int color;
-    
+
+	(void)grid; //остваил ребятам доделать решетку между секторами	
     i = (int)for_draw.wall.x1;
     if (i < 0)
         i = 0;
@@ -347,8 +349,8 @@ void    draw_sector(t_game *game, t_draw for_draw)
     double y1, y2;
 	double y1a, y2a;
 	double x1_b4, x2_b4;
-	int k;
 	double perc1, perc2;
+	t_sprite	*sprite;
 	i = 0;
     while (i < (game->sectors + for_draw.curr_sector)->count_wall)
     {
@@ -425,7 +427,7 @@ void    draw_sector(t_game *game, t_draw for_draw)
                     for_next_draw.fov_left = first_point;
                     for_next_draw.fov_right = second_point;
                     draw_sector(game, for_next_draw);
-                    pre_draw_sector(game->screen, game->display_mode, for_next_draw, (game->sectors + for_draw.curr_sector)->brightness);
+                    pre_draw_sector(game->screen, game->display_mode, for_next_draw, (game->sectors + for_draw.curr_sector)->brightness, *((game->sectors + for_draw.curr_sector)->grid + i));
                 }
             }
             else
@@ -441,13 +443,13 @@ void    draw_sector(t_game *game, t_draw for_draw)
         }
         i++;
     }
-	k = 0;
-	while (k < game->count_sprites)
+	sprite = game->sprites;
+	while (sprite != 0)
 	{
-		if ((game->sprites + k)->sector == for_draw.curr_sector)
+		if (sprite->sector == for_draw.curr_sector)
 		{
-			draw_sprites(game, for_draw, *(game->sprites + k), (game->sectors + for_draw.curr_sector)->brightness);
+			draw_sprites(game, for_draw, *sprite, (game->sectors + for_draw.curr_sector)->brightness);
 		}
-		k++;
+		sprite = sprite->next;
 	}
 }

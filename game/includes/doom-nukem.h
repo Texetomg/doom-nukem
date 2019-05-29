@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/23 03:15:25 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/28 18:52:30 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define COLOR_WALL 0xDA70D6
 # define COLOR_BETW 0xAA0000
 # define STEP 0.05
-
+# define STEP_SOUND 1
 typedef struct		s_gif
 {
 	int				frame;
@@ -130,6 +130,7 @@ typedef struct		s_sector
 	double			floor;
 	double			ceil;
 	int				*neighbors;
+	int				*grid;
 	int				*index_points;
 	int				count_wall;
 	double			brightness;
@@ -153,6 +154,7 @@ typedef	struct 		s_sounds
 	Mix_Music		*music;
 	Mix_Chunk		*bang;
 	Mix_Chunk       *bang1;
+	Mix_Chunk		*step;
 }					t_sounds;
 
 typedef struct		s_angle_sprite
@@ -163,8 +165,9 @@ typedef struct		s_angle_sprite
 	struct s_angle_sprite *next;
 }					t_angle_sprite;
 
-typedef struct 		s_sprites
+typedef struct 		s_sprite
 {
+	int				id;
 	vec3			pos;
 	int				sector;
 	double			heigth;
@@ -173,7 +176,8 @@ typedef struct 		s_sprites
 	double			angle;
 	double			angle_in_cam;
 	t_angle_sprite	*angle_sprite;
-}					t_sprites;
+	struct s_sprite *next;
+}					t_sprite;
 
 typedef	struct 		s_hud
 {
@@ -217,13 +221,21 @@ typedef struct 		s_pre_calc
 	int dispmodh20; 
 } 					t_pre_calc;
 
+typedef struct		s_for_udp
+{
+	vec3			pos;
+	int				sector;
+	double			angle;
+	int				sound;
+}					t_for_udp;
+
 typedef struct		s_game
 {
 	t_pre_calc		pre_calc;
 	t_hud			hud;
 	t_sounds		sounds;
 	t_player		player;
-	t_sprites		*sprites;
+	t_sprite		*sprites;
 	vec2			*points;
 	t_sector		*sectors;
 	SDL_Window		*window;
@@ -239,7 +251,6 @@ typedef struct		s_game
 	int				count_points;
 	vec2   			*points_cam;
 	int				count_sectors;
-	int				count_sprites;
 	t_keystate		keystate;	
 	t_gif			gif[2];
 	int				complexity;
@@ -248,10 +259,12 @@ typedef struct		s_game
 	SDL_Surface     *aim;
 	int				rifle_state;
 	int				rifle_angle;
+	t_for_udp		for_udp;
 }					t_game;
 
+void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);
 int					ft_bright(int color, double bright);
-void        		draw_sprites(t_game *game, t_draw for_draw, t_sprites sprite, double bright);
+void        		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright);
 void           		give_sprites_cam(t_game *game);
 void    			start_menu_render(t_game *game, int *loop);
 void    			tab_menu_render(t_game *game, int *loop);
