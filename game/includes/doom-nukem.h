@@ -31,7 +31,7 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 
-# define SERVERIP "192.168.30.47"
+# define SERVERIP "192.168.30.46"
 # define SERVERPORT "9034" 
 # define MAXLINE 1024 
 
