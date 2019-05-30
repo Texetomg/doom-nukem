@@ -214,29 +214,7 @@ int			main(void)
 			draw_hud(game);
 			//запуск гифок
 			gif_loop(game->gif, &game->keystate, &k);
-			/*client*/
-			game->for_udp.pos = game->player.pos;
-			game->for_udp.angle = game->player.angle;
-			while (game->for_udp.angle < 0)
-				game->for_udp.angle = game->for_udp.angle + 3.14 * 2;
-			while (game->for_udp.angle > 3.14 * 2)
-				game->for_udp.angle = game->for_udp.angle - 3.14 * 2;
-			game->for_udp.sector = game->player.curr_sector;
-			game->socket_struct.numbytes = send(game->socket_struct.sockfd, &(game->for_udp), sizeof(t_for_udp), 0);
-			//printf("client: sent %d bytes to %s\n", game->socket_struct.numbytes, SERVERIP);
-			if ((game->socket_struct.numbytes = recv(game->socket_struct.sockfd, &(game->for_udp), game->socket_struct.numbytes, MSG_DONTWAIT | 0)) < 0){
-				perror("bogdan sraka");
-			}
-			if (game->socket_struct.numbytes > 0)
-			{
-				game->sprites->pos = game->for_udp.pos;
-				game->sprites->sector = game->for_udp.sector;
-				game->sprites->angle = game->for_udp.angle;
-				if (game->for_udp.sound != 0)
-					play_sound(game, game->for_udp.pos, game->for_udp.sound, -1);
-			}
-			//printf("client: recv %d bytes from %s\n", game->socket_struct.numbytes, SERVERIP);
-			/*client*/
+			client(game);
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);

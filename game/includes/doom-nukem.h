@@ -301,4 +301,5 @@ void 				draw_img(SDL_Surface *screen, SDL_Surface *img, vec2 start, vec2 end);
 void 				draw_hud(t_game *game);
 void				draw_full_screen_img(SDL_Surface *screen, SDL_Surface *image);
 void 				init_client(t_socket *socket_struct);
+void 				client(t_game *game);
 #endif
