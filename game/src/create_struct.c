@@ -256,5 +256,6 @@ t_game	*create_struct(void)
 	load_images(game);
 	set_initial_values(game);
 	add_sprites_wall(game);
+	init_client(&game->socket_struct);
 	return (game);
 }

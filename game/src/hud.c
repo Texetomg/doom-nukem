@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fps.c                                              :+:      :+:    :+:   */
+/*   hud.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -42,7 +42,6 @@ static void draw_hp_bar(SDL_Surface *screen, SDL_Surface *img){
 	start.y = screen->h / 100 * 92;
 	end.x = screen->w / 100 * 30;
 	end.y = screen->h / 100 * 98;
-
 	draw_img(screen, img, start, end);
 }
 
@@ -54,7 +53,6 @@ static void draw_hands(SDL_Surface *screen, SDL_Surface *img){
 	start.y = screen->h / 2;
 	end.x = screen->w;
 	end.y = screen->h;
-
 	draw_img(screen, img, start, end);
 }
 

@@ -31,7 +31,7 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 
-# define SERVERIP "192.168.30.47"
+# define SERVERIP "192.168.23.61"
 # define SERVERPORT "9034" 
 # define MAXLINE 1024 
 
@@ -231,6 +231,12 @@ typedef struct		s_for_udp
 	int				sound;
 }					t_for_udp;
 
+typedef struct		s_socket
+{
+	int				sockfd;
+	int				numbytes;
+}					t_socket;
+
 typedef struct		s_game
 {
 	t_pre_calc		pre_calc;
@@ -260,6 +266,7 @@ typedef struct		s_game
 	SDL_Surface     *skybox;
 	int				rifle_state;
 	int				rifle_angle;
+	t_socket		socket_struct;
 	t_for_udp		for_udp;
 }					t_game;
 
@@ -293,4 +300,5 @@ int             	inside_sector(t_game *game, double x, double y, t_sector sector
 void 				draw_img(SDL_Surface *screen, SDL_Surface *img, vec2 start, vec2 end);
 void 				draw_hud(t_game *game);
 void				draw_full_screen_img(SDL_Surface *screen, SDL_Surface *image);
+void 				init_client(t_socket *socket_struct);
 #endif

@@ -14,7 +14,7 @@ NAME = doom-nukem
 FLAG = -Wall -Wextra -Werror -g -O3
 SRC = sound.c main.c draw_minimap.c fps.c create_struct.c read_map.c key_hooks.c \
 utils.c SDL_utils.c math_utils.c render.c start_menu.c tab_menu.c hud.c \
-draw_img.c
+draw_img.c init_client.c
 INC = -I ../libft/ \
 -I ./includes \
 -I ../framework/SDL2.framework/Versions/A/Headers \

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_minimap.c                                     :+:      :+:    :+:   */
+/*   tab_menu.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -50,9 +50,11 @@ static void key_hook(t_game *game, int **loop)
 
 void    tab_menu_render(t_game *game, int *loop)
 {
-	int i = 0;
-	int new_str = 10;
-	
+	int i;
+	int new_str;
+
+	i = 0;
+	new_str = 10;
 	game->tab_menu.dest.h = 80;
 	game->tab_menu.dest.w = 120;
 	game->tab_menu.dest.x = game->screen->w / 100 * 65;
@@ -71,7 +73,9 @@ void    tab_menu_render(t_game *game, int *loop)
 		else
 			set_color(&game->tab_menu.text_color, 0, 255, 0);
 			
-		print_text(game->screen, game->tab_menu.strings[i], "../font/font.otf", 46, game->tab_menu.text_color, game->tab_menu.dest);
+		print_text(game->screen, game->tab_menu.strings[i],
+					"../font/font.otf", 46, game->tab_menu.text_color,
+					game->tab_menu.dest);
 		game->tab_menu.dest.y = game->screen->h / 100 * new_str;
 		new_str += 5;
 		i++;
