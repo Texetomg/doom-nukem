@@ -102,6 +102,7 @@ typedef struct			s_rle_rool
 {
 	u_int					i;
 	u_int					j;
+	int 					k;
 	int					x;
 	int					y;
 }						t_rle_rool;
