@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 14:01:44 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/05/31 15:02:59 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,19 +209,16 @@ typedef struct 		s_menu_status
 
 typedef struct 		s_pre_calc
 {
-	int screenw3;
-	int screenw2;
-	int screenh3;
-	int screenw10045;
-	int screenh10065;
-	int spritesw2;
-	int spritesh2;
-	int dispmodh2;
-	int dispmodw2;
-	int dispmodw10;
-	int dispmodh10;
-	int dispmodw20;
-	int dispmodh20; 
+	
+	int screen_h_div_2;
+	int screen_w_div_2;
+	int screen_h_div_10;
+	int screen_w_div_10;
+	int screen_h_div_20;
+	int screen_w_div_20;
+	int screen_h_mult_2;
+	double pi_mult_2;
+	double pi_div_4;
 } 					t_pre_calc;
 
 typedef struct		s_for_udp

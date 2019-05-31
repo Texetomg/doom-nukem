@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 14:11:57 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/05/31 14:59:16 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright
 		}
 		angle_sprite = angle_sprite->next;
 	}
-	x_start = -sprite.pos_in_cam.y * game->screen->w / 2 / sprite.pos_in_cam.x + game->screen->w / 2 - sprite.width / 2 / sprite.pos_in_cam.x;
+	x_start = -sprite.pos_in_cam.y * game->pre_calc.screen_w_div_2 / sprite.pos_in_cam.x + game->pre_calc.screen_w_div_2 - sprite.width / 2 / sprite.pos_in_cam.x;
 	x_end = x_start + sprite.width / sprite.pos_in_cam.x;
-	bot = -(sprite.pos_in_cam.z - sprite.heigth) * game->screen->h / 2 / sprite.pos_in_cam.x + game->line_horiz;
-	top = -(sprite.pos_in_cam.z) * game->screen->h / 2/ sprite.pos_in_cam.x + game->line_horiz;
+	bot = -(sprite.pos_in_cam.z - sprite.heigth) * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x + game->line_horiz;
+	top = -(sprite.pos_in_cam.z) * game->pre_calc.screen_h_div_2/ sprite.pos_in_cam.x + game->line_horiz;
 	
 	if (x_start < 0)
 		x = 0;
@@ -113,25 +113,25 @@ void			draw_skybox(t_game *game)
 	int color;
 	double top;
 	double bot;
-	a = fmod(fabs(game->player.angle + 3.14 / 4), 3.14 * 2);
-	if (game->player.angle + 3.14 / 4 < 0)
+	a = fmod(fabs(game->player.angle + game->pre_calc.pi_div_4), game->pre_calc.pi_mult_2);
+	if (game->player.angle + game->pre_calc.pi_div_4 < 0)
 	{
-		left_border = a / (3.14 * 2);
+		left_border = a / (game->pre_calc.pi_mult_2);
 	}
 	else
-		left_border = (3.14 * 2 - a) / (3.14 * 2);
-	a = fmod(fabs(game->player.angle - 3.14 / 4), 3.14 * 2);
-	if (game->player.angle - 3.14 / 4 < 0)
+		left_border = (game->pre_calc.pi_mult_2 - a) / (game->pre_calc.pi_mult_2);
+	a = fmod(fabs(game->player.angle - game->pre_calc.pi_div_4), game->pre_calc.pi_mult_2);
+	if (game->player.angle - game->pre_calc.pi_div_4 < 0)
 	{
-		right_border = a / (3.14 * 2);
+		right_border = a / (game->pre_calc.pi_mult_2);
 	}
 	else
-		right_border = (3.14 * 2 - a) / (3.14 * 2);
+		right_border = (game->pre_calc.pi_mult_2 - a) / (game->pre_calc.pi_mult_2);
 	if (left_border > right_border)
 		right_border = right_border + 1;
 	x = 0;
-	bot = ((double)game->screen->h - game->line_horiz + game->screen->h / 2 + game->screen->h / 2) / (game->screen->h * 2);
-	top = ((double)game->screen->h - game->line_horiz - game->screen->h / 2 + game->screen->h / 2) / (game->screen->h * 2);
+	bot = ((double)game->screen->h - game->line_horiz + game->pre_calc.screen_h_div_2 + game->pre_calc.screen_h_div_2) / (game->pre_calc.screen_h_mult_2);
+	top = ((double)game->screen->h - game->line_horiz - game->pre_calc.screen_h_div_2 + game->pre_calc.screen_h_div_2) / (game->pre_calc.screen_h_mult_2);
 	while (x < game->screen->w)
 	{
 		a = left_border + (right_border - left_border) * ((double)x / game->screen->w);
@@ -173,7 +173,7 @@ void		check_rifle_state(t_game *game)
 {
 	if (game->rifle_state != 1)
 	{
-		if (fabs(game->rifle_angle - game->player.angle) > 3.14 * 2)
+		if (fabs(game->rifle_angle - game->player.angle) > game->pre_calc.pi_mult_2)
 			game->rifle_state = 1;
 	}
 }
@@ -207,7 +207,7 @@ int			main(void)
 				Mix_PlayMusic(game->sounds.music, -1);*/
 			check_rifle_state(game);
 			player_move(game, &loop);
-			SDL_WarpMouseInWindow(game->window, game->pre_calc.dispmodw2, game->pre_calc.dispmodh2);
+			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);
 			get_pos_z(&game->player, game->sectors);
 			draw_skybox(game);
 			draw_3d_wall(game);

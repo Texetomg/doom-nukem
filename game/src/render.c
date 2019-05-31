@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/31 14:14:25 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/05/31 15:03:00 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -402,10 +402,10 @@ void    draw_sector(t_game *game, t_draw for_draw)
 			}
 			yceil = (game->sectors + for_draw.curr_sector)->ceil - game->player.pos.z;
             yfloor = (game->sectors + for_draw.curr_sector)->floor - game->player.pos.z;
-            yscale1 =  game->screen->h / 2 / first_point.x;
-			yscale2 =  game->screen->h / 2 / second_point.x;
-            for_draw.wall.x1 = -first_point.y * (game->screen->w / 2) / first_point.x + game->screen->w / 2;
-            for_draw.wall.x2 = -second_point.y * (game->screen->w / 2) / second_point.x + game->screen->w / 2;
+            yscale1 =  game->pre_calc.screen_h_div_2 / first_point.x;
+			yscale2 =  game->pre_calc.screen_h_div_2 / second_point.x;
+            for_draw.wall.x1 = -first_point.y * (game->pre_calc.screen_w_div_2) / first_point.x + game->pre_calc.screen_w_div_2;
+            for_draw.wall.x2 = -second_point.y * (game->pre_calc.screen_w_div_2) / second_point.x + game->pre_calc.screen_w_div_2;
             for_draw.wall.y2t = -yscale2 * yceil + game->line_horiz;
             for_draw.wall.y1t = -yscale1 * yceil + game->line_horiz;
             for_draw.wall.y2b = -yscale2 * yfloor + game->line_horiz;

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/31 14:13:41 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/05/31 14:59:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,17 +227,15 @@ static void set_initial_values(t_game *game)
 	set_color(&game->hud.color, 255, 255, 0);
 	set_hood(game);
 	game->line_horiz = 400;
-	game->pre_calc.screenw3 = game->screen->w / 3;
-	game->pre_calc.screenw2 = game->screen->w / 2;
-	game->pre_calc.screenh3 = game->screen->h / 3;
-	game->pre_calc.screenw10045 = game->screen->w / 100 * 45;
-	game->pre_calc.screenh10065 = game->screen->h / 100 * 65;
-	game->pre_calc.dispmodh2 = game->screen->h / 2;
-	game->pre_calc.dispmodw2 = game->screen->w / 2;
-	game->pre_calc.dispmodw10 = game->screen->w / 10;
-	game->pre_calc.dispmodh10 = game->screen->h / 10;
-	game->pre_calc.dispmodw20 = game->screen->w / 20;
-	game->pre_calc.dispmodh20 = game->screen->h / 20;
+	game->pre_calc.screen_h_div_2 = game->screen->h / 2;
+	game->pre_calc.screen_w_div_2 = game->screen->w / 2;
+	game->pre_calc.screen_w_div_10 = game->screen->w / 10;
+	game->pre_calc.screen_h_div_10 = game->screen->h / 10;
+	game->pre_calc.screen_w_div_20 = game->screen->w / 20;
+	game->pre_calc.screen_h_div_20 = game->screen->h / 20;
+	game->pre_calc.screen_h_mult_2 = game->screen->h * 2;
+	game->pre_calc.pi_div_4 = 3.14 / 4;
+	game->pre_calc.pi_mult_2 = 3.14 * 2;
 	game->rifle_state = 0;
 	game->rifle_angle = game->player.angle;
 }

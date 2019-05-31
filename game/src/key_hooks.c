@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 14:24:15 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/05/31 14:33:41 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ SDL_Event	key_hooks(t_game *game)
 	while (SDL_PollEvent(&e))
 	{
 		
-		game->player.angle -= 3.14 / 600 * (game->mouse.x - game->pre_calc.dispmodw2);
-		new_horizon = game->line_horiz - 2 * (game->mouse.y - game->pre_calc.dispmodh2);
+		game->player.angle -= 3.14 / 600 * (game->mouse.x - game->pre_calc.screen_w_div_2);
+		new_horizon = game->line_horiz - 2 * (game->mouse.y - game->pre_calc.screen_h_div_2);
 		if (new_horizon >= 0 && new_horizon < game->screen->h)
 			game->line_horiz = new_horizon;
 		if (e.type == SDL_KEYDOWN)
@@ -140,6 +140,11 @@ void	        player_move(t_game *game, int *loop)
 	{
 		game->menu_status.tab = 1;
 		game->menu_status.main = 0;
+		game->keystate.left = 0;
+		game->keystate.right = 0;
+		game->keystate.forward = 0;
+		game->keystate.back = 0;
+
 	}
 	if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_q)
 		game->player.jetpack = (game->player.jetpack == 0 ? 1 : 0);
