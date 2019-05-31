@@ -100,8 +100,8 @@ typedef struct			s_bmp
 
 typedef struct			s_rle_rool
 {
-	int					i;
-	int					j;
+	u_int					i;
+	u_int					j;
 	int					x;
 	int					y;
 }						t_rle_rool;
