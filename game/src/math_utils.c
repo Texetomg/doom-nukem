@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:06:32 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/31 14:13:51 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/05/31 15:31:02 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ vec3    get_ceil(t_game *game, int x, int y, double dz)
     double    x1;
     double    y1;
     
-    x1 = game->screen->h / 2 * (dz) / (game->line_horiz - y);
-    y1 = -x1 * (x - game->screen->w / 2) / game->screen->w * 2;
+    x1 = game->pre_calc.screen_h_div_2 * (dz) / (game->line_horiz - y);
+    y1 = -x1 * (x - game->pre_calc.screen_w_div_2) / game->screen->w * 2;
     re.x = y1 * cos(game->player.angle) + x1 * sin(game->player.angle) + game->player.pos.y;
     re.y = x1 * cos(game->player.angle) - y1 * sin(game->player.angle) + game->player.pos.x;
     re.z = x1;
@@ -36,8 +36,8 @@ vec3    get_floor(t_game *game, int x, int y, double dz)
     double    x1;
     double    y1;
     
-    x1 = game->screen->h / 2 * (dz) / (y - game->line_horiz);
-    y1 = -x1 * (x - game->screen->w / 2) / game->screen->w * 2;
+    x1 = game->pre_calc.screen_h_div_2 * (dz) / (y - game->line_horiz);
+    y1 = -x1 * (x - game->pre_calc.screen_w_div_2) / game->screen->w * 2;
     re.x = y1 * cos(game->player.angle) + x1 * sin(game->player.angle) + game->player.pos.y;
     re.y = x1 * cos(game->player.angle) - y1 * sin(game->player.angle) + game->player.pos.x;
     re.z = x1;
