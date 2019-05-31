@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_minimap.c                                     :+:      :+:    :+:   */
+/*   start_menu.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,49 +12,29 @@
 
 #include "doom-nukem.h"
 
-void	set_color(SDL_Color *color, int r, int g, int b)
+void		set_color(SDL_Color *color, int r, int g, int b)
 {
 	color->r = r;
 	color->g = g;
 	color->b = b;
 }
 
-void	draw_image(t_game *game, int i, SDL_Surface *image[])
-{
-	int	x = 0;
-	int	y = 0;
-	int new_x;
-	int new_y;
-	int color;
-
-	while (y < game->screen->h)
-	{
-		new_y = (double)y / game->screen->h * image[i]->h;
-		x = 0;
-		while (x < game->screen->w)
-		{
-			new_x = (double)x / game->screen->w * image[i]->w;
-			color = ((int*)(image[i]->pixels))[new_y * image[i]->w + new_x];
-			((int*)(game->screen->pixels))[y * game->screen->w + x] = color;
-			x++;
-		}
-		y++;
-	}
-}
-
-static void arrows(t_game *game, int pos)
+static void	arrows(t_game *game, int pos)
 {
 	game->start_menu.text_pos += pos;
 	Mix_HaltChannel(-1);
-	Mix_PlayChannel( -1, game->start_menu.clap[game->start_menu.text_pos - 1], 0);
+	Mix_PlayChannel(-1,
+					game->start_menu.clap[game->start_menu.text_pos - 1],
+					0);
 }
 
-static void key_hook(t_game *game, int **loop)
+static void	key_hook(t_game *game, int **loop)
 {
 	SDL_Event e;
+
 	while (SDL_PollEvent(&e))
 	{
-		if(e.type == SDL_KEYDOWN)
+		if (e.type == SDL_KEYDOWN)
 		{
 			if (e.key.keysym.sym == SDLK_UP && game->start_menu.text_pos > 1)
 				arrows(game, -1);
@@ -62,7 +42,8 @@ static void key_hook(t_game *game, int **loop)
 				arrows(game, 1);
 			if (e.key.keysym.sym == SDLK_ESCAPE ||
 				e.type == SDL_QUIT ||
-				(e.key.keysym.sym == SDLK_RETURN && game->start_menu.text_pos == 4))
+				(e.key.keysym.sym == SDLK_RETURN &&
+				game->start_menu.text_pos == 4))
 				**loop = 0;
 			if (e.key.keysym.sym == SDLK_RETURN &&
 				game->start_menu.text_pos != 0 &&
@@ -77,16 +58,18 @@ static void key_hook(t_game *game, int **loop)
 	}
 }
 
-void    start_menu_render(t_game *game, int *loop)
+void		start_menu_render(t_game *game, int *loop)
 {
-	int i = 0;
-	int new_str = 10;
-	
+	int		i;
+	int		new_str;
+
+	i = 0;
+	new_str = 10;
 	game->start_menu.dest.h = 80;
 	game->start_menu.dest.w = 120;
-	
 	set_color(&game->start_menu.text_color, 255, 255, 0);
-	draw_image(game, game->start_menu.text_pos, game->start_menu.image);
+	draw_full_screen_img(game->screen,
+						game->start_menu.image[game->start_menu.text_pos]);
 	game->start_menu.dest.x = game->screen->w / 100 * 65;
 	game->start_menu.dest.y = game->screen->h / 100 * 5;
 	key_hook(game, &loop);
@@ -98,8 +81,9 @@ void    start_menu_render(t_game *game, int *loop)
 			set_color(&game->start_menu.text_color, 255, 255, 0);
 		else
 			set_color(&game->start_menu.text_color, 0, 255, 0);
-			
-		print_text(game->screen, game->start_menu.strings[i], "../font/font.otf", 46, game->start_menu.text_color, game->start_menu.dest);
+		print_text(game->screen, game->start_menu.strings[i],
+					"../font/font.otf", 46,
+					game->start_menu.text_color, game->start_menu.dest);
 		game->start_menu.dest.y = game->screen->h / 100 * new_str;
 		new_str += 5;
 		i++;

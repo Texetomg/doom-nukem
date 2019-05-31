@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/29 14:16:12 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 12:10:23 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	init_sdl(t_game *game)
 	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
         check_error_n_exit(1,(char*)SDL_GetError());
     }
-	game->texture = SDL_LoadBMP("imgs/cat.bmp");
+	game->texture = IMG_Load("imgs/cat.bmp");
 }
 
 static void set_player(t_game *game)
@@ -200,7 +200,9 @@ static void load_images(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->skybox = IMG_Load("imgs/sky.jpg")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->aim = IMG_Load("imgs/cross_aim.png")))
+	if (!(game->hud.aim = IMG_Load("imgs/cross_aim.png")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.hp_bar = IMG_Load("imgs/hud/hp_bar.png")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
@@ -254,5 +256,6 @@ t_game	*create_struct(void)
 	load_images(game);
 	set_initial_values(game);
 	add_sprites_wall(game);
+	init_client(&game->socket_struct);
 	return (game);
 }
