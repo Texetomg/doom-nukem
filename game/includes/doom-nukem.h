@@ -6,7 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/05/31 11:39:11 by thorker          ###   ########.fr       */
+=======
+/*   Updated: 2019/05/31 15:02:59 by bfalmer-         ###   ########.fr       */
+>>>>>>> 47d57cbe2327162f8bd461b2a0d2d53748f8a875
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +110,8 @@ typedef	struct		s_sprite_wall
 typedef struct		s_player
 {
 	vec3			pos;
+	int				jetpack;
+	int				key;
 	double			angle;
 	int				curr_sector;
 	double			z_accel;
@@ -183,6 +189,9 @@ typedef	struct 		s_hud
 	SDL_Surface		*face[3];
 	SDL_Surface		*aim;
 	SDL_Surface		*hp_bar;
+	SDL_Surface		*jetpack;
+	SDL_Surface		*key;
+	SDL_Rect		text_dest;
 }					t_hud;
 
 typedef	struct 		s_menu
@@ -205,19 +214,16 @@ typedef struct 		s_menu_status
 
 typedef struct 		s_pre_calc
 {
-	int screenw3;
-	int screenw2;
-	int screenh3;
-	int screenw10045;
-	int screenh10065;
-	int spritesw2;
-	int spritesh2;
-	int dispmodh2;
-	int dispmodw2;
-	int dispmodw10;
-	int dispmodh10;
-	int dispmodw20;
-	int dispmodh20; 
+	
+	int screen_h_div_2;
+	int screen_w_div_2;
+	int screen_h_div_10;
+	int screen_w_div_10;
+	int screen_h_div_20;
+	int screen_w_div_20;
+	int screen_h_mult_2;
+	double pi_mult_2;
+	double pi_div_4;
 } 					t_pre_calc;
 
 typedef struct		s_for_udp
@@ -299,4 +305,5 @@ void 				draw_hud(t_game *game);
 void				draw_full_screen_img(SDL_Surface *screen, SDL_Surface *image);
 void 				init_client(t_socket *socket_struct);
 void 				client(t_game *game);
+void				print_custom_text(t_game *game, char *text);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/28 05:10:13 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 15:05:35 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void client(t_game *game)
 	game->for_udp.pos = game->player.pos;
 	game->for_udp.angle = game->player.angle;
 	while (game->for_udp.angle < 0)
-		game->for_udp.angle = game->for_udp.angle + 3.14 * 2;
-	while (game->for_udp.angle > 3.14 * 2)
-		game->for_udp.angle = game->for_udp.angle - 3.14 * 2;
+		game->for_udp.angle = game->for_udp.angle + game->pre_calc.pi_mult_2;
+	while (game->for_udp.angle > game->pre_calc.pi_mult_2)
+		game->for_udp.angle = game->for_udp.angle - game->pre_calc.pi_mult_2;
 	game->for_udp.sector = game->player.curr_sector;
 	game->socket_struct.numbytes = send(game->socket_struct.sockfd, &(game->for_udp), sizeof(t_for_udp), 0);
 	//printf("client: sent %d bytes to %s\n", game->socket_struct.numbytes, SERVERIP);

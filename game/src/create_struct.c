@@ -6,7 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/05/31 12:10:23 by thorker          ###   ########.fr       */
+=======
+/*   Updated: 2019/05/31 15:27:57 by bfalmer-         ###   ########.fr       */
+>>>>>>> 47d57cbe2327162f8bd461b2a0d2d53748f8a875
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +53,9 @@ static void	init_sdl(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
-	game->window = SDL_CreateWindow(0, 0, 0, 0, 0,
-			SDL_WINDOW_FULLSCREEN_DESKTOP);
+	//game->window = SDL_CreateWindow(0, 0, 0, 0, 0,
+	//		SDL_WINDOW_FULLSCREEN_DESKTOP);
+	game->window = SDL_CreateWindow("Doom-Nukem", 0, 0, 1400, 1000, SDL_WINDOW_SHOWN);
 	if (game->window == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
@@ -60,11 +65,17 @@ static void	init_sdl(t_game *game)
 	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
         check_error_n_exit(1,(char*)SDL_GetError());
     }
+<<<<<<< HEAD
 	game->texture = IMG_Load("imgs/cat.bmp");
+=======
+	game->texture = SDL_LoadBMP("imgs/textures/cat.bmp");
+>>>>>>> 47d57cbe2327162f8bd461b2a0d2d53748f8a875
 }
 
 static void set_player(t_game *game)
 {
+	game->player.jetpack = 0;
+	game->player.key = 1;
 	game->player.curr_sector = 1;
 	game->player.pos.x = 0;
 	game->player.pos.y = -3;
@@ -109,36 +120,36 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->pos.x = 0;
 	(game->sprites)->pos.y = 0;
 	(game->sprites)->heigth = 0.5;
-	(game->sprites)->width = game->display_mode.w / 10;
+	(game->sprites)->width = game->screen->w / 10;
 	(game->sprites)->pos.z = 0.6;
 	(game->sprites)->sector = 0;
 	(game->sprites)->angle = 0;
 	(game->sprites)->angle_sprite = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
 	(game->sprites)->angle_sprite->start_angle = 0;
 	(game->sprites)->angle_sprite->end_angle = 3.14 / 4;
-	(game->sprites)->angle_sprite->texture = IMG_Load("imgs/doomguy_forward.png");
+	(game->sprites)->angle_sprite->texture = IMG_Load("imgs/sprites/doomguy/doomguy_forward.bmp");
 	(game->sprites)->angle_sprite->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
 	(game->sprites)->angle_sprite->next->start_angle = 3.14 / 4;
 	(game->sprites)->angle_sprite->next->end_angle = 3.14 * 3 / 4;
 	(game->sprites)->angle_sprite->next->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->angle_sprite->next->texture = IMG_Load("imgs/doomguy_left.png");
+	(game->sprites)->angle_sprite->next->texture = IMG_Load("imgs/sprites/doomguy/doomguy_left.bmp");
 	(game->sprites)->angle_sprite->next->next->start_angle = 3 * 3.14 / 4;
 	(game->sprites)->angle_sprite->next->next->end_angle = 3.14 * 5 / 4;
 	(game->sprites)->angle_sprite->next->next->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->angle_sprite->next->next->texture = IMG_Load("imgs/doomguy_back.png");
+	(game->sprites)->angle_sprite->next->next->texture = IMG_Load("imgs/sprites/doomguy/doomguy_back.bmp");
 	(game->sprites)->angle_sprite->next->next->next->start_angle = 5 * 3.14 / 4;
 	(game->sprites)->angle_sprite->next->next->next->end_angle = 3.14 * 7 / 4;
 	(game->sprites)->angle_sprite->next->next->next->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->angle_sprite->next->next->next->texture = IMG_Load("imgs/doomguy_right.png");
+	(game->sprites)->angle_sprite->next->next->next->texture = IMG_Load("imgs/sprites/doomguy/doomguy_right.bmp");
 	(game->sprites)->angle_sprite->next->next->next->next->start_angle = 7 * 3.14 / 4;
 	(game->sprites)->angle_sprite->next->next->next->next->end_angle = 3.14 * 2;
 	(game->sprites)->angle_sprite->next->next->next->next->next = 0;
-	(game->sprites)->angle_sprite->next->next->next->next->texture = IMG_Load("imgs/doomguy_forward.png");
+	(game->sprites)->angle_sprite->next->next->next->next->texture = IMG_Load("imgs/sprites/doomguy/doomguy_forward.bmp");
 	game->sprites->next = (t_sprite*)malloc(sizeof(t_sprite));
 	(game->sprites)->next->pos.x = 1;
 	(game->sprites)->next->pos.y = -2;
 	(game->sprites)->next->heigth = 0.5;
-	(game->sprites)->next->width = game->display_mode.w / 10;
+	(game->sprites)->next->width = game->screen->w / 10;
 	(game->sprites)->next->pos.z = 0.5;
 	(game->sprites)->next->sector = 1;
 	(game->sprites)->next->angle = 3.14 / 2;
@@ -156,6 +167,10 @@ static void	set_hood(t_game *game)
 	game->hud.fps_dest.w = 120;
 	game->hud.fps_dest.x = 0;
 	game->hud.fps_dest.y = 0;
+	game->hud.text_dest.h = 800;
+	game->hud.text_dest.w = 800;
+	game->hud.text_dest.x = game->screen->w / 8;
+	game->hud.text_dest.y = game->screen->h / 8;
 }
 
 static void load_sounds(t_game *game)
@@ -183,26 +198,30 @@ static void load_sounds(t_game *game)
 static void load_images(t_game *game)
 {
 	read_gif(game->gif, "imgs/gif1/", 0, 40, ".bmp");
-	read_gif(game->gif, "imgs/rifle/", 1, 2, ".png");
-	if (!(game->start_menu.image[0] = IMG_Load("imgs/start_menu/0.jpg")))
+	read_gif(game->gif, "imgs/rifle/", 1, 2, ".bmp");
+	if (!(game->start_menu.image[0] = IMG_Load("imgs/start_menu/0.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[1] = IMG_Load("imgs/start_menu/1.jpg")))
+	if (!(game->start_menu.image[1] = IMG_Load("imgs/start_menu/1.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[2] = IMG_Load("imgs/start_menu/2.jpg")))
+	if (!(game->start_menu.image[2] = IMG_Load("imgs/start_menu/2.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[3] = IMG_Load("imgs/start_menu/3.jpg")))
+	if (!(game->start_menu.image[3] = IMG_Load("imgs/start_menu/3.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[4] = IMG_Load("imgs/start_menu/4.jpg")))
+	if (!(game->start_menu.image[4] = IMG_Load("imgs/start_menu/4.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.png")))
+	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.face[2] = IMG_Load("imgs/hud/doom.png")))
+	if (!(game->hud.face[2] = IMG_Load("imgs/hud/doom.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->skybox = IMG_Load("imgs/sky.jpg")))
+	if (!(game->skybox = IMG_Load("imgs/textures/space.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.aim = IMG_Load("imgs/cross_aim.png")))
+	if (!(game->hud.aim = IMG_Load("imgs/hud/cross_aim.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.hp_bar = IMG_Load("imgs/hud/hp_bar.png")))
+	if (!(game->hud.hp_bar = IMG_Load("imgs/hud/hp_bar.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.jetpack = IMG_Load("imgs/hud/jetpack.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.key = IMG_Load("imgs/hud/key.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
@@ -216,17 +235,15 @@ static void set_initial_values(t_game *game)
 	set_color(&game->hud.color, 255, 255, 0);
 	set_hood(game);
 	game->line_horiz = 400;
-	game->pre_calc.screenw3 = game->screen->w / 3;
-	game->pre_calc.screenw2 = game->screen->w / 2;
-	game->pre_calc.screenh3 = game->screen->h / 3;
-	game->pre_calc.screenw10045 = game->screen->w / 100 * 45;
-	game->pre_calc.screenh10065 = game->screen->h / 100 * 65;
-	game->pre_calc.dispmodh2 = game->display_mode.h / 2;
-	game->pre_calc.dispmodw2 = game->display_mode.w / 2;
-	game->pre_calc.dispmodw10 = game->display_mode.w / 10;
-	game->pre_calc.dispmodh10 = game->display_mode.h / 10;
-	game->pre_calc.dispmodw20 = game->display_mode.w / 20;
-	game->pre_calc.dispmodh20 = game->display_mode.h / 20;
+	game->pre_calc.screen_h_div_2 = game->screen->h / 2;
+	game->pre_calc.screen_w_div_2 = game->screen->w / 2;
+	game->pre_calc.screen_w_div_10 = game->screen->w / 10;
+	game->pre_calc.screen_h_div_10 = game->screen->h / 10;
+	game->pre_calc.screen_w_div_20 = game->screen->w / 20;
+	game->pre_calc.screen_h_div_20 = game->screen->h / 20;
+	game->pre_calc.screen_h_mult_2 = game->screen->h * 2;
+	game->pre_calc.pi_div_4 = 3.14 / 4;
+	game->pre_calc.pi_mult_2 = 3.14 * 2;
 	game->rifle_state = 0;
 	game->rifle_angle = game->player.angle;
 }
