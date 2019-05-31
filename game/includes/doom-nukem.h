@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/28 18:52:30 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/29 14:16:15 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 
-# define SERVERIP "192.168.20.58"
+# define SERVERIP "192.168.30.47"
 # define SERVERPORT "9034" 
 # define MAXLINE 1024 
 
@@ -229,6 +229,15 @@ typedef struct		s_for_udp
 	int				sound;
 }					t_for_udp;
 
+typedef struct		s_achievement
+{
+	int				done;
+	SDL_Surface		*image;
+	char			*name;
+	char			*discription;
+	SDL_Chunk		*sound;
+}					t_achievement;
+
 typedef struct		s_game
 {
 	t_pre_calc		pre_calc;
@@ -260,6 +269,7 @@ typedef struct		s_game
 	int				rifle_state;
 	int				rifle_angle;
 	t_for_udp		for_udp;
+	t_achievement	achievement;
 }					t_game;
 
 void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);
