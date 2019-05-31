@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/28 19:08:03 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 14:14:25 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void    draw_ceil(t_game *game, t_draw for_draw, double dz, double bright)
     first_left = get_ceil(game, for_draw.window.x1, for_draw.window.y1t, dz);
     second_right = get_ceil(game, for_draw.wall.x2, for_draw.wall.y2t, dz);
     first_right = get_ceil(game, for_draw.window.x2, for_draw.window.y2t, dz);
-    while (i < for_draw.wall.x2 && i < game->display_mode.w)
+    while (i < for_draw.wall.x2 && i < game->screen->w)
     {
         a = (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
 		first.x = ((1 - a) * first_left.x / first_left.z + a * first_right.x / first_right.z) / ((1 - a) / first_left.z + a / first_right.z);
@@ -90,7 +90,7 @@ void    draw_ceil(t_game *game, t_draw for_draw, double dz, double bright)
             if (x > 0 && x < game->texture->w && y > 0 && y < game->texture->h)
             {
                 color = ((int*)game->texture->pixels)[((int)y) * game->texture->w + ((int)x)];
-                ((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
+                ((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
             }
             k++;
         }
@@ -124,7 +124,7 @@ void    draw_floor(t_game *game, t_draw for_draw, double dz, double bright)
     second_left = get_floor(game, for_draw.window.x1, for_draw.window.y1b, dz);
     first_right = get_floor(game, for_draw.wall.x2, for_draw.wall.y2b, dz);
     second_right = get_floor(game, for_draw.window.x2, for_draw.window.y2b, dz);
-    while (i < for_draw.wall.x2 && i < game->display_mode.w)
+    while (i < for_draw.wall.x2 && i < game->screen->w)
     {
         a = (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
         first.x = ((1 - a) * first_left.x / first_left.z + a * first_right.x / first_right.z) / ((1 - a) / first_left.z + a / first_right.z);
@@ -140,7 +140,7 @@ void    draw_floor(t_game *game, t_draw for_draw, double dz, double bright)
             k = game->line_horiz;
         else
             k = yb_wall;
-        while (k < yb_window && k < game->display_mode.h)
+        while (k < yb_window && k < game->screen->h)
         {
             a = (double)(k - yb_wall) / (yb_window - yb_wall);
             x = ((1 - a) * first.x / first.z + a * second.x / second.z) / ((1 - a) / first.z + a / second.z);
@@ -156,7 +156,7 @@ void    draw_floor(t_game *game, t_draw for_draw, double dz, double bright)
             if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
             {
                 color = ((int*)game->texture->pixels)[((int)y) * game->texture->w + ((int)x)];
-                ((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
+                ((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
             }
             k++;
         }
@@ -195,7 +195,7 @@ static void    draw_wall(t_game *game,
     i = (int)for_draw.wall.x1;
     if (i < 0)
         i = 0;
-    while (i < for_draw.wall.x2 && i < game->display_mode.w)
+    while (i < for_draw.wall.x2 && i < game->screen->w)
     {
         yt_wall = (int)(for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
         yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
@@ -209,7 +209,7 @@ static void    draw_wall(t_game *game,
 			x = (x - (int)x) * game->texture->w;
 		else
 			x = (x - (int)x + 1) * game->texture->w;
-        while (k < yb_wall && k < game->display_mode.h)
+        while (k < yb_wall && k < game->screen->h)
         {
 			a = (double)(k - (int)yt_wall) / ((int)yb_wall - (int)yt_wall);
            	y = -((1 - a) * ceil + a * floor);
@@ -220,7 +220,7 @@ static void    draw_wall(t_game *game,
 			if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
 			{
 				color = ((int*)game->texture->pixels)[(int)y * game->texture->w + (int)x];
-				((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
+				((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
 			}
             k++;
         }
@@ -262,7 +262,7 @@ static void    draw_wall(t_game *game,
 		i = for_draw.wall.x1;
 	else
 		i = left_border;
-	while (i < right_border && i < game->display_mode.w && i < for_draw.wall.x2)
+	while (i < right_border && i < game->screen->w && i < for_draw.wall.x2)
 	{
 		yt_wall = (int)(for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
 		yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
@@ -274,13 +274,13 @@ static void    draw_wall(t_game *game,
 			k = top_border;
 		a = ((double)i - left_border) / (right_border - left_border);
 		x = (((1 - a) * left_img / new_y1 + a * right_img / new_y2 )/ ((1 - a) / new_y1 + a / new_y2) )* sprite_wall->texture->w;
-		while (k < bot_border && k < game->display_mode.h)
+		while (k < bot_border && k < game->screen->h)
 		{
 			y = ((double)k - top_border) / (bot_border - top_border) * sprite_wall->texture->h;
 			if (x >= 0 && x < sprite_wall->texture->w && y >= 0 && y < sprite_wall->texture->h)
 			{
 				color = ((int*)sprite_wall->texture->pixels)[(int)y * sprite_wall->texture->w + (int)x];
-				((int*)game->screen->pixels)[k * game->display_mode.w + i] = ft_bright(color, bright);
+				((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
 			}
 			k++;
 		}
@@ -303,11 +303,12 @@ static void    pre_draw_sector(SDL_Surface *screen,
     double yt_window;
     int color;
 
+    (void)display_mode;
 	(void)grid; //остваил ребятам доделать решетку между секторами	
     i = (int)for_draw.wall.x1;
     if (i < 0)
         i = 0;
-    while (i < for_draw.wall.x2 && i < display_mode.w)
+    while (i < for_draw.wall.x2 && i < screen->w)
     {
         yt_window = for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
         yb_window = for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
@@ -317,12 +318,12 @@ static void    pre_draw_sector(SDL_Surface *screen,
             k = 0;
         else
             k = yt_wall;
-        while (k < yb_wall && k < display_mode.h)
+        while (k < yb_wall && k < screen->h)
         {
             if (k < yt_window || k > yb_window)
             {
                 color = COLOR_BETW;
-                ((int*)screen->pixels)[k * display_mode.w + i] = ft_bright(color, bright);
+                ((int*)screen->pixels)[k * screen->w + i] = ft_bright(color, bright);
             }
             k++;
         }
@@ -401,10 +402,10 @@ void    draw_sector(t_game *game, t_draw for_draw)
 			}
 			yceil = (game->sectors + for_draw.curr_sector)->ceil - game->player.pos.z;
             yfloor = (game->sectors + for_draw.curr_sector)->floor - game->player.pos.z;
-            yscale1 =  game->display_mode.h / 2 / first_point.x;
-			yscale2 =  game->display_mode.h / 2 / second_point.x;
-            for_draw.wall.x1 = -first_point.y * (game->display_mode.w / 2) / first_point.x + game->display_mode.w / 2;
-            for_draw.wall.x2 = -second_point.y * (game->display_mode.w / 2) / second_point.x + game->display_mode.w / 2;
+            yscale1 =  game->screen->h / 2 / first_point.x;
+			yscale2 =  game->screen->h / 2 / second_point.x;
+            for_draw.wall.x1 = -first_point.y * (game->screen->w / 2) / first_point.x + game->screen->w / 2;
+            for_draw.wall.x2 = -second_point.y * (game->screen->w / 2) / second_point.x + game->screen->w / 2;
             for_draw.wall.y2t = -yscale2 * yceil + game->line_horiz;
             for_draw.wall.y1t = -yscale1 * yceil + game->line_horiz;
             for_draw.wall.y2b = -yscale2 * yfloor + game->line_horiz;

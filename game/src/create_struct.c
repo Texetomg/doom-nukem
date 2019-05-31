@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/28 18:54:29 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 14:13:41 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,9 @@ static void	init_sdl(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
-	game->window = SDL_CreateWindow(0, 0, 0, 0, 0,
-			SDL_WINDOW_FULLSCREEN_DESKTOP);
+	//game->window = SDL_CreateWindow(0, 0, 0, 0, 0,
+	//		SDL_WINDOW_FULLSCREEN_DESKTOP);
+	game->window = SDL_CreateWindow("Doom-Nukem", 0, 0, 1400, 1000, SDL_WINDOW_SHOWN);
 	if (game->window == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
@@ -65,6 +66,8 @@ static void	init_sdl(t_game *game)
 
 static void set_player(t_game *game)
 {
+	game->player.jetpack = 0;
+	game->player.key = 1;
 	game->player.curr_sector = 1;
 	game->player.pos.x = 0;
 	game->player.pos.y = -3;
@@ -109,7 +112,7 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->pos.x = 0;
 	(game->sprites)->pos.y = 0;
 	(game->sprites)->heigth = 0.5;
-	(game->sprites)->width = game->display_mode.w / 10;
+	(game->sprites)->width = game->screen->w / 10;
 	(game->sprites)->pos.z = 0.6;
 	(game->sprites)->sector = 0;
 	(game->sprites)->angle = 0;
@@ -138,7 +141,7 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->next->pos.x = 1;
 	(game->sprites)->next->pos.y = -2;
 	(game->sprites)->next->heigth = 0.5;
-	(game->sprites)->next->width = game->display_mode.w / 10;
+	(game->sprites)->next->width = game->screen->w / 10;
 	(game->sprites)->next->pos.z = 0.5;
 	(game->sprites)->next->sector = 1;
 	(game->sprites)->next->angle = 3.14 / 2;
@@ -156,6 +159,10 @@ static void	set_hood(t_game *game)
 	game->hud.fps_dest.w = 120;
 	game->hud.fps_dest.x = 0;
 	game->hud.fps_dest.y = 0;
+	game->hud.text_dest.h = 800;
+	game->hud.text_dest.w = 800;
+	game->hud.text_dest.x = game->screen->w / 8;
+	game->hud.text_dest.y = game->screen->h / 8;
 }
 
 static void load_sounds(t_game *game)
@@ -204,6 +211,10 @@ static void load_images(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->hud.hp_bar = IMG_Load("imgs/hud/hp_bar.png")))
 		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.jetpack = IMG_Load("imgs/hud/jetpack.png")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.key = IMG_Load("imgs/hud/key.png")))
+		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
 static void set_initial_values(t_game *game)
@@ -221,12 +232,12 @@ static void set_initial_values(t_game *game)
 	game->pre_calc.screenh3 = game->screen->h / 3;
 	game->pre_calc.screenw10045 = game->screen->w / 100 * 45;
 	game->pre_calc.screenh10065 = game->screen->h / 100 * 65;
-	game->pre_calc.dispmodh2 = game->display_mode.h / 2;
-	game->pre_calc.dispmodw2 = game->display_mode.w / 2;
-	game->pre_calc.dispmodw10 = game->display_mode.w / 10;
-	game->pre_calc.dispmodh10 = game->display_mode.h / 10;
-	game->pre_calc.dispmodw20 = game->display_mode.w / 20;
-	game->pre_calc.dispmodh20 = game->display_mode.h / 20;
+	game->pre_calc.dispmodh2 = game->screen->h / 2;
+	game->pre_calc.dispmodw2 = game->screen->w / 2;
+	game->pre_calc.dispmodw10 = game->screen->w / 10;
+	game->pre_calc.dispmodh10 = game->screen->h / 10;
+	game->pre_calc.dispmodw20 = game->screen->w / 20;
+	game->pre_calc.dispmodh20 = game->screen->h / 20;
 	game->rifle_state = 0;
 	game->rifle_angle = game->player.angle;
 }

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/28 18:52:30 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 14:01:44 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ typedef	struct		s_sprite_wall
 typedef struct		s_player
 {
 	vec3			pos;
+	int				jetpack;
+	int				key;
 	double			angle;
 	int				curr_sector;
 	double			z_accel;
@@ -182,6 +184,9 @@ typedef	struct 		s_hud
 	SDL_Surface		*face[3];
 	SDL_Surface		*aim;
 	SDL_Surface		*hp_bar;
+	SDL_Surface		*jetpack;
+	SDL_Surface		*key;
+	SDL_Rect		text_dest;
 }					t_hud;
 
 typedef	struct 		s_menu
@@ -298,4 +303,5 @@ void 				draw_hud(t_game *game);
 void				draw_full_screen_img(SDL_Surface *screen, SDL_Surface *image);
 void 				init_client(t_socket *socket_struct);
 void 				client(t_game *game);
+void				print_custom_text(t_game *game, char *text);
 #endif

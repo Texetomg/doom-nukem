@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/28 18:36:36 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 14:24:15 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ static void    move(t_game *game, double x, double y)
 }
 
 static void		change_keystate(t_keystate *keystate, SDL_Keycode key, int flag)
-{
-
-	
+{	
 	if (key == SDLK_w)
 		keystate->forward = flag;
 	if (key == SDLK_s)
@@ -102,7 +100,7 @@ SDL_Event	key_hooks(t_game *game)
 		
 		game->player.angle -= 3.14 / 600 * (game->mouse.x - game->pre_calc.dispmodw2);
 		new_horizon = game->line_horiz - 2 * (game->mouse.y - game->pre_calc.dispmodh2);
-		if (new_horizon >= 0 && new_horizon < game->display_mode.h)
+		if (new_horizon >= 0 && new_horizon < game->screen->h)
 			game->line_horiz = new_horizon;
 		if (e.type == SDL_KEYDOWN)
 			change_keystate(&game->keystate, e.key.keysym.sym, 1);
@@ -143,6 +141,8 @@ void	        player_move(t_game *game, int *loop)
 		game->menu_status.tab = 1;
 		game->menu_status.main = 0;
 	}
+	if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_q)
+		game->player.jetpack = (game->player.jetpack == 0 ? 1 : 0);
 	if (game->keystate.forward && (!game->keystate.right && !game->keystate.left))
 	{
 		game->for_udp.sound = STEP_SOUND;
@@ -185,9 +185,9 @@ void	        player_move(t_game *game, int *loop)
 	}
 	else
 		game->for_udp.sound = 0;
-	if (game->keystate.jump && (fabs(game->player.foots - (game->sectors + game->player.curr_sector)->floor)) < 0.000001)
+	if (game->keystate.jump && ((fabs(game->player.foots - (game->sectors + game->player.curr_sector)->floor)) < 0.000001 || game->player.jetpack == 1))
 	{
-		game->player.z_accel = 0.06;
+		game->player.z_accel = 0.05;
 		move(game, 0, 0);
 	}
 	if (game->keystate.ctrl)
@@ -205,5 +205,5 @@ void	        player_move(t_game *game, int *loop)
 		game->keystate.ctrl_flag = 0;
 		game->player.b_foots = 0.5;
 		game->player.b_knees = 0.3;
-	}
+	}		
 }

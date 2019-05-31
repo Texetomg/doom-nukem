@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/16 18:14:46 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 14:13:52 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static void	draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int c
 	while (x < second_point.x)
 	{
 		if (x >= 0 && x < game->pre_calc.dispmodw10 && y >= 0 && y < game->pre_calc.dispmodh10)
-			((int*)game->screen->pixels)[(int)y * game->display_mode.w + x] = bright(color, y - (int)y);
+			((int*)game->screen->pixels)[(int)y * game->screen->w + x] = bright(color, y - (int)y);
 		if (x >= 0 && x < game->pre_calc.dispmodw10 && y > -1 && y < game->pre_calc.dispmodh10 - 1)
-			((int*)game->screen->pixels)[((int)y + 1) * game->display_mode.w + x] = bright(color, 1 - (y - (int)y));
+			((int*)game->screen->pixels)[((int)y + 1) * game->screen->w + x] = bright(color, 1 - (y - (int)y));
 		x++;
 		y += grad;
 	}
@@ -62,9 +62,9 @@ static void	draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int c
 	while (y < second_point.y)
 	{
 		if (x >= 0 && x < game->pre_calc.dispmodw10 && y >= 0 && y < game->pre_calc.dispmodh10)
-			((int*)game->screen->pixels)[y * game->display_mode.w + (int)x] = bright(color, x - (int)x);
+			((int*)game->screen->pixels)[y * game->screen->w + (int)x] = bright(color, x - (int)x);
 		if (x > -1 && x < game->pre_calc.dispmodw10 - 1 && y >= 0 && y < game->pre_calc.dispmodh10)
-			((int*)game->screen->pixels)[ y * game->display_mode.w + (int)x + 1] = bright(color, 1 - (x - (int)x));
+			((int*)game->screen->pixels)[ y * game->screen->w + (int)x + 1] = bright(color, 1 - (x - (int)x));
 		y++;
 		x += grad;
 	}
