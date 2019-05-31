@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/31 16:21:19 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 17:12:27 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ static void	init_sdl(t_game *game)
 	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
         check_error_n_exit(1,(char*)SDL_GetError());
     }
-	game->texture = IMG_Load("imgs/textures/cat.bmp");
+	game->texture = get_texture("imgs/textures/cat.bmp");
+	ft_putnbrln(game->texture->w);
+	ft_putnbrln(game->texture->h);
 }
 
 static void set_player(t_game *game)

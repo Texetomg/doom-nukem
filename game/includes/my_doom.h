@@ -6,7 +6,7 @@
 /*   By: htorp <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:50:18 by htorp             #+#    #+#             */
-/*   Updated: 2019/05/30 12:50:23 by htorp            ###   ########.fr       */
+/*   Updated: 2019/05/31 18:09:59 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 # include <stdlib.h>
 # include <mlx.h>
 # include <math.h>
-
-typedef unsigned int	u_int;
-typedef unsigned char	u_char;
 
 typedef struct			s_color
 {
@@ -48,9 +45,9 @@ typedef struct			s_texture1
 
 typedef struct			s_texture
 {
-	int					width;
-	int					height;
-	unsigned int		*image;
+	int					w;
+	int					h;
+	unsigned int		*pixels;
 }						t_texture;
 
 typedef struct			s_ar_params
@@ -100,9 +97,8 @@ typedef struct			s_bmp
 
 typedef struct			s_rle_rool
 {
-	u_int					i;
-	u_int					j;
-	int 					k;
+	unsigned int		i;
+	unsigned int		j;
 	int					x;
 	int					y;
 }						t_rle_rool;

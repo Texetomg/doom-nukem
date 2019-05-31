@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 14:29:50 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/05/31 16:50:26 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void    free_SDL(t_game *game)
 	Mix_Quit();
 	SDL_FreeSurface(game->screen);
 	game->screen = NULL;
-	SDL_FreeSurface(game->texture);
+	free(game->texture);
 	game->texture = NULL;
 	/*
 	while (game->texture_arr[i])

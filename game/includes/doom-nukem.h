@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 15:48:52 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 17:00:53 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ typedef struct		s_game
 	t_sector		*sectors;
 	SDL_Window		*window;
 	SDL_Surface		*screen;
-	SDL_Surface		*texture;
+	t_texture		*texture;
 	SDL_Surface		*texture_arr[3];
 	t_menu			start_menu;
 	t_menu			tab_menu;

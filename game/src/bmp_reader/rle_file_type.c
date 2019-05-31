@@ -12,10 +12,11 @@
 
 #include "my_doom.h"
 
-void			rle_r1(u_char *im_a, u_int **im, t_rle_rool *rle_r, t_bmp *bmp)
+void			rle_r1(unsigned char *im_a, unsigned int **im,
+		t_rle_rool *rle_r, t_bmp *bmp)
 {
-	t_bmpinfo	*bmpinfo;
-	u_int		*col_array;
+	t_bmpinfo		*bmpinfo;
+	unsigned int	*col_array;
 
 	bmpinfo = bmp->bmpinfo_v5;
 	col_array = bmp->color->col_array;
@@ -32,7 +33,8 @@ void			rle_r1(u_char *im_a, u_int **im, t_rle_rool *rle_r, t_bmp *bmp)
 	}
 }
 
-void			rle_rool3(u_char *im_a, u_int **im, t_rle_rool *r, u_int *c_a)
+void			rle_rool3(unsigned char *im_a, unsigned int **im,
+		t_rle_rool *r, unsigned int *c_a)
 {
 	r->j = 0;
 	while (r->j < im_a[r->i + 1])
@@ -44,14 +46,16 @@ void			rle_rool3(u_char *im_a, u_int **im, t_rle_rool *r, u_int *c_a)
 	r->i++;
 }
 
-void			rle_rool2(u_char *im_array, t_rle_rool *rle_rool)
+void			rle_rool2(unsigned char *im_array,
+		t_rle_rool *rle_rool)
 {
 	rle_rool->x += im_array[rle_rool->i + 2];
 	rle_rool->y += im_array[rle_rool->i + 3];
 	rle_rool->i += 2;
 }
 
-void			rle_imread(t_bmp *bmp, u_char *i_a, u_int **im, u_int *c_a)
+void			rle_imread(t_bmp *bmp, unsigned char *i_a,
+		unsigned int **im, unsigned int *c_a)
 {
 	t_rle_rool	*rle_rool;
 	t_bmpinfo	*b_i;

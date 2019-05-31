@@ -18,7 +18,10 @@ void			image_set2(int i, int j, t_bmp *bmp, t_ar_params *ar_params)
 	int				k;
 	unsigned int	*pixel;
 
-	pos = (i * bmp->bmpinfo_v5->width + j) * (ar_params->step) + i;
+	if (bmp->bmpinfo_v5->bit_count == 32)
+		pos = (i * bmp->bmpinfo_v5->width + j) * (ar_params->step);
+	else
+		pos = (i * bmp->bmpinfo_v5->width + j) * (ar_params->step) + i;
 	k = 0;
 	while (k < ar_params->step)
 	{
@@ -64,19 +67,20 @@ void			im_presets(t_ar_params *ar_p, t_bmpinfo *bmpinfo,
 	else
 	{
 		ar_p->step = bmpinfo->bit_count / 8;
-		ar_p->pixel_array = (u_char*)malloc(sizeof(char) * ar_p->step);
+		ar_p->pixel_array = (unsigned char*)malloc(sizeof(char) * ar_p->step);
 	}
 	ar_p->image = (unsigned int**)malloc(sizeof(int*) * bmpinfo->height);
 	i = 0;
 	while (i < bmpinfo->height)
 	{
-		ar_p->image[i] = (u_int *)malloc(sizeof(int) * bmpinfo->width);
+		ar_p->image[i] = (unsigned int *)malloc(sizeof(int) * bmpinfo->width);
 		i++;
 	}
 	ar_p->image_shift = bmp->bmphead->bf_off_bits - 14 - inf_size -
 			bmp->color->colmap_size - bmp->color->colmap_shift;
-	ar_p->im_size = bmpinfo->size_image;
-	ar_p->im_array = (u_char *)malloc(sizeof(char) * ar_p->im_size);
+	ar_p->im_size = (bmpinfo->size_image != 0) ? bmpinfo->size_image :
+			bmpinfo->width * bmpinfo->height * ar_p->step;
+	ar_p->im_array = (unsigned char *)malloc(sizeof(char) * ar_p->im_size);
 }
 
 void			create_image(t_ar_params *ar_p, t_bmpinfo *bmpinfo, t_bmp *bmp)

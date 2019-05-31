@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/31 15:50:20 by thorker          ###   ########.fr       */
+/*   Updated: 2019/05/31 17:13:14 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ static void    draw_wall(t_game *game,
 				y = (y - (int)y + 1) * game->texture->h;
 			if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
 			{
-				color = ((int*)game->texture->pixels)[(int)y * game->texture->w + (int)x];
+				color = (game->texture->pixels)[(int)y * game->texture->w + (int)x];
 				((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
 			}
             k++;

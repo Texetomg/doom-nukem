@@ -6,7 +6,7 @@
 /*   By: htorp <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:50:18 by htorp             #+#    #+#             */
-/*   Updated: 2019/05/30 12:50:23 by htorp            ###   ########.fr       */
+/*   Updated: 2019/05/31 18:10:17 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,17 @@ unsigned int	get_colmap_shift(unsigned int inf_size, void *bmp_info)
 
 t_color			*get_c_map(int fd, t_bmpinfo *b_i, unsigned char **rca, int i_s)
 {
-	t_color	*color;
-	u_int	i;
-	char	c;
+	t_color				*color;
+	unsigned int		i;
+	char				c;
 
 	color = (t_color*)malloc(sizeof(t_color));
 	color->colmap_shift = get_colmap_shift(i_s, b_i);
 	if (b_i->bit_count <= 8)
 		color->colmap_size = (unsigned int)pow(2, b_i->bit_count) * 4;
 	else if (b_i->clr_used != 0)
-		color->colmap_size = i_s == 12 ? b_i->clr_used * 3 : b_i->clr_used * 4;
+		color->colmap_size = (i_s == 12) ?
+				b_i->clr_used * 3 : b_i->clr_used * 4;
 	else
 		color->colmap_size = 0;
 	*rca = (unsigned char*)malloc(sizeof(char) * color->colmap_size);
@@ -120,7 +121,8 @@ t_texture		*get_texture(char *file_name)
 	t_texture1		*texture1;
 
 	texture1 = get_texture1(file_name);
-	image = (u_int*)malloc(sizeof(int) * texture1->height * texture1->width);
+	image = (unsigned int*)malloc(sizeof(int) * texture1->height *
+			texture1->width);
 	texture = (t_texture*)malloc(sizeof(t_texture));
 	i = 0;
 	while (i < texture1->height)
@@ -133,9 +135,9 @@ t_texture		*get_texture(char *file_name)
 		}
 		i++;
 	}
-	texture->width = texture1->width;
-	texture->height = texture1->height;
-	texture->image = image;
+	texture->w = texture1->width;
+	texture->h = texture1->height;
+	texture->pixels = image;
 	glob_free(texture1);
 	return (texture);
 }
