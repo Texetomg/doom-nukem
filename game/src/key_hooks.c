@@ -20,6 +20,11 @@ static void    move(t_game *game, double x, double y)
 	vec2	f_point;
 	vec2	s_point;
 	int		flag;
+	double  radius;
+	double  dx;
+	double  dy;
+    t_sprite *sprite;
+
     new_x = game->player.pos.x + x * 1.5;
 	new_y = game->player.pos.y + y * 1.5;
 	i = 0;
@@ -67,6 +72,19 @@ static void    move(t_game *game, double x, double y)
 		}
 		i++;
 	}
+	sprite = game->sprites;
+	while (sprite != NULL)
+    {
+	    dx = new_x - sprite->pos.x;
+	    dy = new_y - sprite->pos.y;
+	    radius = pow(dx, 2) + pow(dy, 2);
+	    if (radius < 0.2)
+	        flag = 1;
+	    sprite = sprite->next;
+	    printf("%f ", radius);
+    }
+	printf("\n");
+
 	if (flag == 0)
 	{
 		game->player.pos.x = game->player.pos.x + x;

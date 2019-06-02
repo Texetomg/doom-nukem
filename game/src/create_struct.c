@@ -40,6 +40,46 @@ static void read_gif(t_gif *gif, char *str, int index, int frame, char* extensio
 	free(folder);
 }
 
+void	texture_cut(t_texture *texture, unsigned int st_color, unsigned int end_color)
+{
+	int i;
+	unsigned int	red;
+	unsigned int	green;
+	unsigned int	blue;
+
+	i = 0;
+	while (i < texture->w * texture->h)
+	{
+		red = texture->pixels[i] & 0xFF0000;
+		green = texture->pixels[i] & 0xFF00;
+		blue =  texture->pixels[i] & 0xFF;
+		if (((red > (st_color & 0xFF0000)) && (red < (end_color & 0xFF0000))) && ((green > (st_color & 0xFF00)) && (green < (end_color & 0xFF00))) && ((blue > (st_color & 0xFF)) && (blue < (end_color & 0xFF))))
+			texture->pixels[i] = 0;
+		i++;
+	}
+}
+
+void	texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int end_color)
+{
+    int i;
+    unsigned int	red;
+    unsigned int	green;
+    unsigned int	blue;
+    unsigned int    *pixels;
+
+    pixels = (unsigned int*)texture->pixels;
+    i = 0;
+    while (i < texture->w * texture->h)
+    {
+        red = pixels[i] & 0xFF0000;
+        green = pixels[i] & 0xFF00;
+        blue =  pixels[i] & 0xFF;
+        if (((red > (st_color & 0xFF0000)) && (red < (end_color & 0xFF0000))) && ((green > (st_color & 0xFF00)) && (green < (end_color & 0xFF00))) && ((blue > (st_color & 0xFF)) && (blue < (end_color & 0xFF))))
+            pixels[i] = 0;
+        i++;
+    }
+}
+
 //инициализация sdl
 static void	init_sdl(t_game *game)
 {
@@ -62,6 +102,8 @@ static void	init_sdl(t_game *game)
         check_error_n_exit(1,(char*)SDL_GetError());
     }
 	game->texture = get_texture("imgs/textures/cat.bmp");
+	game->texture1 = get_texture("imgs/gif1/13.bmp");
+	texture_cut(game->texture1, 0, 0x303030);
 	ft_putnbrln(game->texture->w);
 	ft_putnbrln(game->texture->h);
 }
@@ -94,7 +136,8 @@ static void set_keystate(t_game *game)
 
 static void set_menu(t_game *game)
 {
-	game->start_menu.strings[0] = "CHOOSE YOUR DESTINY:";
+
+	game->menu_status.start = 1;	game->start_menu.strings[0] = "CHOOSE YOUR DESTINY:";
 	game->start_menu.strings[1] = "Loli";
 	game->start_menu.strings[2] = "Trump";
 	game->start_menu.strings[3] = "Doomguy";
@@ -103,13 +146,14 @@ static void set_menu(t_game *game)
 	game->tab_menu.strings[0] = "Continue";
 	game->tab_menu.strings[1] = "New game";
 	game->tab_menu.strings[2] = "Exit";
-	game->menu_status.start = 1;
 	game->menu_status.tab = 0;
 	game->menu_status.main = 0;
 }
 
 static void	set_sprites(t_game *game)
 {
+    t_angle_sprite *start_sprite;
+
 	game->sprites = (t_sprite*)malloc(sizeof(t_sprite));
 	(game->sprites)->pos.x = 0;
 	(game->sprites)->pos.y = 0;
@@ -153,6 +197,12 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->next->angle_sprite->next = 0;
 	(game->sprites)->next->angle_sprite->texture = *((game->gif)->array + 10);
 	(game->sprites)->next->next = 0;
+	start_sprite = (game->sprites)->angle_sprite;
+	while (start_sprite != NULL)
+    {
+	    texture_cut_sdl(start_sprite->texture, 0x71FAFC, 0x73FCFE);
+	    start_sprite = start_sprite->next;
+    }
 }
 
 static void	set_hood(t_game *game)

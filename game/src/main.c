@@ -53,7 +53,11 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright
 	int b_window;
 	SDL_Surface *texture;
 	t_angle_sprite *angle_sprite;
+	int     cross_flag;
+	int     cross_x;
+	int     cross_y;
 
+	cross_flag = 0;
 	angle_sprite = sprite.angle_sprite;
 	texture = sprite.angle_sprite->texture;
 	while (angle_sprite != 0)
@@ -67,15 +71,24 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright
 	}
 	x_start = -sprite.pos_in_cam.y * game->pre_calc.screen_w_div_2 / sprite.pos_in_cam.x + game->pre_calc.screen_w_div_2 - sprite.width / 2 / sprite.pos_in_cam.x;
 	x_end = x_start + sprite.width / sprite.pos_in_cam.x;
-	bot = -(sprite.pos_in_cam.z - sprite.heigth) * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x + game->line_horiz;
-	top = -(sprite.pos_in_cam.z) * game->pre_calc.screen_h_div_2/ sprite.pos_in_cam.x + game->line_horiz;
-	
+	//bot = -(sprite.pos_in_cam.z - sprite.heigth) * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x + game->line_horiz;
+      top = -sprite.pos_in_cam.z * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x + game->line_horiz;
+    //bot = -sprite.pos_in_cam.z * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x + sprite.heigth * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x + game->line_horiz;
+    bot = top + sprite.heigth * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x;
 	if (x_start < 0)
 		x = 0;
 	else if (x_start < for_draw.window.x1)
 		x = for_draw.window.x1;
 	else
 		x = x_start;
+	/*if ((x_start > game->screen->w / 2 - sprite.width / 2 / sprite.pos_in_cam.x) && (x_end < game->screen->w / 2 + sprite.width / 2 / sprite.pos_in_cam.x) &&
+	    (top > game->screen->h / 2 - sprite.heigth * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x / 2) && (bot > game->screen->h / 2 + sprite.heigth * game->pre_calc.screen_h_div_2 / sprite.pos_in_cam.x / 2))
+	    cross_flag = 1;*/
+	cross_x = (double)(game->screen->w / 2 - x_start) / (x_end - x_start) * texture->w;
+	cross_y = (double)(game->screen->h / 2 - top) / (bot - top) * texture->h;
+	if ((cross_x > 0) && (cross_x < texture->w) && (cross_y > 0) && (cross_y < texture->h))
+	    if (((int*)texture->pixels)[cross_y * texture->w + cross_x])
+	        cross_flag = 1;
 	while (x < x_end && x < for_draw.window.x2 && x < game->screen->w)
 	{
 		t_window = (int)(for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * ((double)x - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
@@ -92,8 +105,19 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright
 			new_y = (double)(y - top) / (bot - top) * texture->h;
 			if (new_y >= 0 && new_y < texture->h && new_x >= 0 && new_x < texture->w)
 			{
-				color = ((int*)texture->pixels)[new_y * texture->w + new_x];
-				((int*)game->screen->pixels)[y * game->screen->w + x] = ft_bright(color, bright);
+			    /*if (cross_flag)
+			        color = 0xFF0000;
+                else
+				    color = ((int*)texture->pixels)[new_y * texture->w + new_x];
+                if (color != 0)
+				    ((int*)game->screen->pixels)[y * game->screen->w + x] = ft_bright(color, bright);*/
+                color = ((int*)texture->pixels)[new_y * texture->w + new_x];
+                if (color != 0)
+                {
+                    if (cross_flag)
+                        color = 0xFF0000;
+                    ((int*)game->screen->pixels)[y * game->screen->w + x] = ft_bright(color, bright);
+                }
 			}
 			y++;
 		}
@@ -205,16 +229,16 @@ int			main(void)
 		{	
 			/*if( Mix_PlayingMusic() == 0 )
 				Mix_PlayMusic(game->sounds.music, -1);*/
-			check_rifle_state(game);
+			check_rifle_state(game);//усиление ружья при повороте на 360
 			player_move(game, &loop);
-			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);
-			get_pos_z(&game->player, game->sectors);
+			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);//центровка мыши
+			get_pos_z(&game->player, game->sectors);//определение коллизий м полом и потолком
 			draw_skybox(game);
 			draw_3d_wall(game);
 			draw_hud(game);
 			//запуск гифок
-			gif_loop(game->gif, &game->keystate, &k);
-			client(game);
+			gif_loop(game->gif, &game->keystate, &k);//отвечает за анимировнные стены
+			client(game);//отвечает за сетевую игру
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);

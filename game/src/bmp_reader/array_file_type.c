@@ -119,7 +119,7 @@ unsigned int	**array_read(t_bmp *bmp, int inf_size, int fd)
 	create_image(ar_params, bmpinfo, bmp);
 	free(ar_params->im_array);
 	free(unval_info);
-	if (ar_params->pixel_array == NULL)
+	if (ar_params->pixel_array != NULL)
 		free(ar_params->pixel_array);
 	free(ar_params);
 	return (ar_params->image);

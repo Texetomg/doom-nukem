@@ -248,6 +248,7 @@ typedef struct		s_game
 	SDL_Window		*window;
 	SDL_Surface		*screen;
 	t_texture		*texture;
+	t_texture		*texture1;
 	SDL_Surface		*texture_arr[3];
 	t_menu			start_menu;
 	t_menu			tab_menu;
@@ -267,6 +268,7 @@ typedef struct		s_game
 	int				rifle_angle;
 	t_socket		socket_struct;
 	t_for_udp		for_udp;
+    t_sprite        cross_flag;
 }					t_game;
 
 void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+#include <stdio.h>
 
 int	ft_bright(int color, double bright)
 {
@@ -204,7 +205,7 @@ static void    draw_wall(t_game *game,
         else
             k = yt_wall;
 		a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
-		x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2);
+		x = ((1 - a) * x1 / y1 + a * x2 / y2) /((1 - a) / y1 + a / y2);
 		if (x > 0)
 			x = (x - (int)x) * game->texture->w;
 		else
@@ -293,7 +294,15 @@ static void    pre_draw_sector(SDL_Surface *screen,
                                SDL_DisplayMode display_mode,
                                t_draw for_draw,
 							   double bright,
-							   int grid)
+							   int grid,
+							   t_game *game,
+							   double x1,
+							   double x2,
+							   double y1,
+							   double y2,
+							   double ceil,
+							   double floor,
+							   t_texture *bars)
 {
     int i;
     int k;
@@ -302,13 +311,32 @@ static void    pre_draw_sector(SDL_Surface *screen,
     double yb_window;
     double yt_window;
     int color;
+    double	wall_max_x;
+    double	x_start;
+	double	dx_left;
+	double	dx_right;
+	double	x;
+	double	y;
+	double	a;
 
     (void)display_mode;
 	(void)grid; //остваил ребятам доделать решетку между секторами	
     i = (int)for_draw.wall.x1;
+	x_start = (int)for_draw.wall.x1;
+	dx_left = 0;
+	dx_right = 0;
     if (i < 0)
-        i = 0;
-    while (i < for_draw.wall.x2 && i < screen->w)
+	{
+		dx_left = -i;
+		i = 0;
+	}
+	wall_max_x = for_draw.wall.x2 - for_draw.wall.x1;
+    if (for_draw.wall.x2 > screen->w)
+	{
+    	dx_right = for_draw.wall.x2 - screen->w;
+	}
+	//printf("Max_x: %")
+	while (i < for_draw.wall.x2 && i < screen->w)
     {
         yt_window = for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
         yb_window = for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
@@ -318,13 +346,56 @@ static void    pre_draw_sector(SDL_Surface *screen,
             k = 0;
         else
             k = yt_wall;
+		a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
+		x = ((1 - a) * x1 / y1 + a * x2 / y2) /((1 - a) / y1 + a / y2);
+		if (x > 0)
+			x = (x - (int)x) * game->texture->w;
+		else
+			x = (x - (int)x + 1) * game->texture->w;
         while (k < yb_wall && k < screen->h)
         {
             if (k < yt_window || k > yb_window)
             {
-                color = COLOR_BETW;
+            	if (k < yb_window)
+				{
+					a = (double)(k - (int)yt_wall) / ((int)yb_wall - (int)yt_wall);
+					y = -((1 - a) * ceil + a * floor);
+					if (y > 0)
+						y = (y - (int)y) * game->texture->h;
+					else
+						y = (y - (int)y + 1) * game->texture->h;
+					if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
+					{
+						color = (game->texture->pixels)[(int)y * game->texture->w + (int)x];
+						((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
+					}
+					//color = 0xFF1F00;
+				}
+            	else
+            		color = 0x1FFF;
                 ((int*)screen->pixels)[k * screen->w + i] = ft_bright(color, bright);
             }
+			else
+			{
+				a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
+				x = ((1 - a) * x1 / y1 + a * x2 / y2) /((1 - a) / y1 + a / y2);
+				if (x > 0)
+					x = (x - (int)x) * bars->w;
+				else
+					x = (x - (int)x + 1) * bars->w;
+				a = (double)(k - (int)yt_wall) / ((int)yb_wall - (int)yt_wall);
+				y = -((1 - a) * ceil + a * floor);
+				if (y > 0)
+					y = (y - (int)y) * bars->h;
+				else
+					y = (y - (int)y + 1) * bars->h;
+				if (x >= 0 && x < bars->w && y >= 0 && y < bars->h)
+				{
+					color = (bars->pixels)[(int)y * bars->w + (int)x];
+					if (color > 10)
+						((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
+				}
+			}
             k++;
         }
         i++;
@@ -428,7 +499,8 @@ void    draw_sector(t_game *game, t_draw for_draw)
                     for_next_draw.fov_left = first_point;
                     for_next_draw.fov_right = second_point;
                     draw_sector(game, for_next_draw);
-                    pre_draw_sector(game->screen, game->display_mode, for_next_draw, (game->sectors + for_draw.curr_sector)->brightness, *((game->sectors + for_draw.curr_sector)->grid + i));
+                    pre_draw_sector(game->screen, game->display_mode, for_next_draw, (game->sectors + for_draw.curr_sector)->brightness,
+                    		*((game->sectors + for_draw.curr_sector)->grid + i), game, x1a, x2a, y1a, y2a, (game->sectors + for_draw.curr_sector)->ceil, (game->sectors + for_draw.curr_sector)->floor, game->texture1);
                 }
             }
             else
