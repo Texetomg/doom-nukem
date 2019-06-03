@@ -268,12 +268,13 @@ typedef struct		s_game
 	int				rifle_angle;
 	t_socket		socket_struct;
 	t_for_udp		for_udp;
-    t_sprite        cross_flag;
+    t_sprite        *cross_flag;
+    t_sprite_wall   *sprite_wall;
 }					t_game;
 
 void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);
 int					ft_bright(int color, double bright);
-void        		draw_sprites(t_game *game, t_draw for_draw, t_sprite sprite, double bright);
+void        		draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double bright);
 void           		give_sprites_cam(t_game *game);
 void    			start_menu_render(t_game *game, int *loop);
 void    			tab_menu_render(t_game *game, int *loop);

@@ -78,10 +78,9 @@ static void    move(t_game *game, double x, double y)
 	    dx = new_x - sprite->pos.x;
 	    dy = new_y - sprite->pos.y;
 	    radius = pow(dx, 2) + pow(dy, 2);
-	    if (radius < 0.2)
+	    if (radius < (double)sprite->width * 0.0004)
 	        flag = 1;
 	    sprite = sprite->next;
-	    printf("%f ", radius);
     }
 	printf("\n");
 

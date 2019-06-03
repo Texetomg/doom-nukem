@@ -104,8 +104,6 @@ static void	init_sdl(t_game *game)
 	game->texture = get_texture("imgs/textures/cat.bmp");
 	game->texture1 = get_texture("imgs/gif1/13.bmp");
 	texture_cut(game->texture1, 0, 0x303030);
-	ft_putnbrln(game->texture->w);
-	ft_putnbrln(game->texture->h);
 }
 
 static void set_player(t_game *game)

@@ -193,6 +193,7 @@ static void    draw_wall(t_game *game,
 	int left_border;
 	double new_y1, new_y2;
 	double left_img, right_img;
+    game->cross_flag = NULL;
     i = (int)for_draw.wall.x1;
     if (i < 0)
         i = 0;
@@ -227,6 +228,7 @@ static void    draw_wall(t_game *game,
         }
         i++;
     }
+    //######################################################################################################
 	if (sprite_wall == 0)
 		return ;
 	if (sprite_wall->left < perc1)
@@ -319,23 +321,49 @@ static void    pre_draw_sector(SDL_Surface *screen,
 	double	y;
 	double	a;
 
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    i = game->screen->w / 2;
+    k = game->screen->h / 2;
+    yt_window = for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
+    yb_window = for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
+    yt_wall = for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
+    yb_wall = for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
+    a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
+    x = ((1 - a) * x1 / y1 + a * x2 / y2) /((1 - a) / y1 + a / y2);
+    if (x > 0)
+        x = (x - (int)x) * bars->w;
+    else
+        x = (x - (int)x + 1) * bars->w;
+    a = (double)(k - (int)yt_wall) / ((int)yb_wall - (int)yt_wall);
+    y = -((1 - a) * ceil + a * floor);
+    if (y > 0)
+        y = (y - (int)y) * bars->h;
+    else
+        y = (y - (int)y + 1) * bars->h;
+    if (x >= 0 && x < bars->w && y >= 0 && y < bars->h)
+    {
+        color = (bars->pixels)[(int)y * bars->w + (int)x];
+        if (color != 0)
+            game->cross_flag = NULL;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
     (void)display_mode;
-	(void)grid; //остваил ребятам доделать решетку между секторами	
+    (void)grid; //остваил ребятам доделать решетку между секторами
     i = (int)for_draw.wall.x1;
-	x_start = (int)for_draw.wall.x1;
-	dx_left = 0;
-	dx_right = 0;
+    x_start = (int)for_draw.wall.x1;
+    dx_left = 0;
+    dx_right = 0;
     if (i < 0)
-	{
-		dx_left = -i;
-		i = 0;
-	}
-	wall_max_x = for_draw.wall.x2 - for_draw.wall.x1;
+    {
+        dx_left = -i;
+        i = 0;
+    }
+    wall_max_x = for_draw.wall.x2 - for_draw.wall.x1;
     if (for_draw.wall.x2 > screen->w)
-	{
-    	dx_right = for_draw.wall.x2 - screen->w;
-	}
-	//printf("Max_x: %")
+    {
+        dx_right = for_draw.wall.x2 - screen->w;
+    }
 	while (i < for_draw.wall.x2 && i < screen->w)
     {
         yt_window = for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
@@ -369,7 +397,6 @@ static void    pre_draw_sector(SDL_Surface *screen,
 						color = (game->texture->pixels)[(int)y * game->texture->w + (int)x];
 						((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
 					}
-					//color = 0xFF1F00;
 				}
             	else
             		color = 0x1FFF;
@@ -392,7 +419,7 @@ static void    pre_draw_sector(SDL_Surface *screen,
 				if (x >= 0 && x < bars->w && y >= 0 && y < bars->h)
 				{
 					color = (bars->pixels)[(int)y * bars->w + (int)x];
-					if (color > 10)
+					if (color != 0)
 						((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
 				}
 			}
@@ -521,7 +548,7 @@ void    draw_sector(t_game *game, t_draw for_draw)
 	{
 		if (sprite->sector == for_draw.curr_sector)
 		{
-			draw_sprites(game, for_draw, *sprite, (game->sectors + for_draw.curr_sector)->brightness);
+			draw_sprites(game, for_draw, sprite, (game->sectors + for_draw.curr_sector)->brightness);
 		}
 		sprite = sprite->next;
 	}
