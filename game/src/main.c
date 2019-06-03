@@ -16,7 +16,9 @@
 static void	draw_3d_wall(t_game *game)
 {
 	t_draw	for_draw;
-	
+
+    game->sprite_wall = NULL;
+    game->cross_flag = NULL;
 	//ft_putendl("draw_3d_wall");
 	for_draw.fov_left.x = 5;
 	for_draw.fov_left.y = 5;
@@ -39,6 +41,10 @@ static void	draw_3d_wall(t_game *game)
 	    printf("Headshort!!\n");
     else
         printf("Looser!!\n");
+    if (game->sprite_wall != NULL)
+        printf("Find a picture!!\n");
+    else
+        printf("Don't find!!\n");
 }
 
 

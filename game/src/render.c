@@ -193,7 +193,11 @@ static void    draw_wall(t_game *game,
 	int left_border;
 	double new_y1, new_y2;
 	double left_img, right_img;
-    game->cross_flag = NULL;
+	int     green_flag;
+
+	green_flag = 0;
+    //game->cross_flag = NULL;
+    //game->sprite_wall = NULL;
     i = (int)for_draw.wall.x1;
     if (i < 0)
         i = 0;
@@ -259,6 +263,23 @@ static void    draw_wall(t_game *game,
 	a = (x / y1 - x1 / y1) / (x2 / y2 - x / y2 + x / y1 - x1 / y1);
 	new_y2 = 1 / ((1 - a) / y1 + a / y2);
 	right_border = for_draw.wall.x1 + (for_draw.wall.x2 - for_draw.wall.x1) * a;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    i = game->screen->w / 2;
+    k = game->screen->h / 2;
+    yt_wall = (int)(for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
+    yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
+    top_border = yt_wall + (yb_wall - yt_wall) * sprite_wall->top;
+    bot_border = yt_wall + (yb_wall - yt_wall) * sprite_wall->bot;
+    a = ((double)i - left_border) / (right_border - left_border);
+    x = (((1 - a) * left_img / new_y1 + a * right_img / new_y2 )/ ((1 - a) / new_y1 + a / new_y2) )* sprite_wall->texture->w;
+    y = ((double)k - top_border) / (bot_border - top_border) * sprite_wall->texture->h;
+    if (x >= 0 && x < sprite_wall->texture->w && y >= 0 && y < sprite_wall->texture->h)
+    {
+        green_flag = 1;
+        game->sprite_wall = sprite_wall;
+    }
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (left_border < 0)
 		i = 0;
 	else if ( left_border < for_draw.wall.x1)
@@ -283,6 +304,8 @@ static void    draw_wall(t_game *game,
 			if (x >= 0 && x < sprite_wall->texture->w && y >= 0 && y < sprite_wall->texture->h)
 			{
 				color = ((int*)sprite_wall->texture->pixels)[(int)y * sprite_wall->texture->w + (int)x];
+				/*if (green_flag)
+				    color = 0xFF00;*/
 				((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
 			}
 			k++;
@@ -345,7 +368,10 @@ static void    pre_draw_sector(SDL_Surface *screen,
     {
         color = (bars->pixels)[(int)y * bars->w + (int)x];
         if (color != 0)
+        {
             game->cross_flag = NULL;
+            game->sprite_wall = NULL;
+        }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     (void)display_mode;
