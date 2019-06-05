@@ -160,6 +160,8 @@ typedef struct		s_angle_sprite
 {
 	double			start_angle;
 	double			end_angle;
+	double			up_health;
+	double			down_health;
 	SDL_Surface		*texture;
 	struct s_angle_sprite *next;
 }					t_angle_sprite;
@@ -175,6 +177,7 @@ typedef struct 		s_sprite
 	double			angle;
 	double			angle_in_cam;
 	t_angle_sprite	*angle_sprite;
+	int				health;
 	struct s_sprite *next;
 }					t_sprite;
 

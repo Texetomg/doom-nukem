@@ -79,16 +79,97 @@ static void    move(t_game *game, double x, double y)
 	    dy = new_y - sprite->pos.y;
 	    radius = pow(dx, 2) + pow(dy, 2);
 	    if (radius < (double)sprite->width * 0.0004)
-	        flag = 1;
+		{
+			flag = 1;
+			if (game->player.foots > sprite->pos.z)
+				flag = 0;
+		}
 	    sprite = sprite->next;
     }
-	printf("\n");
 
 	if (flag == 0)
 	{
 		game->player.pos.x = game->player.pos.x + x;
 		game->player.pos.y = game->player.pos.y + y;
 	}
+	printf("Z-pos: %f\n", game->player.foots);
+}
+
+int				one_sec_check(t_game *game, t_sprite *sprite, int num)
+{
+	int			i;
+	vec2		f_point;
+	vec2		s_point;
+	t_sector 	*cur_sec;
+	double 		cross;
+
+	cur_sec = game->sectors + num;
+	i = 0;
+	while (i < cur_sec->count_wall)
+	{
+		f_point = *(game->points + *(cur_sec->index_points + i));
+		if (i == cur_sec->count_wall - 1)
+			s_point = *(game->points + *(cur_sec->index_points));
+		else
+			s_point = *(game->points + *(cur_sec->index_points + i + 1));
+		s_point.x = s_point.x - f_point.x;
+		s_point.y = s_point.y - f_point.y;
+		f_point.x = sprite->pos.x - f_point.x;
+		f_point.y = sprite->pos.y - f_point.y;
+		cross = cross_product(f_point, s_point);
+		if (cross < 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int				sector_check(t_game *game, t_sprite *sprite)
+{
+	int			i;
+	int			j;
+	vec2		f_point;
+	vec2		s_point;
+	t_sector 	*cur_sec;
+	double 		cross;
+
+	cur_sec = game->sectors + sprite->sector;
+	i = 0;
+	while (i < cur_sec->count_wall)
+	{
+		f_point = *(game->points + *(cur_sec->index_points + i));
+		if (i == cur_sec->count_wall - 1)
+			s_point = *(game->points + *(cur_sec->index_points));
+		else
+			s_point = *(game->points + *(cur_sec->index_points + i + 1));
+		s_point.x = s_point.x - f_point.x;
+		s_point.y = s_point.y - f_point.y;
+		f_point.x = sprite->pos.x - f_point.x;
+		f_point.y = sprite->pos.y - f_point.y;
+		cross = cross_product(f_point, s_point);
+		if (cross < -0.0001)
+		{
+			j = 0;
+			while (j < cur_sec->count_wall)
+			{
+				if (cur_sec->neighbors[j] == -1)
+				{
+					j++;
+					continue;
+				}
+				if (one_sec_check(game, sprite, cur_sec->neighbors[j]))
+				{
+					sprite->sector = cur_sec->neighbors[j];
+					sprite->pos.z = sprite->heigth + (game->sectors + cur_sec->neighbors[j])->floor;
+					return (0);
+				}
+				j++;
+			}
+			printf("\n");
+		}
+		i++;
+	}
+	return (0);
 }
 
 static void		change_keystate(t_keystate *keystate, SDL_Keycode key, int flag)
@@ -132,6 +213,19 @@ void	        player_move(t_game *game, int *loop)
 	SDL_Event e;
 	vec2	direct;
 	vec2	curve;
+	double  dx;
+	double  dy;
+	double	px;
+	double	py;
+	double	cx;
+	double	cy;
+	double	new_x;
+	double	new_y;
+	double	radius;
+	t_sprite	*sprite;
+	t_sprite	*index;
+	t_sprite	start_sprite;
+
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
 	//перемещать курсор в одну и ту же точку
@@ -141,6 +235,11 @@ void	        player_move(t_game *game, int *loop)
 	curve.y = STEP * (sin(game->player.angle) * 0.7 + cos(game->player.angle) * 0.7);
 	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
 	{
+		if (game->cross_flag != NULL)
+		{
+			if (game->cross_flag->health > 10)
+				game->cross_flag->health -= 10;
+		}
 		Mix_HaltChannel(-1);
 		if (game->rifle_state == 0)
 			Mix_PlayChannel( -1, game->sounds.bang, 0);
@@ -227,5 +326,35 @@ void	        player_move(t_game *game, int *loop)
 		game->keystate.ctrl_flag = 0;
 		game->player.b_foots = 0.5;
 		game->player.b_knees = 0.3;
-	}		
+	}
+
+	px = game->player.pos.x;
+	py = game->player.pos.y;
+	sprite = game->sprites;
+	while (sprite != NULL)
+	{
+		sector_check(game, sprite);
+		cx = sprite->pos.x;
+		cy = sprite->pos.y;
+		dx = px - cx;
+		dy = py - cy;
+		radius = pow(dx, 2) + pow(dy, 2);
+		if (radius > (double) sprite->width * 0.0004)
+		{
+			dx = dx * (1 - 0.01);
+			dy = dy * (1 - 0.01);
+			new_x = px - dx;
+			new_y = py - dy;
+			radius = pow(dx, 2) + pow(dy, 2);
+			if ((radius < ((double) sprite->width) * 0.01) && ((radius > ((double) sprite->width) * 0.0004)))
+			{
+				index = sprite;
+				start_sprite = game->sprites;
+				sprite->pos.x = new_x;
+				sprite->pos.y = new_y;
+			}
+		}
+		printf("Sector %d\n", sprite->sector);
+		sprite = sprite->next;
+	}
 }

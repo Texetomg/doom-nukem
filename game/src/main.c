@@ -38,7 +38,10 @@ static void	draw_3d_wall(t_game *game)
 	draw_sector(game, for_draw);
 	draw_minimap(game);
 	if (game->cross_flag != NULL)
-	    printf("Headshort!!\n");
+	{
+		printf("Headshort!!\n");
+		printf("Health: %d\n", game->cross_flag->health);
+	}
     else
         printf("Looser!!\n");
     if (game->sprite_wall != NULL)
@@ -74,8 +77,11 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double brigh
 	{
 		if (sprite->angle_in_cam > angle_sprite->start_angle && sprite->angle_in_cam < angle_sprite->end_angle)
 		{
-			texture = angle_sprite->texture;
-			break;
+			if (((sprite->health > angle_sprite->down_health) && (sprite->health < angle_sprite->up_health)) || (angle_sprite->up_health < 0))
+			{
+				texture = angle_sprite->texture;
+				break;
+			}
 		}
 		angle_sprite = angle_sprite->next;
 	}
