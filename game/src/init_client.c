@@ -66,9 +66,9 @@ void client(t_game *game)
 	game->for_udp.sector = game->player.curr_sector;
 	game->socket_struct.numbytes = send(game->socket_struct.sockfd, &(game->for_udp), sizeof(t_for_udp), 0);
 	//printf("client: sent %d bytes to %s\n", game->socket_struct.numbytes, SERVERIP);
-	if ((game->socket_struct.numbytes = recv(game->socket_struct.sockfd, &(game->for_udp), game->socket_struct.numbytes, MSG_DONTWAIT | 0)) < 0){
-		perror("bogdan sraka");
-	}
+//	if ((game->socket_struct.numbytes = recv(game->socket_struct.sockfd, &(game->for_udp), game->socket_struct.numbytes, MSG_DONTWAIT | 0)) < 0){
+//		perror("bogdan sraka");
+//	}
 	if (game->socket_struct.numbytes > 0)
 	{
 		game->sprites->pos = game->for_udp.pos;

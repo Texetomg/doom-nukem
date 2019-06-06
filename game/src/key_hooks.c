@@ -92,7 +92,7 @@ static void    move(t_game *game, double x, double y)
 		game->player.pos.x = game->player.pos.x + x;
 		game->player.pos.y = game->player.pos.y + y;
 	}
-	printf("Z-pos: %f\n", game->player.foots);
+	//printf("Z-pos: %f\n", game->player.foots);
 }
 
 int				one_sec_check(t_game *game, t_sprite *sprite, int num)
@@ -165,7 +165,6 @@ int				sector_check(t_game *game, t_sprite *sprite)
 				}
 				j++;
 			}
-			printf("\n");
 		}
 		i++;
 	}
@@ -206,6 +205,32 @@ SDL_Event	key_hooks(t_game *game)
 			change_keystate(&game->keystate, e.key.keysym.sym, 0);
 	}
 	return (e);
+}
+
+t_sprite *sort(t_sprite *sortlist)
+{
+	t_sprite *new_list = NULL;
+
+	while (sortlist != NULL)
+	{
+		t_sprite *node = sortlist;
+		sortlist = sortlist->next;
+
+		if (new_list == NULL || node->pos_in_cam.x > new_list->pos_in_cam.x)
+		{
+			node->next = new_list;
+			new_list = node;
+		}
+		else
+		{
+			t_sprite *current = new_list;
+			while (current->next != NULL && !(node->pos_in_cam.x > current->next->pos_in_cam.x))
+				current = current->next;
+			node->next = current->next;
+			current->next = node;
+		}
+	}
+	return (new_list);
 }
 
 void	        player_move(t_game *game, int *loop)
@@ -361,13 +386,18 @@ void	        player_move(t_game *game, int *loop)
 						{
 							sprite->pos.x = new_x;
 							sprite->pos.y = new_y;
+							sprite->move = 1;
 						}
+						else
+							sprite->move = 0;
 					}
 					start_sprite = start_sprite->next;
 				}
 			}
+			else
+				sprite->move = 0;
 		}
-		printf("Sector %d\n", sprite->sector);
 		sprite = sprite->next;
 	}
+	game->sprites = sort(game->sprites);
 }

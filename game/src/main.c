@@ -37,19 +37,88 @@ static void	draw_3d_wall(t_game *game)
 	give_sprites_cam(game);
 	draw_sector(game, for_draw);
 	draw_minimap(game);
-	if (game->cross_flag != NULL)
-	{
-		printf("Headshort!!\n");
-		printf("Health: %d\n", game->cross_flag->health);
-	}
-    else
-        printf("Looser!!\n");
-    if (game->sprite_wall != NULL)
-        printf("Find a picture!!\n");
-    else
-        printf("Don't find!!\n");
+//	if (game->cross_flag != NULL)
+//	{
+//		printf("Headshort!!\n");
+//		printf("Health: %d\n", game->cross_flag->health);
+//	}
+//    else
+//        printf("Looser!!\n");
+//    if (game->sprite_wall != NULL)
+//        printf("Find a picture!!\n");
+//    else
+//        printf("Don't find!!\n");
 }
 
+SDL_Surface		*check_sprite(t_sprite *sprite)
+{
+	t_angle_sprite *angle_sprite;
+	SDL_Surface *texture;
+
+	angle_sprite = sprite->angle_sprite;
+	texture = sprite->angle_sprite->texture;
+	while (angle_sprite != 0)
+	{
+		if (sprite->move)
+		{
+			if (sprite->health <= angle_sprite->up_health && sprite->health > angle_sprite->down_health)
+			{
+				if (sprite->id == 0)
+				{
+					texture = angle_sprite->texture2;
+					angle_sprite = sprite->angle_sprite;
+					while (angle_sprite != 0)
+					{
+						angle_sprite->texture = texture;
+						angle_sprite = angle_sprite->next;
+					}
+				}
+				else
+					texture = angle_sprite->texture;
+				break;
+			}
+		}
+		else if (sprite->health > 85)
+		{
+			if (sprite->angle_in_cam >= angle_sprite->start_angle && sprite->angle_in_cam < angle_sprite->end_angle && sprite->health == 100)
+			{
+				texture = angle_sprite->texture;
+				break;
+			}
+			else
+			{
+				texture = angle_sprite->texture;
+			}
+		}
+		else
+		{
+			if (sprite->health <= angle_sprite->up_health && sprite->health > angle_sprite->down_health)
+			{
+				if (sprite->id == 0)
+				{
+					texture = angle_sprite->texture2;
+					angle_sprite = sprite->angle_sprite;
+					while (angle_sprite != 0)
+					{
+						angle_sprite->texture = texture;
+						angle_sprite = angle_sprite->next;
+					}
+				}
+				else
+					texture = angle_sprite->texture;
+				break;
+			}
+		}
+//		else if (sprite->angle_in_cam >= angle_sprite->start_angle && sprite->angle_in_cam < angle_sprite->end_angle)
+//		{
+//			texture = angle_sprite->texture;
+//			break;
+//		}
+
+		angle_sprite = angle_sprite->next;
+	}
+	return (texture);
+}
 
 void		draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double bright)
 {
@@ -65,26 +134,44 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double brigh
 	int t_window;
 	int b_window;
 	SDL_Surface *texture;
-	t_angle_sprite *angle_sprite;
+//	t_angle_sprite *angle_sprite;
 	int     cross_flag;
 	int     cross_x;
 	int     cross_y;
 
 	cross_flag = 0;
-	angle_sprite = sprite->angle_sprite;
-	texture = sprite->angle_sprite->texture;
-	while (angle_sprite != 0)
-	{
-		if (sprite->angle_in_cam > angle_sprite->start_angle && sprite->angle_in_cam < angle_sprite->end_angle)
-		{
-			if (((sprite->health > angle_sprite->down_health) && (sprite->health < angle_sprite->up_health)) || (angle_sprite->up_health < 0))
-			{
-				texture = angle_sprite->texture;
-				break;
-			}
-		}
-		angle_sprite = angle_sprite->next;
-	}
+//	angle_sprite = sprite->angle_sprite;
+//	texture = sprite->angle_sprite->texture;
+//	while (angle_sprite != 0)
+//	{
+//		if (sprite->move)
+//		{
+//			if (sprite->health <= angle_sprite->up_health && sprite->health > angle_sprite->down_health)
+//			{
+//				if (sprite->id == 0)
+//				{
+//					texture = angle_sprite->texture2;
+//					angle_sprite = sprite->angle_sprite;
+//					while (angle_sprite != 0)
+//					{
+//						angle_sprite->texture = texture;
+//						angle_sprite = angle_sprite->next;
+//					}
+//				}
+//				else
+//					texture = angle_sprite->texture;
+//				break;
+//			}
+//		}
+//		else if (sprite->angle_in_cam >= angle_sprite->start_angle && sprite->angle_in_cam < angle_sprite->end_angle)
+//		{
+//			texture = angle_sprite->texture;
+//			break;
+//		}
+//
+//		angle_sprite = angle_sprite->next;
+//	}
+	texture = check_sprite(sprite);
 	x_start = -sprite->pos_in_cam.y * game->pre_calc.screen_w_div_2 / sprite->pos_in_cam.x + game->pre_calc.screen_w_div_2 - sprite->width / 2 / sprite->pos_in_cam.x;
 	x_end = x_start + sprite->width / sprite->pos_in_cam.x;
 	top = -sprite->pos_in_cam.z * game->pre_calc.screen_h_div_2 / sprite->pos_in_cam.x + game->line_horiz;
