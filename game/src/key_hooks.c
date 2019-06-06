@@ -224,7 +224,7 @@ void	        player_move(t_game *game, int *loop)
 	double	radius;
 	t_sprite	*sprite;
 	t_sprite	*index;
-	t_sprite	start_sprite;
+	t_sprite	*start_sprite;
 
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
@@ -350,8 +350,21 @@ void	        player_move(t_game *game, int *loop)
 			{
 				index = sprite;
 				start_sprite = game->sprites;
-				sprite->pos.x = new_x;
-				sprite->pos.y = new_y;
+				while (start_sprite != NULL)
+				{
+					if (start_sprite != index)
+					{
+						dx = new_x - start_sprite->pos.x;
+						dy = new_y - start_sprite->pos.y;
+						radius = pow(dx, 2) + pow(dy, 2);
+						if (radius > ((double) sprite->width) * 0.0008)
+						{
+							sprite->pos.x = new_x;
+							sprite->pos.y = new_y;
+						}
+					}
+					start_sprite = start_sprite->next;
+				}
 			}
 		}
 		printf("Sector %d\n", sprite->sector);
