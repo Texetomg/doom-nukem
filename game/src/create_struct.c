@@ -282,6 +282,7 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->next->angle_sprite->start_angle = -3.14;
 	(game->sprites)->next->angle_sprite->end_angle = 3.14;
 	(game->sprites)->next->angle_sprite->texture = *((game->gif)->array + 10);
+	(game->sprites)->next->angle_sprite->texture2 = *((game->gif)->array + 10);
 	(game->sprites)->next->angle_sprite->up_health = 100;
 	(game->sprites)->next->angle_sprite->down_health = 85;
 	//------------------------------------------------------------------------------------------------------------------
@@ -289,6 +290,7 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->next->angle_sprite->next->start_angle = -3.14;
 	(game->sprites)->next->angle_sprite->next->end_angle = 3.14;
 	(game->sprites)->next->angle_sprite->next->texture = *((game->gif)->array + 11);
+	(game->sprites)->next->angle_sprite->next->texture2 = *((game->gif)->array + 11);
 	(game->sprites)->next->angle_sprite->next->up_health = 85;
 	(game->sprites)->next->angle_sprite->next->down_health = 70;
 	//------------------------------------------------------------------------------------------------------------------
@@ -296,6 +298,7 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->next->angle_sprite->next->next->start_angle = -3.14;
 	(game->sprites)->next->angle_sprite->next->next->end_angle = 3.14;
 	(game->sprites)->next->angle_sprite->next->next->texture = *((game->gif)->array + 12);
+	(game->sprites)->next->angle_sprite->next->next->texture2 = *((game->gif)->array + 12);
 	(game->sprites)->next->angle_sprite->next->next->up_health = 70;
 	(game->sprites)->next->angle_sprite->next->next->down_health = 55;
 	//------------------------------------------------------------------------------------------------------------------
@@ -303,6 +306,7 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->next->angle_sprite->next->next->next->start_angle = -3.14;
 	(game->sprites)->next->angle_sprite->next->next->next->end_angle = 3.14;
 	(game->sprites)->next->angle_sprite->next->next->next->texture = *((game->gif)->array + 13);
+	(game->sprites)->next->angle_sprite->next->next->next->texture2 = *((game->gif)->array + 13);
 	(game->sprites)->next->angle_sprite->next->next->next->up_health = 55;
 	(game->sprites)->next->angle_sprite->next->next->next->down_health = 40;
 	//------------------------------------------------------------------------------------------------------------------
@@ -310,6 +314,7 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->next->angle_sprite->next->next->next->next->start_angle = -3.14;
 	(game->sprites)->next->angle_sprite->next->next->next->next->end_angle = 3.14;
 	(game->sprites)->next->angle_sprite->next->next->next->next->texture = *((game->gif)->array + 14);
+	(game->sprites)->next->angle_sprite->next->next->next->next->texture2 = *((game->gif)->array + 14);
 	(game->sprites)->next->angle_sprite->next->next->next->next->up_health = 40;
 	(game->sprites)->next->angle_sprite->next->next->next->next->down_health = 25;
 	//------------------------------------------------------------------------------------------------------------------
@@ -317,6 +322,7 @@ static void	set_sprites(t_game *game)
 	(game->sprites)->next->angle_sprite->next->next->next->next->next->start_angle = -3.14;
 	(game->sprites)->next->angle_sprite->next->next->next->next->next->end_angle = 3.14;
 	(game->sprites)->next->angle_sprite->next->next->next->next->next->texture = *((game->gif)->array + 15);
+	(game->sprites)->next->angle_sprite->next->next->next->next->next->texture2 = *((game->gif)->array + 15);
 	(game->sprites)->next->angle_sprite->next->next->next->next->next->up_health = 25;
 	(game->sprites)->next->angle_sprite->next->next->next->next->next->down_health = 0;
 	//------------------------------------------------------------------------------------------------------------------
@@ -418,6 +424,12 @@ static void set_initial_values(t_game *game)
 	game->pre_calc.pi_mult_2 = 3.14 * 2;
 	game->rifle_state = 0;
 	game->rifle_angle = game->player.angle;
+	game->spaw1.x = -1;
+	game->spaw1.y = -5;
+	game->spaw2.x = 1.5;
+	game->spaw2.y = -5.5;
+	game->spaw3.x = 0.75;
+	game->spaw3.y = -7.5;
 }
 
 void	add_sprites_wall(t_game *game)

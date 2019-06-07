@@ -233,6 +233,30 @@ t_sprite *sort(t_sprite *sortlist)
 	return (new_list);
 }
 
+void			resp_mobe(t_game *game, t_sprite *sprite)
+{
+	if (game->player.curr_sector == 0)
+	{
+		sprite->pos.x = game->spaw1.x;
+		sprite->pos.y = game->spaw1.y;
+		sprite->sector = 1;
+	}
+	else if (game->player.curr_sector == 1)
+	{
+		sprite->pos.x = game->spaw2.x;
+		sprite->pos.y = game->spaw2.y;
+		sprite->sector = 2;
+	}
+	else if (game->player.curr_sector == 2)
+	{
+		sprite->pos.x = game->spaw3.x;
+		sprite->pos.y = game->spaw3.y;
+		sprite->sector = 4;
+	}
+	sprite->health = 100;
+	sprite->move = 0;
+}
+
 void	        player_move(t_game *game, int *loop)
 {
 	SDL_Event e;
@@ -264,6 +288,11 @@ void	        player_move(t_game *game, int *loop)
 		{
 			if (game->cross_flag->health > 10)
 				game->cross_flag->health -= 10;
+			if (game->cross_flag->health <= 10)
+			{
+				game->cross_flag->health = 100;
+				game->cross_flag->move = 0;
+			}
 		}
 		Mix_HaltChannel(-1);
 		if (game->rifle_state == 0)
@@ -366,6 +395,7 @@ void	        player_move(t_game *game, int *loop)
 		radius = pow(dx, 2) + pow(dy, 2);
 		if (radius > (double) sprite->width * 0.0004)
 		{
+
 			dx = dx * (1 - 0.01);
 			dy = dy * (1 - 0.01);
 			new_x = px - dx;
@@ -373,6 +403,7 @@ void	        player_move(t_game *game, int *loop)
 			radius = pow(dx, 2) + pow(dy, 2);
 			if ((radius < ((double) sprite->width) * 0.01) && ((radius > ((double) sprite->width) * 0.0004)))
 			{
+				printf("Into\n");
 				index = sprite;
 				start_sprite = game->sprites;
 				while (start_sprite != NULL)
@@ -384,8 +415,11 @@ void	        player_move(t_game *game, int *loop)
 						radius = pow(dx, 2) + pow(dy, 2);
 						if (radius > ((double) sprite->width) * 0.0008)
 						{
-							sprite->pos.x = new_x;
-							sprite->pos.y = new_y;
+							if (sprite->health > 30)
+							{
+								sprite->pos.x = new_x;
+								sprite->pos.y = new_y;
+							}
 							sprite->move = 1;
 						}
 						else

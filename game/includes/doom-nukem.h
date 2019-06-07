@@ -275,6 +275,9 @@ typedef struct		s_game
 	t_for_udp		for_udp;
     t_sprite        *cross_flag;
     t_sprite_wall   *sprite_wall;
+	vec2			spaw1;
+	vec2			spaw2;
+	vec2			spaw3;
 }					t_game;
 
 void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);
