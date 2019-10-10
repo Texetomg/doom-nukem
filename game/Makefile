@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
+#    By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/05/31 18:11:46 by thorker          ###   ########.fr        #
+#    Updated: 2019/10/10 15:43:36 by ramory-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,10 @@ all: $(NAME)
 $(NAME): $(OBJ_DIR) $(OBJS)
 	make lib_ft
 	$(CC) $(FLAG) $(OBJS) $(INC) $(LIB) $(FRWR) -o $(NAME)
+	@install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 ../framework/SDL2.framework/Versions/A/SDL2 $(NAME)
+	@install_name_tool -change @rpath/SDL2_mixer.framework/Versions/A/SDL2_mixer ../framework/SDL2_mixer.framework/Versions/A/SDL2_mixer $(NAME)
+	@install_name_tool -change @rpath/SDL2_image.framework/Versions/A/SDL2_image ../framework/SDL2_image.framework/Versions/A/SDL2_image $(NAME)
+	@install_name_tool -change @rpath/SDL2_ttf.framework/Versions/A/SDL2_ttf ../framework/SDL2_ttf.framework/Versions/A/SDL2_ttf $(NAME)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@$(CC) $(FLAG) $(INC) -c $^ -o $@
@@ -59,9 +63,6 @@ fclean:
 re:
 	make fclean
 	make
-
-frame:
-	cp -r ../framework ~/Library/Frameworks
 
 git_%: clean
 	git add --all
