@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom-nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 17:00:53 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/10 17:21:27 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,10 +197,10 @@ typedef	struct 		s_hud
 
 typedef	struct 		s_menu
 {
-	SDL_Surface		*image[5];
-	char			*strings[5];
+	SDL_Surface		*image[6];
+	char			*strings[6];
 	Mix_Music		*music;
-	Mix_Chunk		*clap[4];
+	Mix_Chunk		*clap[5];
 	int				text_pos;
 	SDL_Color		text_color;
 	SDL_Rect		dest;
@@ -211,6 +211,7 @@ typedef struct 		s_menu_status
 	int				start;
 	int				tab;
 	int				main;
+	int				multi;
 }					t_menu_status;
 
 typedef struct 		s_pre_calc
@@ -313,4 +314,5 @@ void				draw_full_screen_img(SDL_Surface *screen, SDL_Surface *image);
 void 				init_client(t_socket *socket_struct);
 void 				client(t_game *game);
 void				print_custom_text(t_game *game, char *text);
+void				draw_multiplayer_screen(t_game *game);
 #endif

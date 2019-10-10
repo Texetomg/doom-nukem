@@ -6,7 +6,7 @@
 #    By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/10/10 15:43:36 by ramory-l         ###   ########.fr        #
+#    Updated: 2019/10/10 16:56:37 by ramory-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = doom-nukem
 BMP_DIR = bmp_reader
 FLAG = -Wall -Wextra -Werror -g -O3
 SRC = sound.c main.c draw_minimap.c fps.c create_struct.c read_map.c key_hooks.c \
-utils.c SDL_utils.c math_utils.c render.c start_menu.c tab_menu.c hud.c \
+utils.c SDL_utils.c math_utils.c render.c start_menu.c tab_menu.c hud.c  multiplayer.c \
 draw_img.c init_client.c $(BMP_DIR)/array_file_type.c $(BMP_DIR)/bmp_info.c \
 $(BMP_DIR)/get_blocks.c $(BMP_DIR)/glob_texture_funks.c $(BMP_DIR)/rle_file_type.c \
 $(BMP_DIR)/texture_add_funks.c print_text.c

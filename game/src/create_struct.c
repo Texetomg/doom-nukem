@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/31 18:12:08 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/10 17:19:35 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,17 +135,20 @@ static void set_keystate(t_game *game)
 static void set_menu(t_game *game)
 {
 
-	game->menu_status.start = 1;	game->start_menu.strings[0] = "CHOOSE YOUR DESTINY:";
+	game->menu_status.start = 1;
+	game->start_menu.strings[0] = "CHOOSE YOUR DESTINY:";
 	game->start_menu.strings[1] = "Loli";
 	game->start_menu.strings[2] = "Trump";
 	game->start_menu.strings[3] = "Doomguy";
-	game->start_menu.strings[4] = "Exit";
+	game->start_menu.strings[4] = "Setevaya igra";
+	game->start_menu.strings[5] = "Exit";
 	game->start_menu.text_pos = 0;
 	game->tab_menu.strings[0] = "Continue";
 	game->tab_menu.strings[1] = "New game";
 	game->tab_menu.strings[2] = "Exit";
 	game->menu_status.tab = 0;
 	game->menu_status.main = 0;
+	game->menu_status.multi = 0;
 }
 
 static void	set_sprites(t_game *game)
@@ -369,6 +372,8 @@ static void load_sounds(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->start_menu.clap[3] = Mix_LoadWAV( "sounds/gay.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->start_menu.clap[4] = Mix_LoadWAV( "sounds/gay.mp3" )))
+		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->sounds.step = Mix_LoadWAV( "sounds/step.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
@@ -386,6 +391,8 @@ static void load_images(t_game *game)
 	if (!(game->start_menu.image[3] = IMG_Load("imgs/start_menu/3.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->start_menu.image[4] = IMG_Load("imgs/start_menu/4.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->start_menu.image[5] = IMG_Load("imgs/start_menu/4.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
