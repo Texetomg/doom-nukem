@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/13 15:11:13 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/13 16:06:33 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 
-# define SERVERIP "192.168.30.41"
+# define SERVERIP "192.168.30.40"
 # define SERVERPORT "9034" 
 # define MAXLINE 1024 
 

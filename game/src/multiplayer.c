@@ -6,9 +6,9 @@ static void	key_hook(t_game *game, int *loop)
 	char *new_str;
 	char *temp;
 
-	temp = ft_strnew(ft_strlen(game->multi_menu.strings[1]));
-	temp = ft_strcpy(temp, game->multi_menu.strings[1]);
-	new_str = ft_strnew(1);
+	temp = NULL;
+	new_str = ft_strnew(ft_strlen(game->multi_menu.strings[1]));
+	new_str = ft_strcpy(new_str, game->multi_menu.strings[1]);
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_KEYDOWN)
@@ -28,14 +28,16 @@ static void	key_hook(t_game *game, int *loop)
 				game->multi_menu.text_pos += 1;
 			else if (e.key.keysym.sym == SDLK_BACKSPACE && game->multi_menu.text_pos == 1)
 			{
-				if (temp[ft_strlen(temp) - 1] != ' ')
-					temp[ft_strlen(temp) - 1] = '\0';
-				game->multi_menu.strings[1] = temp;
+				if (new_str[ft_strlen(new_str) - 1] != ' ')
+					new_str[ft_strlen(new_str) - 1] = '\0';
+				game->multi_menu.strings[1] = new_str;
 			}
 		}
 		else if(e.type == SDL_TEXTINPUT && game->multi_menu.text_pos == 1)
 		{
-			new_str = ft_strjoin(new_str, e.text.text);
+			temp = new_str;
+			new_str = ft_strjoin(temp, e.text.text);
+			free(temp);
 			game->multi_menu.strings[1] = new_str;
 		}
 	}

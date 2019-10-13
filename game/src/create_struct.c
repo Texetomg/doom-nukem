@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/13 15:42:17 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/13 16:08:26 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ static void set_menu(t_game *game)
 	game->start_menu.strings[4] = "Setevaya igra";
 	game->start_menu.strings[5] = "Exit";
 	game->multi_menu.strings[0] = "Back";
-	game->multi_menu.strings[1] = " IP";
+	game->multi_menu.strings[1] = "IP: 192.168.";
 	game->start_menu.text_pos = 0;
 	game->multi_menu.text_pos = 0;
 	game->tab_menu.strings[0] = "Continue";
