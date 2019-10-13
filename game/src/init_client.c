@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_client.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 17:57:30 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/13 15:32:03 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	init_client(t_socket *socket_struct)
 	if (p == NULL)
 		ft_putstr("client: failed to bind socket\n");
 	freeaddrinfo(servinfo);
-	freeaddrinfo(p);
+	// freeaddrinfo(p);
 }
 
 void client(t_game *game)

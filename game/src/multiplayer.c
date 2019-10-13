@@ -3,7 +3,11 @@
 static void	key_hook(t_game *game, int *loop)
 {
 	SDL_Event e;
+	char *new_str;
+	char *temp;
 
+	temp = ft_strnew(ft_strlen(game->multi_menu.strings[1]));
+	temp = ft_strcpy(temp, game->multi_menu.strings[1]);
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_KEYDOWN)
@@ -17,6 +21,21 @@ static void	key_hook(t_game *game, int *loop)
 					game->menu_status.multi = 0;
                     game->menu_status.start = 1;
 				}
+			else if (e.key.keysym.sym == SDLK_UP && game->multi_menu.text_pos > 0)
+				game->multi_menu.text_pos -= 1;
+			else if (e.key.keysym.sym == SDLK_DOWN && game->multi_menu.text_pos < 1)
+				game->multi_menu.text_pos += 1;
+			else if (e.key.keysym.sym == SDLK_BACKSPACE && game->multi_menu.text_pos == 1)
+			{
+				if (temp[ft_strlen(temp) - 1] != ' ')
+					temp[ft_strlen(temp) - 1] = '\0';
+				game->multi_menu.strings[1] = temp;
+			}
+		}
+		else if(e.type == SDL_TEXTINPUT && game->multi_menu.text_pos == 1)
+		{
+			new_str = e.text.text;
+			game->multi_menu.strings[1] = new_str;
 		}
 	}
 }
@@ -32,14 +51,12 @@ void    draw_multiplayer_screen(t_game *game, int *loop)
 	game->multi_menu.dest.w = 120;
 	game->multi_menu.dest.x = game->screen->w / 100 * 65;
 	game->multi_menu.dest.y = game->screen->h / 100 * 5;
-	game->multi_menu.image[1] = NULL;
-	game->multi_menu.image[2] = NULL;
     key_hook(game, loop);
-	set_color(&game->start_menu.text_color, 255, 255, 0);
+	set_color(&game->multi_menu.text_color, 255, 255, 0);
 	draw_full_screen_img(game->screen, game->multi_menu.image[0]);
 	game->multi_menu.dest.y = game->screen->h / 100 * new_str;
 	new_str += 5;
-	while (i < 1)
+	while (i < 2)
 	{
 		if (game->multi_menu.text_pos != i)
 			set_color(&game->multi_menu.text_color, 255, 255, 0);
