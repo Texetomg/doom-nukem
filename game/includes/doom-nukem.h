@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/10 17:21:27 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/13 13:37:45 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,7 @@ typedef struct		s_game
 	SDL_Surface		*texture_arr[3];
 	t_menu			start_menu;
 	t_menu			tab_menu;
+	t_menu			multi_menu;
 	t_menu_status	menu_status;
 	SDL_DisplayMode	display_mode;
 	struct timeval  time;
@@ -314,5 +315,5 @@ void				draw_full_screen_img(SDL_Surface *screen, SDL_Surface *image);
 void 				init_client(t_socket *socket_struct);
 void 				client(t_game *game);
 void				print_custom_text(t_game *game, char *text);
-void				draw_multiplayer_screen(t_game *game);
+void				draw_multiplayer_screen(t_game *game, int *loop);
 #endif

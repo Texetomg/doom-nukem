@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 17:49:51 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/13 13:48:46 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,6 +270,12 @@ int			main(void)
 	k = -3;
 	while (loop)
 	{
+		if(game->menu_status.multi == 1)
+		{
+			/*if( Mix_PlayingMusic() == 0 )
+				Mix_PlayMusic(game->sounds.music, -1);*/
+			draw_multiplayer_screen(game, &loop);
+		}
 		if (game->menu_status.start == 1)
 		{
 			/*if( Mix_PlayingMusic() == 0 )

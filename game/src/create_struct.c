@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/10 17:19:35 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/13 13:46:37 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,9 @@ static void set_menu(t_game *game)
 	game->start_menu.strings[3] = "Doomguy";
 	game->start_menu.strings[4] = "Setevaya igra";
 	game->start_menu.strings[5] = "Exit";
+	game->multi_menu.strings[0] = "Back";
 	game->start_menu.text_pos = 0;
+	game->multi_menu.text_pos = 0;
 	game->tab_menu.strings[0] = "Continue";
 	game->tab_menu.strings[1] = "New game";
 	game->tab_menu.strings[2] = "Exit";
@@ -395,6 +397,8 @@ static void load_images(t_game *game)
 	if (!(game->start_menu.image[5] = IMG_Load("imgs/start_menu/4.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->multi_menu.image[0] = IMG_Load("imgs/tab_menu/1.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->hud.face[2] = IMG_Load("imgs/hud/doom.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
