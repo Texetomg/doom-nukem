@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/13 16:08:26 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/13 17:55:50 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ static void set_menu(t_game *game)
 	game->multi_menu.strings[1] = "IP: 192.168.";
 	game->start_menu.text_pos = 0;
 	game->multi_menu.text_pos = 0;
+	game->tab_menu.text_pos = 0;
 	game->tab_menu.strings[0] = "Continue";
 	game->tab_menu.strings[1] = "New game";
 	game->tab_menu.strings[2] = "Exit";
@@ -469,6 +470,6 @@ t_game	*create_struct(void)
 	load_images(game);
 	set_initial_values(game);
 	add_sprites_wall(game);
-	init_client(&game->socket_struct);
+	game->server_ip = ft_strnew(ft_strlen(game->multi_menu.strings[1]));
 	return (game);
 }

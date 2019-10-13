@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/13 16:06:33 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/13 17:20:51 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 
-# define SERVERIP "192.168.30.40"
+# define SERVERIP "192.168.22.70"
 # define SERVERPORT "9034" 
 # define MAXLINE 1024 
 
@@ -280,6 +280,7 @@ typedef struct		s_game
 	vec2			spaw1;
 	vec2			spaw2;
 	vec2			spaw3;
+	char			*server_ip;
 }					t_game;
 
 void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);
@@ -312,7 +313,7 @@ int             	inside_sector(t_game *game, double x, double y, t_sector sector
 void 				draw_img(SDL_Surface *screen, SDL_Surface *img, vec2 start, vec2 end);
 void 				draw_hud(t_game *game);
 void				draw_full_screen_img(SDL_Surface *screen, SDL_Surface *image);
-void 				init_client(t_socket *socket_struct);
+void 				init_client(t_game *game, t_socket *socket_struct);
 void 				client(t_game *game);
 void				print_custom_text(t_game *game, char *text);
 void				draw_multiplayer_screen(t_game *game, int *loop);

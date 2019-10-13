@@ -1,14 +1,21 @@
 #include "doom-nukem.h"
 
+static char *processing_ip(char *ip)
+{
+	char *temp;
+
+	temp = ft_strdup(&ip[4]);
+
+	return temp;
+}
+
 static void	key_hook(t_game *game, int *loop)
 {
 	SDL_Event e;
-	char *new_str;
 	char *temp;
 
 	temp = NULL;
-	new_str = ft_strnew(ft_strlen(game->multi_menu.strings[1]));
-	new_str = ft_strcpy(new_str, game->multi_menu.strings[1]);
+	game->server_ip = ft_strcpy(game->server_ip, game->multi_menu.strings[1]);
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_KEYDOWN)
@@ -28,17 +35,24 @@ static void	key_hook(t_game *game, int *loop)
 				game->multi_menu.text_pos += 1;
 			else if (e.key.keysym.sym == SDLK_BACKSPACE && game->multi_menu.text_pos == 1)
 			{
-				if (new_str[ft_strlen(new_str) - 1] != ' ')
-					new_str[ft_strlen(new_str) - 1] = '\0';
-				game->multi_menu.strings[1] = new_str;
+				if (game->server_ip[ft_strlen(game->server_ip) - 1] != ' ')
+					game->server_ip[ft_strlen(game->server_ip) - 1] = '\0';
+				game->multi_menu.strings[1] = game->server_ip;
+			}
+			else if (e.key.keysym.sym == SDLK_RETURN && game->multi_menu.text_pos == 1)
+			{
+				game->server_ip = processing_ip(game->multi_menu.strings[1]);
+				init_client(game, &game->socket_struct);
+				game->menu_status.multi = 0;
+				game->menu_status.main = 1;
 			}
 		}
 		else if(e.type == SDL_TEXTINPUT && game->multi_menu.text_pos == 1)
 		{
-			temp = new_str;
-			new_str = ft_strjoin(temp, e.text.text);
+			temp = game->server_ip;
+			game->server_ip = ft_strjoin(temp, e.text.text);
 			free(temp);
-			game->multi_menu.strings[1] = new_str;
+			game->multi_menu.strings[1] = game->server_ip;
 		}
 	}
 }
