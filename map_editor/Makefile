@@ -6,7 +6,7 @@
 #    By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/20 14:23:06 by twitting          #+#    #+#              #
-#    Updated: 2019/10/15 15:09:34 by ramory-l         ###   ########.fr        #
+#    Updated: 2019/10/15 16:05:15 by ramory-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ FRWR = -framework SDL2 -F ../framework \
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) libft kiss_sdl
 	$(CC) $(FLAG) $(OBJS) $(INC) $(LIB) $(FRWR) -o $(NAME) -L ../kiss_sdl -l kisssdl
 	@install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 ../framework/SDL2.framework/Versions/A/SDL2 $(NAME)
 	@install_name_tool -change @rpath/SDL2_mixer.framework/Versions/A/SDL2_mixer ../framework/SDL2_mixer.framework/Versions/A/SDL2_mixer $(NAME)
@@ -55,6 +55,12 @@ $(NAME): $(OBJS)
 
 %.o: %.c
 	@$(CC) $(FLAG) $(INC) -F ../framework -c $^ -o $@
+
+libft:
+	make -C ../libft
+
+kiss_sdl:
+	make -C ../kiss_sdl
 
 clean:
 	/bin/rm -f $(OBJS)
