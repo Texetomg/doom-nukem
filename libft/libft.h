@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 18:25:21 by thorker           #+#    #+#             */
-/*   Updated: 2019/04/16 18:19:54 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/15 15:12:24 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,4 +127,5 @@ void					ft_putnbr(int c);
 void					put_sdl_error(char *str);
 double  				ft_atod(const char *c);
 void					clean_buffer(char **buffer);
+char					*ft_strjoinfree_right(char const *s1, char const *s2);
 #endif
