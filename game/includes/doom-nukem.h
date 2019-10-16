@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 11:40:30 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/16 13:41:37 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,4 +317,10 @@ void 				init_client(t_game *game, t_socket *socket_struct);
 void 				client(t_game *game);
 void				print_custom_text(t_game *game, char *text);
 void				multiplayer_menu_render(t_game *game, int *loop);
+void				draw_player_icon(SDL_Surface *screen, SDL_Surface *img);
+void				draw_aim(SDL_Surface *screen, SDL_Surface *img);
+void				draw_hp_bar(SDL_Surface *screen, SDL_Surface *img);
+void				draw_hands(SDL_Surface *screen, SDL_Surface *img);
+void				draw_jetpack(SDL_Surface *screen, SDL_Surface *img);
+
 #endif
