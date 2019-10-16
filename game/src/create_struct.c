@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/13 17:55:50 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/16 11:15:04 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -416,6 +416,27 @@ static void load_images(t_game *game)
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 
+static void pre_calc_screen(t_pre_calc *pre_calc, SDL_Surface  screen)
+{
+	pre_calc->screen_h_div_2 = screen.h / 2;
+	pre_calc->screen_w_div_2 = screen.w / 2;
+	pre_calc->screen_w_div_10 = screen.w / 10;
+	pre_calc->screen_h_div_10 = screen.h / 10;
+	pre_calc->screen_w_div_20 = screen.w / 20;
+	pre_calc->screen_h_div_20 = screen.h / 20;
+	pre_calc->screen_h_mult_2 = screen.h * 2;
+	pre_calc->pi_div_4 = 3.14 / 4;
+	pre_calc->pi_mult_2 = 3.14 * 2;
+}
+static void set_spaw(vec2 *spaw1, vec2 *spaw2, vec2 *spaw3)
+{
+	spaw1->x = -1;
+	spaw1->y = -5;
+	spaw2->x = 1.5;
+	spaw2->y = -5.5;
+	spaw3->x = 0.75;
+	spaw3->y = -7.5;
+}
 static void set_initial_values(t_game *game)
 {
 	set_player(game);
@@ -426,23 +447,10 @@ static void set_initial_values(t_game *game)
 	set_color(&game->hud.color, 255, 255, 0);
 	set_hood(game);
 	game->line_horiz = 400;
-	game->pre_calc.screen_h_div_2 = game->screen->h / 2;
-	game->pre_calc.screen_w_div_2 = game->screen->w / 2;
-	game->pre_calc.screen_w_div_10 = game->screen->w / 10;
-	game->pre_calc.screen_h_div_10 = game->screen->h / 10;
-	game->pre_calc.screen_w_div_20 = game->screen->w / 20;
-	game->pre_calc.screen_h_div_20 = game->screen->h / 20;
-	game->pre_calc.screen_h_mult_2 = game->screen->h * 2;
-	game->pre_calc.pi_div_4 = 3.14 / 4;
-	game->pre_calc.pi_mult_2 = 3.14 * 2;
+	pre_calc_screen(&game->pre_calc, *game->screen);
 	game->rifle_state = 0;
 	game->rifle_angle = game->player.angle;
-	game->spaw1.x = -1;
-	game->spaw1.y = -5;
-	game->spaw2.x = 1.5;
-	game->spaw2.y = -5.5;
-	game->spaw3.x = 0.75;
-	game->spaw3.y = -7.5;
+	set_spaw(&game->spaw1, &game->spaw2, &game->spaw3);
 }
 
 void	add_sprites_wall(t_game *game)
