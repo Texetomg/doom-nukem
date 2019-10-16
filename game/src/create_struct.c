@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/16 11:55:36 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/16 12:50:10 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -476,7 +476,7 @@ t_game	*create_struct(void)
 		check_error_n_exit(1,"malloc error");
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
-	read_map("src/map2", game);
+	read_map("map2", game);
 	load_sounds(game);
 	load_images(game);
 	set_initial_values(game);

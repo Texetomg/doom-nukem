@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 11:38:43 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/16 12:55:50 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,7 @@ int			main(void)
 	t_game		*game;
 	int loop;
 	int k;
+	/* system("make unzip"); */
 	game = create_struct();
 	loop = 1;		
 	k = -3;
@@ -293,21 +294,22 @@ int			main(void)
 		{	
 			/*if( Mix_PlayingMusic() == 0 )
 				Mix_PlayMusic(game->sounds.music, -1);*/
-			check_rifle_state(game);//усиление ружья при повороте на 360
+			check_rifle_state(game);/* усиление ружья при повороте на 360 */
 			player_move(game, &loop);
-			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);//центровка мыши
-			get_pos_z(&game->player, game->sectors);//определение коллизий м полом и потолком
+			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);/* центровка мыши */
+			get_pos_z(&game->player, game->sectors);/* определение коллизий м полом и потолком */
 			draw_skybox(game);
 			draw_3d_wall(game);
 			draw_hud(game);
-			//запуск гифок
-			gif_loop(game->gif, &game->keystate, &k);//отвечает за анимировнные стены
-			client(game);//отвечает за сетевую игру
+			/* запуск гифок */
+			gif_loop(game->gif, &game->keystate, &k);/* отвечает за анимировнные стены */
+			client(game);/* отвечает за сетевую игру */
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);
 	}
-	//закрытие sdl
+	/* закрытие sdl */
+	/* system("make zip"); */
 	close(game->socket_struct.sockfd);
 	free_SDL(game);
 	return (0);
