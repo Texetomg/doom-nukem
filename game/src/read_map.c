@@ -6,13 +6,13 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/28 19:03:46 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/16 11:25:53 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-//считывание самой первой строки и возврат значения из нее
+/* считывание самой первой строки и возврат значения из нее */
 static int	count(int fd)
 {
 	char	*line;
@@ -37,13 +37,13 @@ static int	count(int fd)
 		return (0);
 }
 
-//считывание инф-ии со строки 'v'
+/* считывание инф-ии со строки 'v' */
 static void	define_vertex(vec2 *points, char **line)
 {
 	points->y = ft_atod(line[1]);
 	points->x = ft_atod(line[2]);
 }
-//считывание инф-ии со строки 's'
+/* считывание инф-ии со строки 's' */
 static void	define_sector(t_sector *sector, char **line)
 {
 	int		counter;
@@ -51,12 +51,12 @@ static void	define_sector(t_sector *sector, char **line)
 	char	**buffer;
 	counter = 0;
 	i = 0;
-	//считывание пола и потолка
+	/* считывание пола и потолка */
 	buffer = ft_strsplit(line[1], ' ');
 	sector->ceil = ft_atod(buffer[0]);
 	sector->floor = ft_atod(buffer[1]);
 	clean_buffer(buffer);
-	//кол-во стен (кол-во инексов векторов)
+	/* кол-во стен (кол-во инексов векторов) */
 	while(line[2][i])
 	{
 		if (line[2][i] == ' ')
@@ -100,8 +100,7 @@ static void	define_sector(t_sector *sector, char **line)
 	sector->brightness = (double)ft_atoi(line[5]) / 100;
 }
 
-
-//чтение карты
+/* чтение карты */
 void		read_map(char *name, t_game *game)
 {
 	char	*line;

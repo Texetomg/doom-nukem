@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom-nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/13 17:20:51 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/16 11:40:30 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,5 +316,5 @@ void				draw_full_screen_img(SDL_Surface *screen, SDL_Surface *image);
 void 				init_client(t_game *game, t_socket *socket_struct);
 void 				client(t_game *game);
 void				print_custom_text(t_game *game, char *text);
-void				draw_multiplayer_screen(t_game *game, int *loop);
+void				multiplayer_menu_render(t_game *game, int *loop);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/16 11:15:04 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/16 11:55:36 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ void	texture_cut(t_texture *texture, unsigned int st_color, unsigned int end_col
 		red = texture->pixels[i] & 0xFF0000;
 		green = texture->pixels[i] & 0xFF00;
 		blue =  texture->pixels[i] & 0xFF;
-		if (((red > (st_color & 0xFF0000)) && (red < (end_color & 0xFF0000))) && ((green > (st_color & 0xFF00)) && (green < (end_color & 0xFF00))) && ((blue > (st_color & 0xFF)) && (blue < (end_color & 0xFF))))
+		if (((red > (st_color & 0xFF0000)) && (red < (end_color & 0xFF0000)))
+			&& ((green > (st_color & 0xFF00)) && (green < (end_color & 0xFF00)))
+			&& ((blue > (st_color & 0xFF)) && (blue < (end_color & 0xFF))))
 			texture->pixels[i] = 0;
 		i++;
 	}
@@ -74,7 +76,9 @@ void	texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int e
         red = pixels[i] & 0xFF0000;
         green = pixels[i] & 0xFF00;
         blue =  pixels[i] & 0xFF;
-        if (((red > (st_color & 0xFF0000)) && (red < (end_color & 0xFF0000))) && ((green > (st_color & 0xFF00)) && (green < (end_color & 0xFF00))) && ((blue > (st_color & 0xFF)) && (blue < (end_color & 0xFF))))
+        if (((red > (st_color & 0xFF0000)) && (red < (end_color & 0xFF0000)))
+			&& ((green > (st_color & 0xFF00)) && (green < (end_color & 0xFF00)))
+			&& ((blue > (st_color & 0xFF)) && (blue < (end_color & 0xFF))))
             pixels[i] = 0;
         i++;
     }
@@ -134,7 +138,6 @@ static void set_keystate(t_game *game)
 
 static void set_menu(t_game *game)
 {
-
 	game->menu_status.start = 1;
 	game->start_menu.strings[0] = "CHOOSE YOUR DESTINY:";
 	game->start_menu.strings[1] = "Loli";

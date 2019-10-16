@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/13 13:48:46 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/16 11:38:43 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,7 +274,7 @@ int			main(void)
 		{
 			/*if( Mix_PlayingMusic() == 0 )
 				Mix_PlayMusic(game->sounds.music, -1);*/
-			draw_multiplayer_screen(game, &loop);
+			multiplayer_menu_render(game, &loop);
 		}
 		if (game->menu_status.start == 1)
 		{

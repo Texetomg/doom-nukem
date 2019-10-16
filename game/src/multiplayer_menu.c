@@ -5,7 +5,6 @@ static char *processing_ip(char *ip)
 	char *temp;
 
 	temp = ft_strdup(&ip[4]);
-
 	return temp;
 }
 
@@ -57,7 +56,7 @@ static void	key_hook(t_game *game, int *loop)
 	}
 }
 
-void    draw_multiplayer_screen(t_game *game, int *loop)
+void    multiplayer_menu_render(t_game *game, int *loop)
 {
 	int i;
 	int new_str;
