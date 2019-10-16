@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   start_menu.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/13 13:44:07 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/16 16:20:30 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
-
-void		set_color(SDL_Color *color, int r, int g, int b)
-{
-	color->r = r;
-	color->g = g;
-	color->b = b;
-}
 
 static void	arrows(t_game *game, int pos)
 {
@@ -28,6 +21,26 @@ static void	arrows(t_game *game, int pos)
 					0);
 }
 
+static void	key_hook_sup(t_game *game, int *loop, SDL_Event e)
+{
+	if (e.key.keysym.sym == SDLK_UP && game->start_menu.text_pos > 1)
+		arrows(game, -1);
+	else if (e.key.keysym.sym == SDLK_DOWN && game->start_menu.text_pos < 5)
+		arrows(game, 1);
+	else if (e.key.keysym.sym == SDLK_RETURN && game->start_menu.text_pos == 4)
+		switch_menu(&game->menu_status.multi, &game->menu_status.start);
+	else if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT ||
+		(e.key.keysym.sym == SDLK_RETURN && game->start_menu.text_pos == 5))
+		*loop = 0;
+	else if (e.key.keysym.sym == SDLK_RETURN &&
+		game->start_menu.text_pos != 0 && game->start_menu.text_pos != 5)
+	{
+		game->complexity = game->start_menu.text_pos;
+		switch_menu(&game->menu_status.main, &game->menu_status.start);
+		Mix_HaltMusic();
+	}
+}
+
 static void	key_hook(t_game *game, int *loop)
 {
 	SDL_Event e;
@@ -35,63 +48,15 @@ static void	key_hook(t_game *game, int *loop)
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_KEYDOWN)
-		{
-			if (e.key.keysym.sym == SDLK_UP && game->start_menu.text_pos > 1)
-				arrows(game, -1);
-			else if (e.key.keysym.sym == SDLK_DOWN && game->start_menu.text_pos < 5)
-				arrows(game, 1);
-			else if (e.key.keysym.sym == SDLK_RETURN &&
-				game->start_menu.text_pos == 4)
-				{
-					game->menu_status.start = 0;
-					game->menu_status.multi = 1;
-				}
-			else if (e.key.keysym.sym == SDLK_ESCAPE ||
-				e.type == SDL_QUIT ||
-				(e.key.keysym.sym == SDLK_RETURN &&
-				game->start_menu.text_pos == 5))
-				*loop = 0;	
-			else if (e.key.keysym.sym == SDLK_RETURN &&
-				game->start_menu.text_pos != 0 &&
-				game->start_menu.text_pos != 5)
-			{
-				game->complexity = game->start_menu.text_pos;
-				game->menu_status.start = 0;
-				game->menu_status.main = 1;
-				Mix_HaltMusic();
-			}
-		}
+			key_hook_sup(game, loop, e);
 	}
 }
 
 void		start_menu_render(t_game *game, int *loop)
 {
-	int		i;
-	int		new_str;
-
-	i = 0;
-	new_str = 10;
-	game->start_menu.dest.h = 80;
-	game->start_menu.dest.w = 120;
-	set_color(&game->start_menu.text_color, 255, 255, 0);
-	draw_full_screen_img(game->screen,
-						game->start_menu.image[game->start_menu.text_pos]);
-	game->start_menu.dest.x = game->screen->w / 100 * 65;
-	game->start_menu.dest.y = game->screen->h / 100 * 5;
+	menu_render(game->screen,
+				&game->start_menu,
+				game->start_menu.image[game->start_menu.text_pos]);
 	key_hook(game, loop);
-	game->start_menu.dest.y = game->screen->h / 100 * new_str;
-	new_str += 5;
-	while (i < 6)
-	{
-		if (game->start_menu.text_pos != i)
-			set_color(&game->start_menu.text_color, 255, 255, 0);
-		else
-			set_color(&game->start_menu.text_color, 0, 255, 0);
-		print_text(game->screen, game->start_menu.strings[i],
-					"../font/font.otf", 46,
-					game->start_menu.text_color, game->start_menu.dest);
-		game->start_menu.dest.y = game->screen->h / 100 * new_str;
-		new_str += 5;
-		i++;
-	}
+	print_menu_text(game->screen, &game->start_menu, 6);
 }

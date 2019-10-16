@@ -6,11 +6,18 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/16 12:50:10 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/16 16:01:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
+
+void		set_color(SDL_Color *color, int r, int g, int b)
+{
+	color->r = r;
+	color->g = g;
+	color->b = b;
+}
 
 static void read_gif(t_gif *gif, char *str, int index, int frame, char* extension)
 {

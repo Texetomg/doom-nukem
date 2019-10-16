@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 13:41:37 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:47:35 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,5 +322,8 @@ void				draw_aim(SDL_Surface *screen, SDL_Surface *img);
 void				draw_hp_bar(SDL_Surface *screen, SDL_Surface *img);
 void				draw_hands(SDL_Surface *screen, SDL_Surface *img);
 void				draw_jetpack(SDL_Surface *screen, SDL_Surface *img);
+void				menu_render(SDL_Surface *screen, t_menu *menu, SDL_Surface *image);
+void				print_menu_text(SDL_Surface *screen, t_menu *menu, int string_count);
+void				switch_menu(int *menu_on, int *menu_off);
 
 #endif
