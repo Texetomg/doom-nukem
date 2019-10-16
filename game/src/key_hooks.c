@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 15:36:41 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/16 13:18:35 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -403,7 +403,7 @@ void	        player_move(t_game *game, int *loop)
 			radius = pow(dx, 2) + pow(dy, 2);
 			if ((radius < ((double) sprite->width) * 0.01) && ((radius > ((double) sprite->width) * 0.0004)))
 			{
-				printf("Into\n");
+				/* printf("Into\n"); */
 				index = sprite;
 				start_sprite = game->sprites;
 				while (start_sprite != NULL)

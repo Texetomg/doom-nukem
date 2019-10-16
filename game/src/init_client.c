@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_client.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/13 17:42:32 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/10/16 13:15:45 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ void client(t_game *game)
 		game->for_udp.angle = game->for_udp.angle - game->pre_calc.pi_mult_2;
 	game->for_udp.sector = game->player.curr_sector;
 	game->socket_struct.numbytes = send(game->socket_struct.sockfd, &(game->for_udp), sizeof(t_for_udp), 0);
-	printf("client: sent %d bytes to %s\n", game->socket_struct.numbytes, game->server_ip);
-	if ((game->socket_struct.numbytes = recv(game->socket_struct.sockfd, &(game->for_udp), game->socket_struct.numbytes, MSG_DONTWAIT | 0)) < 0){
+	/* printf("client: sent %d bytes to %s\n", game->socket_struct.numbytes, game->server_ip); */
+	/* if ((game->socket_struct.numbytes = recv(game->socket_struct.sockfd, &(game->for_udp), game->socket_struct.numbytes, MSG_DONTWAIT | 0)) < 0){
 		perror("bogdan sraka");
-	}
+	} */
 	if (game->socket_struct.numbytes > 0)
 	{
 		game->sprites->pos = game->for_udp.pos;
@@ -79,5 +79,5 @@ void client(t_game *game)
 		if (game->for_udp.sound != 0)
 			play_sound(game, game->for_udp.pos, game->for_udp.sound, -1);
 	}
-	printf("client: recv %d bytes from %s\n", game->socket_struct.numbytes, game->server_ip);
+	/* printf("client: recv %d bytes from %s\n", game->socket_struct.numbytes, game->server_ip); */
 }

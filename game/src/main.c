@@ -6,20 +6,19 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 12:55:50 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/16 13:20:46 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-//запускает отрисовку всех стен
+/* запускает отрисовку всех стен */
 static void	draw_3d_wall(t_game *game)
 {
 	t_draw	for_draw;
 
     game->sprite_wall = NULL;
     game->cross_flag = NULL;
-	//ft_putendl("draw_3d_wall");
 	for_draw.fov_left.x = 5;
 	for_draw.fov_left.y = 5;
 	for_draw.fov_right.x = 5;
@@ -32,22 +31,21 @@ static void	draw_3d_wall(t_game *game)
 	for_draw.window.y2t = 0;
 	for_draw.last_sector = -2;
 	for_draw.curr_sector = game->player.curr_sector;
-
 	give_points_cam(game->points_cam, game->points, &game->player, game->count_points);
 	give_sprites_cam(game);
 	draw_sector(game, for_draw);
 	draw_minimap(game);
-	if (game->cross_flag != NULL)
+	/* if (game->cross_flag != NULL)
 	{
 		printf("Headshort!!\n");
 		printf("Health: %d\n", game->cross_flag->health);
 	}
     else
-        printf("Looser!!\n");
+        printf("Looser!!\n"); */
     if (game->sprite_wall != NULL)
         printf("Find a picture!!\n");
-    else
-        printf("Don't find!!\n");
+    /* else
+        printf("Don't find!!\n"); */
 }
 
 SDL_Surface		*check_sprite(t_sprite *sprite)
@@ -265,7 +263,7 @@ int			main(void)
 	t_game		*game;
 	int loop;
 	int k;
-	/* system("make unzip"); */
+	system("make unzip");
 	game = create_struct();
 	loop = 1;		
 	k = -3;
@@ -309,7 +307,7 @@ int			main(void)
 		SDL_UpdateWindowSurface(game->window);
 	}
 	/* закрытие sdl */
-	/* system("make zip"); */
+	system("make zip");
 	close(game->socket_struct.sockfd);
 	free_SDL(game);
 	return (0);
