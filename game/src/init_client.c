@@ -6,34 +6,24 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/17 15:08:05 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/17 16:48:59 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-static struct	addrinfo init_hint()
+static struct addrinfo	init_hint()
 {
 	struct addrinfo	hints;
-	
+
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
-	return(hints);
+	return (hints);
 }
 
-
-void			init_client(t_game *game, t_socket *socket_struct)
+static void				connect_to(t_socket *socket_struct, struct addrinfo *p)
 {
-	struct addrinfo	hints;
-	struct addrinfo	*p;
-	struct addrinfo	*servinfo;
-	int				rv;
-
-	hints = init_hint();
-	if ((rv = getaddrinfo(game->server_ip, SERVERPORT, &hints, &servinfo)) != 0)
-		perror("getaddrinfo error: ");
-	p = servinfo;
 	while (p != NULL)
 	{
 		if ((socket_struct->sockfd = socket(p->ai_family, p->ai_socktype,
@@ -50,15 +40,33 @@ void			init_client(t_game *game, t_socket *socket_struct)
 		}
 		break ;
 	}
+}
+
+void					init_client(t_game *game, t_socket *socket_struct)
+{
+	struct addrinfo	hints;
+	struct addrinfo	*p;
+	struct addrinfo	*servinfo;
+	int				rv;
+
+	hints = init_hint();
+	if ((rv = getaddrinfo(game->server_ip, SERVERPORT, &hints, &servinfo)) != 0)
+		perror("getaddrinfo error: ");
+	p = servinfo;
+	connect_to(socket_struct, p);
 	if (p == NULL)
 	{
-		freeaddrinfo(p);	
+		freeaddrinfo(p);
 		ft_putstr("client: failed to bind socket\n");
 	}
 	freeaddrinfo(servinfo);
 }
 
-void client(t_game *game)
+/*
+**  баг с мультиплееров здесь
+*/
+
+void					client(t_game *game)
 {
 	game->for_udp.pos = game->player.pos;
 	game->for_udp.angle = game->player.angle;
@@ -67,7 +75,8 @@ void client(t_game *game)
 	while (game->for_udp.angle > game->pre_calc.pi_mult_2)
 		game->for_udp.angle = game->for_udp.angle - game->pre_calc.pi_mult_2;
 	game->for_udp.sector = game->player.curr_sector;
-	game->socket_struct.numbytes = send(game->socket_struct.sockfd, &(game->for_udp), sizeof(t_for_udp), 0);
+	game->socket_struct.numbytes = send(game->socket_struct.sockfd,
+		&(game->for_udp), sizeof(t_for_udp), 0);
 	if (game->socket_struct.numbytes > 0)
 	{
 		game->sprites->pos = game->for_udp.pos;
