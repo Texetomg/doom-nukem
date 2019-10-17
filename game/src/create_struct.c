@@ -95,7 +95,7 @@ void	texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int e
 static void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:	
+		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
@@ -117,7 +117,7 @@ static void	init_sdl(t_game *game)
 	texture_cut(game->texture1, 0, 0x303030);
 }
 
-static void set_player(t_game *game)
+void set_player(t_game *game)
 {
 	game->player.jetpack = 0;
 	game->player.key = 1;
@@ -478,7 +478,7 @@ void	add_sprites_wall(t_game *game)
 t_game	*create_struct(void)
 {
 	t_game	*game;
-	
+
 	if ((game = (t_game*)malloc(sizeof(t_game))) == 0)
 		check_error_n_exit(1,"malloc error");
 	init_sdl(game);

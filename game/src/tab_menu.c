@@ -30,6 +30,10 @@ static void	key_hook(t_game *game, int *loop)
 				switch_menu(&game->menu_status.main, &game->menu_status.tab);
 			if (e.key.keysym.sym == SDLK_RETURN && game->tab_menu.text_pos == 1)
 			{
+				// game start again
+				set_player(game);
+				game->tab_menu.text_pos = 0;
+				game->start_menu.text_pos = 0;
 				switch_menu(&game->menu_status.start, &game->menu_status.tab);
 				Mix_HaltMusic();
 			}

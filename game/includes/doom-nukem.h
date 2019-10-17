@@ -29,8 +29,8 @@
 # include <netdb.h>
 
 # define SERVERIP "192.168.22.70"
-# define SERVERPORT "9034" 
-# define MAXLINE 1024 
+# define SERVERPORT "9034"
+# define MAXLINE 1024
 
 # define HIGH 0.5
 # define ACCEL 0.005
@@ -216,7 +216,7 @@ typedef struct 		s_menu_status
 
 typedef struct 		s_pre_calc
 {
-	
+
 	int screen_h_div_2;
 	int screen_w_div_2;
 	int screen_h_div_10;
@@ -266,7 +266,7 @@ typedef struct		s_game
 	int				count_points;
 	vec2   			*points_cam;
 	int				count_sectors;
-	t_keystate		keystate;	
+	t_keystate		keystate;
 	t_gif			gif[2];
 	int				complexity;
 	int				line_horiz;
@@ -325,5 +325,6 @@ void				draw_jetpack(SDL_Surface *screen, SDL_Surface *img);
 void				menu_render(SDL_Surface *screen, t_menu *menu, SDL_Surface *image);
 void				print_menu_text(SDL_Surface *screen, t_menu *menu, int string_count);
 void				switch_menu(int *menu_on, int *menu_off);
+void 				set_player(t_game *game);
 
 #endif
