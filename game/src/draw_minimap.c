@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/05/31 14:47:47 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:01:29 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static int		bright(int color, double bri)
 
 static void	draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
-	//ft_putendl("draw_wall_x");
 	int	x;
 	double y;
 	double grad;
