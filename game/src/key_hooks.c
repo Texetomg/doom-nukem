@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 13:18:35 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:41:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ static void    move(t_game *game, double x, double y)
 		game->player.pos.x = game->player.pos.x + x;
 		game->player.pos.y = game->player.pos.y + y;
 	}
-	//printf("Z-pos: %f\n", game->player.foots);
 }
 
 int				one_sec_check(t_game *game, t_sprite *sprite, int num)
@@ -277,7 +276,6 @@ void	        player_move(t_game *game, int *loop)
 
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
-	//перемещать курсор в одну и ту же точку
 	direct.x = STEP * cos(game->player.angle);
 	direct.y = STEP * sin(game->player.angle);
 	curve.x = STEP * (cos(game->player.angle) * 0.7 - sin(game->player.angle) * 0.7);
@@ -403,7 +401,6 @@ void	        player_move(t_game *game, int *loop)
 			radius = pow(dx, 2) + pow(dy, 2);
 			if ((radius < ((double) sprite->width) * 0.01) && ((radius > ((double) sprite->width) * 0.0004)))
 			{
-				/* printf("Into\n"); */
 				index = sprite;
 				start_sprite = game->sprites;
 				while (start_sprite != NULL)

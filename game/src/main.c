@@ -6,13 +6,16 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 13:20:46 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:43:04 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
 
-/* запускает отрисовку всех стен */
+/*
+** запускает отрисовку всех стен
+*/
+
 static void	draw_3d_wall(t_game *game)
 {
 	t_draw	for_draw;
@@ -183,16 +186,17 @@ void		draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double brigh
 
 void			draw_skybox(t_game *game)
 {
-	double left_border;
-	double right_border;
-	double a;
-	int x;
-	int y;
-	int x_texture;
-	int y_texture;
-	int color;
-	double top;
-	double bot;
+	double	left_border;
+	double	right_border;
+	double	a;
+	int		x;
+	int		y;
+	int		x_texture;
+	int		y_texture;
+	int		color;
+	double	top;
+	double	bot;
+	
 	a = fmod(fabs(game->player.angle + game->pre_calc.pi_div_4), game->pre_calc.pi_mult_2);
 	if (game->player.angle + game->pre_calc.pi_div_4 < 0)
 	{
@@ -260,9 +264,10 @@ void		check_rifle_state(t_game *game)
 
 int			main(void)
 {
-	t_game		*game;
-	int loop;
-	int k;
+	t_game	*game;
+	int		loop;
+	int		k;
+
 	system("make unzip");
 	game = create_struct();
 	loop = 1;		
@@ -270,28 +275,13 @@ int			main(void)
 	while (loop)
 	{
 		if(game->menu_status.multi == 1)
-		{
-			/*if( Mix_PlayingMusic() == 0 )
-				Mix_PlayMusic(game->sounds.music, -1);*/
 			multiplayer_menu_render(game, &loop);
-		}
 		if (game->menu_status.start == 1)
-		{
-			/*if( Mix_PlayingMusic() == 0 )
-				Mix_PlayMusic(game->start_menu.music, -1);
-				*/
 			start_menu_render(game, &loop);
-		}
 		if(game->menu_status.tab == 1)
-		{
-			/*if( Mix_PlayingMusic() == 0 )
-				Mix_PlayMusic(game->sounds.music, -1);*/
 			tab_menu_render(game, &loop);
-		}
 		if (game->menu_status.main == 1)
 		{	
-			/*if( Mix_PlayingMusic() == 0 )
-				Mix_PlayMusic(game->sounds.music, -1);*/
 			check_rifle_state(game);/* усиление ружья при повороте на 360 */
 			player_move(game, &loop);
 			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);/* центровка мыши */

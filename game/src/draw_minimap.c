@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/17 15:01:29 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:39:37 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int		bright(int color, double bri)
 {
-	int r;
+	int	r;
 	int g;
 	int b;
 
@@ -28,11 +28,11 @@ static int		bright(int color, double bri)
 	return (color);
 }
 
-static void	draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int color)
+static void		draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
-	int	x;
-	double y;
-	double grad;
+	int		x;
+	double	y;
+	double	grad;
 
 	grad = (second_point.y - first_point.y) / (second_point.x - first_point.x);
 	x = round(first_point.x);
@@ -48,12 +48,11 @@ static void	draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int c
 	}
 }
 
-static void	draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int color)
+static void		draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int color)
 {
-	//ft_putendl("draw_wall_y");
-	int	y;
-	double x;
-	double grad;
+	int		y;
+	double	x;
+	double	grad;
 
 	grad = (second_point.x - first_point.x) / (second_point.y - first_point.y);
 	y = round(first_point.y);
@@ -70,13 +69,13 @@ static void	draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int c
 }
 
 
-static void	draw_2dsector(t_game *game, int curr_sector)
+static void		draw_2dsector(t_game *game, int curr_sector)
 {
-	//ft_putendl("draw_2dsector");
-	double for_swap;
-	int i;
+	double	for_swap;
+	int		i;
 	vec2	first_point;
 	vec2	second_point;
+
 	i = 0;
 	while (i < (game->sectors + curr_sector)->count_wall)
 	{
@@ -119,13 +118,13 @@ static void	draw_2dsector(t_game *game, int curr_sector)
 	}
 }
 
-// переделать минимапу
-void	draw_minimap(t_game *game)
+void			draw_minimap(t_game *game)
 {
-	int i;
-	vec2 left_fov;
-	vec2 right_fov;
-	vec2 pos0;
+	int		i;
+	vec2	left_fov;
+	vec2	right_fov;
+	vec2	pos0;
+
 	i = 0;
 	while (i < game->count_sectors)
 	{
