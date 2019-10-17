@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:38:34 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 13:48:43 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:06:37 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void	draw_key(SDL_Surface *screen, SDL_Surface *img)
 
 void		draw_hud(t_game *game)
 {
-	/* print_custom_text(game, "privet"); */
 	draw_player_icon(game->screen, game->hud.face[2]);
 	draw_aim(game->screen, game->hud.aim);
 	draw_hp_bar(game->screen, game->hud.hp_bar);
