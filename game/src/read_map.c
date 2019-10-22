@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 11:25:53 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/22 18:30:12 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ static int	count(int fd)
 static void	define_vertex(vec2 *points, char **line)
 {
 	points->y = ft_atod(line[1]);
+	fr_putendl(line[1]);
 	points->x = ft_atod(line[2]);
+	fr_putendl(line[2]);
 }
 /* считывание инф-ии со строки 's' */
 static void	define_sector(t_sector *sector, char **line)
