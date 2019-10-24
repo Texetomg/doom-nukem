@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/17 15:39:37 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/24 14:44:53 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static int		bright(int color, double bri)
 	return (color);
 }
 
-static void		draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int color)
+static void		draw_wall_x(t_game *game, vec2 first_point,
+		vec2 second_point, int color)
 {
 	int		x;
 	double	y;
@@ -39,16 +40,21 @@ static void		draw_wall_x(t_game *game, vec2 first_point, vec2 second_point, int 
 	y = first_point.y + grad * (x - first_point.x);
 	while (x < second_point.x)
 	{
-		if (x >= 0 && x < game->pre_calc.screen_w_div_10 && y >= 0 && y < game->pre_calc.screen_h_div_10)
-			((int*)game->screen->pixels)[(int)y * game->screen->w + x] = bright(color, y - (int)y);
-		if (x >= 0 && x < game->pre_calc.screen_w_div_10 && y > -1 && y < game->pre_calc.screen_h_div_10 - 1)
-			((int*)game->screen->pixels)[((int)y + 1) * game->screen->w + x] = bright(color, 1 - (y - (int)y));
+		if (x >= 0 && x < game->pre_calc.screen_w_div_10 && y >= 0 &&
+				y < game->pre_calc.screen_h_div_10)
+			((int*)game->screen->pixels)[(int)y * game->screen->w + x] =
+				bright(color, y - (int)y);
+		if (x >= 0 && x < game->pre_calc.screen_w_div_10 && y > -1 &&
+				y < game->pre_calc.screen_h_div_10 - 1)
+			((int*)game->screen->pixels)[((int)y + 1) * game->screen->w + x] =
+				bright(color, 1 - (y - (int)y));
 		x++;
 		y += grad;
 	}
 }
 
-static void		draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int color)
+static void		draw_wall_y(t_game *game, vec2 first_point,
+		vec2 second_point, int color)
 {
 	int		y;
 	double	x;
@@ -59,62 +65,42 @@ static void		draw_wall_y(t_game *game, vec2 first_point, vec2 second_point, int 
 	x = first_point.x + grad * (y - first_point.y);
 	while (y < second_point.y)
 	{
-		if (x >= 0 && x < game->pre_calc.screen_w_div_10 && y >= 0 && y < game->pre_calc.screen_h_div_10)
-			((int*)game->screen->pixels)[y * game->screen->w + (int)x] = bright(color, x - (int)x);
-		if (x > -1 && x < game->pre_calc.screen_w_div_10 - 1 && y >= 0 && y < game->pre_calc.screen_h_div_10)
-			((int*)game->screen->pixels)[ y * game->screen->w + (int)x + 1] = bright(color, 1 - (x - (int)x));
+		if (x >= 0 && x < game->pre_calc.screen_w_div_10 &&
+				y >= 0 && y < game->pre_calc.screen_h_div_10)
+			((int*)game->screen->pixels)[y * game->screen->w + (int)x] =
+				bright(color, x - (int)x);
+		if (x > -1 && x < game->pre_calc.screen_w_div_10 - 1 &&
+				y >= 0 && y < game->pre_calc.screen_h_div_10)
+			((int*)game->screen->pixels)[y * game->screen->w + (int)x + 1] =
+				bright(color, 1 - (x - (int)x));
 		y++;
 		x += grad;
 	}
 }
 
-
 static void		draw_2dsector(t_game *game, int curr_sector)
 {
-	double	for_swap;
 	int		i;
 	vec2	first_point;
 	vec2	second_point;
 
-	i = 0;
-	while (i < (game->sectors + curr_sector)->count_wall)
+	i = -1;
+	while (++i < (game->sectors + curr_sector)->count_wall)
 	{
-		first_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points + i));
-		if (i == (game->sectors + curr_sector)->count_wall - 1)
-			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points));
-		else
-			second_point = *(game->points_cam + *((game->sectors + curr_sector)->index_points + i + 1));
-		first_point.x = first_point.x * 20  + game->pre_calc.screen_w_div_20;
-		first_point.y = -first_point.y * 20 + game->pre_calc.screen_h_div_20;
-		second_point.x = second_point.x * 20 + game->pre_calc.screen_w_div_20;
-		second_point.y = -second_point.y * 20 +  game->pre_calc.screen_h_div_20;
-		if (fabs(first_point.x - second_point.x) > fabs(first_point.y - second_point.y))
+		get_points(game, curr_sector, &first_point, &second_point, i);
+		if (fabs(first_point.x - second_point.x) >
+				fabs(first_point.y - second_point.y))
 		{
 			if (first_point.x > second_point.x)
-			{
-				for_swap = first_point.x;
-				first_point.x = second_point.x;
-				second_point.x = for_swap;
-				for_swap = first_point.y;
-				first_point.y = second_point.y;
-				second_point.y = for_swap;
-			}
+				swap_vec2(&first_point, &second_point);
 			draw_wall_x(game, first_point, second_point, 0);
 		}
 		else
 		{
 			if (first_point.y > second_point.y)
-			{
-				for_swap = first_point.x;
-				first_point.x = second_point.x;
-				second_point.x = for_swap;
-				for_swap = first_point.y;
-				first_point.y = second_point.y;
-				second_point.y = for_swap;
-			}
+				swap_vec2(&first_point, &second_point);
 			draw_wall_y(game, first_point, second_point, 0);
 		}
-		i++;
 	}
 }
 

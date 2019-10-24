@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/05/31 16:50:26 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/24 15:35:18 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,35 @@ void			create_new_player(t_game *game, t_for_udp for_udp)
 {
 	//заполнить функцию
 }*/
+/*cмена координат двух точек*/
+
+void			get_points(t_game *game, int curr_sector,
+		vec2 *first_point, vec2 *second_point, int i)
+{
+	*first_point = *(game->points_cam + *((game->sectors +
+					curr_sector)->index_points + i));
+	if (i == (game->sectors + curr_sector)->count_wall - 1)
+		*second_point = *(game->points_cam + *((game->sectors +
+						curr_sector)->index_points));
+	else
+		*second_point = *(game->points_cam + *((game->sectors +
+						curr_sector)->index_points + i + 1));
+	first_point->x = first_point->x * 20 + game->pre_calc.screen_w_div_20;
+	first_point->y = -first_point->y * 20 + game->pre_calc.screen_h_div_20;
+	second_point->x = second_point->x * 20 + game->pre_calc.screen_w_div_20;
+	second_point->y = -second_point->y * 20 + game->pre_calc.screen_h_div_20;
+}
+void			swap_vec2(vec2 *first, vec2 *second)
+{
+	double swap;
+
+	swap = first->x;
+	first->x = second->x;
+	second->x = swap;
+	swap = first->y;
+	first->y = second->y;
+	second->y = swap;
+}
 
 int				inside_sector(t_game *game, double x, double y, t_sector sector)
 {
