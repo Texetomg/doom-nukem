@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:06:32 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/17 15:26:12 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/24 15:52:14 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,8 @@ int		intersection(vec2 *first_point, vec2 *second_point, vec2 left_fov,
 	double	x;
 	double	y;
 
-	x = cross_product(left_fov, *first_point);
 	y = cross_product(left_fov, *second_point);
-	if (x > 0 && y > 0)
+	if ((x = cross_product(left_fov, *first_point)) > 0 && y > 0)
 		return (0);
 	if (x > 0 || y > 0)
 	{
