@@ -6,27 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/24 14:44:53 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 14:07:28 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
-
-static int		bright(int color, double bri)
-{
-	int	r;
-	int g;
-	int b;
-
-	b = color % 256;
-	g = color / 256 % 256;
-	r = (color / 256) / 256;
-	r = (int)(r * bri);
-	g = (int)(g * bri);
-	b = (int)(b * bri);
-	color = b + g * 256 + r * 256 * 256;
-	return (color);
-}
 
 static void		draw_wall_x(t_game *game, vec2 first_point,
 		vec2 second_point, int color)
@@ -43,11 +27,11 @@ static void		draw_wall_x(t_game *game, vec2 first_point,
 		if (x >= 0 && x < game->pre_calc.screen_w_div_10 && y >= 0 &&
 				y < game->pre_calc.screen_h_div_10)
 			((int*)game->screen->pixels)[(int)y * game->screen->w + x] =
-				bright(color, y - (int)y);
+				ft_bright(color, y - (int)y);
 		if (x >= 0 && x < game->pre_calc.screen_w_div_10 && y > -1 &&
 				y < game->pre_calc.screen_h_div_10 - 1)
 			((int*)game->screen->pixels)[((int)y + 1) * game->screen->w + x] =
-				bright(color, 1 - (y - (int)y));
+				ft_bright(color, 1 - (y - (int)y));
 		x++;
 		y += grad;
 	}
@@ -68,11 +52,11 @@ static void		draw_wall_y(t_game *game, vec2 first_point,
 		if (x >= 0 && x < game->pre_calc.screen_w_div_10 &&
 				y >= 0 && y < game->pre_calc.screen_h_div_10)
 			((int*)game->screen->pixels)[y * game->screen->w + (int)x] =
-				bright(color, x - (int)x);
+				ft_bright(color, x - (int)x);
 		if (x > -1 && x < game->pre_calc.screen_w_div_10 - 1 &&
 				y >= 0 && y < game->pre_calc.screen_h_div_10)
 			((int*)game->screen->pixels)[y * game->screen->w + (int)x + 1] =
-				bright(color, 1 - (x - (int)x));
+				ft_bright(color, 1 - (x - (int)x));
 		y++;
 		x += grad;
 	}

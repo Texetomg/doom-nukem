@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/24 15:01:03 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 15:36:02 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,7 @@ typedef struct		s_game
 	char			*server_ip;
 }					t_game;
 
+void				draw_ceil(t_game *game, t_draw for_draw, double dz, double bright);
 void				play_sound(t_game *game, vec3 position, int flag_sound, int flag);
 int					ft_bright(int color, double bright);
 void        		draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double bright);

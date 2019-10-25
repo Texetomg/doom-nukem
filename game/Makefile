@@ -6,14 +6,14 @@
 #    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/10/22 18:13:16 by thorker          ###   ########.fr        #
+#    Updated: 2019/10/25 14:18:52 by thorker          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = doom-nukem
 BMP_DIR = bmp_reader
 FLAG = -Wall -Wextra -Werror -g -O3
-SRC = sound.c main.c draw_minimap.c fps.c create_struct.c read_map.c key_hooks.c \
+SRC = draw_ceil.c sound.c main.c draw_minimap.c fps.c create_struct.c read_map.c key_hooks.c \
 utils.c sdl_utils.c math_utils.c render.c start_menu.c tab_menu.c hud.c  multiplayer_menu.c \
 hud_utils.c menu_utils.c\
 draw_img.c init_client.c $(BMP_DIR)/array_file_type.c $(BMP_DIR)/bmp_info.c \

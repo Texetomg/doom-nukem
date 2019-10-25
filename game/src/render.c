@@ -6,12 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/17 15:43:39 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 14:27:29 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom-nukem.h"
-#include <stdio.h>
 
 int	ft_bright(int color, double bright)
 {
@@ -19,85 +18,18 @@ int	ft_bright(int color, double bright)
 	int g;
 	int b;
 	int new_color;
-	int rMask = 0xFF0000;
-	int gMask = 0xFF00;
-	int bMask = 0xFF;
 
-	r = (color & rMask) >> 16;
+	r = (color & 0xFF0000) >> 16;
 	r = r * bright;
-	g = (color & gMask) >> 8;
+	g = (color & 0xFF00) >> 8;
 	g = g * bright;
-	b = (color & bMask);
+	b = (color & 0xFF);
 	b = b * bright;
 	new_color = r * 256 * 256 + g * 256 + b;
 	return (new_color);
 }
-/*
- * Отрисовывает потолок
- */
-void    draw_ceil(t_game *game, t_draw for_draw, double dz, double bright)
-{
-    int i;
-    int k;
-    vec3 first;
-    vec3 second;
-    int yt_window;
-    int yt_wall;
-    int color;
-    double a;
-    double x;
-    double y;
-    vec3 first_left;
-    vec3 first_right;
-    vec3 second_left;
-    vec3 second_right;
-    
-    i = (int)for_draw.wall.x1;
-    if (i < 0)
-        i = 0;
-    second_left = get_ceil(game, for_draw.wall.x1, for_draw.wall.y1t, dz);
-    first_left = get_ceil(game, for_draw.window.x1, for_draw.window.y1t, dz);
-    second_right = get_ceil(game, for_draw.wall.x2, for_draw.wall.y2t, dz);
-    first_right = get_ceil(game, for_draw.window.x2, for_draw.window.y2t, dz);
-    while (i < for_draw.wall.x2 && i < game->screen->w)
-    {
-        a = (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
-		first.x = ((1 - a) * first_left.x / first_left.z + a * first_right.x / first_right.z) / ((1 - a) / first_left.z + a / first_right.z);
-		first.y = ((1 - a) * first_left.y / first_left.z + a * first_right.y / first_right.z) / ((1 - a) / first_left.z + a / first_right.z);
-		first.z = 1 / ((1 - a) / first_left.z + a / first_right.z);
-        a = (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
-		second.x = ((1 - a) * second_left.x / second_left.z + a * second_right.x / second_right.z) / ((1 - a) / second_left.z + a / second_right.z);
-		second.y = ((1 - a) * second_left.y / second_left.z + a * second_right.y / second_right.z) / ((1 - a) / second_left.z + a / second_right.z);
-        second.z = 1 / ((1 - a) / second_left.z + a / second_right.z);
-        yt_wall = (int)(for_draw.wall.y1t + (for_draw.wall.y2t - for_draw.wall.y1t) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
-        yt_window = (int)(for_draw.window.y1t + (for_draw.window.y2t - for_draw.window.y1t) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
-        if (yt_window < 0)
-            k = 0;
-        else
-            k = yt_window;
-        while (k < yt_wall && k < game->line_horiz)
-        {
-            a = (double)(k - yt_window) / (yt_wall - yt_window);
-            x = ((1 - a) * first.x / first.z + a * second.x / second.z) / ((1 - a) / first.z + a / second.z);
-            if (x < 0)
-                x = (x - (int)x + 1) * game->texture->w;
-            else
-                x = (x - (int)x) * game->texture->w;
-            y = ((1 - a) * first.y / first.z + a * second.y / second.z) / ((1 - a) / first.z + a / second.z);
-            if (y < 0)
-                y = (y - (int)y + 1) * game->texture->h;
-            else
-                y = (y - (int)y) * game->texture->h;
-            if (x > 0 && x < game->texture->w && y > 0 && y < game->texture->h)
-            {
-                color = ((int*)game->texture->pixels)[((int)y) * game->texture->w + ((int)x)];
-                ((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
-            }
-            k++;
-        }
-        i++;
-    }
-}
+
+
 /*
  * Отрисовывает пол
  */
