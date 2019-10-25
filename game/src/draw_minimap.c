@@ -6,14 +6,14 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/25 14:07:28 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 16:59:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
-static void		draw_wall_x(t_game *game, vec2 first_point,
-		vec2 second_point, int color)
+static void		draw_wall_x(t_game *game, t_vec2 first_point,
+		t_vec2 second_point, int color)
 {
 	int		x;
 	double	y;
@@ -37,8 +37,8 @@ static void		draw_wall_x(t_game *game, vec2 first_point,
 	}
 }
 
-static void		draw_wall_y(t_game *game, vec2 first_point,
-		vec2 second_point, int color)
+static void		draw_wall_y(t_game *game, t_vec2 first_point,
+		t_vec2 second_point, int color)
 {
 	int		y;
 	double	x;
@@ -65,8 +65,8 @@ static void		draw_wall_y(t_game *game, vec2 first_point,
 static void		draw_2dsector(t_game *game, int curr_sector)
 {
 	int		i;
-	vec2	first_point;
-	vec2	second_point;
+	t_vec2	first_point;
+	t_vec2	second_point;
 
 	i = -1;
 	while (++i < (game->sectors + curr_sector)->count_wall)
@@ -91,9 +91,9 @@ static void		draw_2dsector(t_game *game, int curr_sector)
 void			draw_minimap(t_game *game)
 {
 	int		i;
-	vec2	left_fov;
-	vec2	right_fov;
-	vec2	pos0;
+	t_vec2	left_fov;
+	t_vec2	right_fov;
+	t_vec2	pos0;
 
 	i = 0;
 	while (i < game->count_sectors)

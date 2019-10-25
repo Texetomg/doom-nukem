@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:38:34 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/17 15:05:09 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 16:58:02 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 #include <sys/time.h>
 
 static int	count_fps(struct timeval *time)

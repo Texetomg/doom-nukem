@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/24 14:09:30 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 16:59:51 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 /* считывание самой первой строки и возврат значения из нее */
 static int	count(int fd)
@@ -38,7 +38,7 @@ static int	count(int fd)
 }
 
 /* считывание инф-ии со строки 'v' */
-static void	define_vertex(vec2 *points, char **line)
+static void	define_vertex(t_vec2 *points, char **line)
 {
 	points->y = ft_atod(line[1]);
 	points->x = ft_atod(line[2]);
@@ -115,7 +115,7 @@ void		read_map(char *name, t_game *game)
 		check_error_n_exit(1, "file descriptor < 0");
 	game->count_points = count(fd);
 	game->count_sectors = count(fd);
-	if ((game->points = (vec2*)malloc(sizeof(vec2) * game->count_points)) == 0)
+	if ((game->points = (t_vec2*)malloc(sizeof(t_vec2) * game->count_points)) == 0)
 		check_error_n_exit(1, "malloc error");
 	if ((game->sectors = (t_sector*)malloc(sizeof(t_sector) * game->count_sectors)) == 0)
 		check_error_n_exit(1, "malloc error");

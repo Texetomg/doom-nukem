@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/17 15:43:04 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 17:01:03 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 /*
 ** запускает отрисовку всех стен
@@ -299,6 +299,6 @@ int			main(void)
 	/* закрытие sdl */
 	system("make zip");
 	close(game->socket_struct.sockfd);
-	free_SDL(game);
+	free_sdl(game);
 	return (0);
 }

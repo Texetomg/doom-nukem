@@ -6,19 +6,19 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:06:32 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/24 15:52:14 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 17:02:39 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 /*
 ** переводит координаты экраны в координаты потолка
 */
 
-vec3	get_ceil(t_game *game, int x, int y, double dz)
+t_vec3	get_ceil(t_game *game, int x, int y, double dz)
 {
-	vec3	re;
+	t_vec3	re;
 	double	x1;
 	double	y1;
 
@@ -36,9 +36,9 @@ vec3	get_ceil(t_game *game, int x, int y, double dz)
 ** переводит координаты экраны в координаты пола
 */
 
-vec3	get_floor(t_game *game, int x, int y, double dz)
+t_vec3	get_floor(t_game *game, int x, int y, double dz)
 {
-	vec3	re;
+	t_vec3	re;
 	double	x1;
 	double	y1;
 
@@ -56,7 +56,7 @@ vec3	get_floor(t_game *game, int x, int y, double dz)
 ** векторное проиведение
 */
 
-double	cross_product(vec2 first_point, vec2 second_point)
+double	cross_product(t_vec2 first_point, t_vec2 second_point)
 {
 	return (first_point.x * second_point.y - second_point.x * first_point.y);
 }
@@ -65,7 +65,7 @@ double	cross_product(vec2 first_point, vec2 second_point)
 ** пересечение прямой и фова
 */
 
-void	cross(vec2 *first_point, vec2 second_point, vec2 fov)
+void	cross(t_vec2 *first_point, t_vec2 second_point, t_vec2 fov)
 {
 	double new_x;
 	double new_y;
@@ -84,8 +84,8 @@ void	cross(vec2 *first_point, vec2 second_point, vec2 fov)
 ** находит точки в фове(их пересечения) возращает ноль если не в фове;
 */
 
-int		intersection(vec2 *first_point, vec2 *second_point, vec2 left_fov,
-	vec2 right_fov)
+int		intersection(t_vec2 *first_point, t_vec2 *second_point, t_vec2 left_fov,
+	t_vec2 right_fov)
 {
 	double	x;
 	double	y;

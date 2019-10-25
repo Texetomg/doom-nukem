@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sound.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/27 12:26:44 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/24 15:43:50 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 17:00:13 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 static void	get_right_and_left(t_game *game,
-		vec3 position,
+		t_vec3 position,
 		int *right,
 		int *left)
 {
@@ -41,7 +41,7 @@ static void	get_right_and_left(t_game *game,
 	*right = *right * dist;
 }
 
-void		play_sound(t_game *game, vec3 position, int flag_sound, int flag)
+void		play_sound(t_game *game, t_vec3 position, int flag_sound, int flag)
 {
 	int right;
 	int left;

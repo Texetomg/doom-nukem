@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   draw_ceil.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thorker <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 14:15:18 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/25 16:21:05 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 16:58:30 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 /*
  ** Дробная часть
@@ -29,8 +29,8 @@ double	fractial_part(double a)
  */
 
 void	fill_texture(t_game *game, int start, int end,
-		vec3 first,
-		vec3 second,
+		t_vec3 first,
+		t_vec3 second,
 		double bright,
 		int i)
 {
@@ -73,15 +73,15 @@ void	fill_texture(t_game *game, int start, int end,
 void	draw_ceil(t_game *game, t_draw for_draw, double dz, double bright)
 {
 	int i;
-	vec3 first;
-	vec3 second;
+	t_vec3 first;
+	t_vec3 second;
 	int yt_window;
 	int yt_wall;
 	double a;
-	vec3 first_left;
-	vec3 first_right;
-	vec3 second_left;
-	vec3 second_right;
+	t_vec3 first_left;
+	t_vec3 first_right;
+	t_vec3 second_left;
+	t_vec3 second_right;
 
 	i = ((int)for_draw.wall.x1 + abs((int)for_draw.wall.x1)) / 2;
 	second_left = get_ceil(game, for_draw.wall.x1, for_draw.wall.y1t, dz);

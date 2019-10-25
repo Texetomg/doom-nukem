@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/25 16:56:32 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 17:01:25 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,7 +343,7 @@ void						print_menu_text(SDL_Surface *screen, t_menu *menu,
 								int string_count);
 void						switch_menu(int *menu_on, int *menu_off);
 void						set_player(t_game *game);
-void						swap_t_vec2(t_vec2 *first, t_vec2 *second);
+void						swap_vec2(t_vec2 *first, t_vec2 *second);
 void						get_points(t_game *game, int curr_sector,
 								t_vec2 *first_point,
 								t_vec2 *second_point, int i);

@@ -6,16 +6,16 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:38:34 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/17 15:06:37 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 17:01:53 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 static void	draw_key(SDL_Surface *screen, SDL_Surface *img)
 {
-	vec2 start;
-	vec2 end;
+	t_vec2 start;
+	t_vec2 end;
 
 	start.x = screen->w / 100 * 90;
 	start.y = screen->h / 100 * 5;

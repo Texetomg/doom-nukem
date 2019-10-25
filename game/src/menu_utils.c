@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:22:16 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 15:57:34 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 16:58:02 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 void	switch_menu(int *menu_on, int *menu_off)
 {

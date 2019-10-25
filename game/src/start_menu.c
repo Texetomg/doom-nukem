@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/16 16:20:30 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 16:58:02 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 static void	arrows(t_game *game, int pos)
 {

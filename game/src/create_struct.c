@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/22 18:26:12 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 17:01:46 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 void		set_color(SDL_Color *color, int r, int g, int b)
 {
@@ -438,7 +438,7 @@ static void pre_calc_screen(t_pre_calc *pre_calc, SDL_Surface  screen)
 	pre_calc->pi_div_4 = 3.14 / 4;
 	pre_calc->pi_mult_2 = 3.14 * 2;
 }
-static void set_spaw(vec2 *spaw1, vec2 *spaw2, vec2 *spaw3)
+static void set_spaw(t_vec2 *spaw1, t_vec2 *spaw2, t_vec2 *spaw3)
 {
 	spaw1->x = -1;
 	spaw1->y = -5;
@@ -453,7 +453,7 @@ static void set_initial_values(t_game *game)
 	set_keystate(game);
 	set_menu(game);
 	set_sprites(game);
-	game->points_cam = (vec2*)malloc(sizeof(vec2) * game->count_points);
+	game->points_cam = (t_vec2*)malloc(sizeof(t_vec2) * game->count_points);
 	set_color(&game->hud.color, 255, 255, 0);
 	set_hood(game);
 	game->line_horiz = 400;

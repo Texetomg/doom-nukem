@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/25 14:27:29 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 17:00:05 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 int	ft_bright(int color, double bright)
 {
@@ -37,18 +37,18 @@ void    draw_floor(t_game *game, t_draw for_draw, double dz, double bright)
 {
     int i;
     int k;
-    vec3 first;
-    vec3 second;
+    t_vec3 first;
+    t_vec3 second;
     int yb_window;
     int yb_wall;
     int color;
     double a;
     double x;
     double y;
-    vec3 first_left;
-    vec3 first_right;
-    vec3 second_left;
-    vec3 second_right;
+    t_vec3 first_left;
+    t_vec3 first_right;
+    t_vec3 second_left;
+    t_vec3 second_right;
     
     i = (int)for_draw.wall.x1;
     if (i < 0)
@@ -393,8 +393,8 @@ void    draw_sector(t_game *game, t_draw for_draw)
 {
     int i;
     t_draw    for_next_draw;
-    vec2    first_point;
-    vec2    second_point;
+    t_vec2    first_point;
+    t_vec2    second_point;
     double yscale1;
     double yscale2;
     double yceil;

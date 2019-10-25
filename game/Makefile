@@ -6,7 +6,7 @@
 #    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/10/25 14:18:52 by thorker          ###   ########.fr        #
+#    Updated: 2019/10/25 17:03:47 by bfalmer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,6 @@ git_%: clean
 	git push
 
 zip:
-	zip -r -q game.zip imgs map2
 	rm -r imgs map2
 
 unzip:

@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/24 15:56:11 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 17:00:48 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 /*
 void			create_new_player(t_game *game, t_for_udp for_udp)
 {
@@ -19,7 +19,7 @@ void			create_new_player(t_game *game, t_for_udp for_udp)
 /*cмена координат двух точек*/
 
 void			get_points(t_game *game, int curr_sector,
-		vec2 *first_point, vec2 *second_point, int i)
+		t_vec2 *first_point, t_vec2 *second_point, int i)
 {
 	*first_point = *(game->points_cam + *((game->sectors +
 					curr_sector)->index_points + i));
@@ -34,7 +34,7 @@ void			get_points(t_game *game, int curr_sector,
 	second_point->x = second_point->x * 20 + game->pre_calc.screen_w_div_20;
 	second_point->y = -second_point->y * 20 + game->pre_calc.screen_h_div_20;
 }
-void			swap_vec2(vec2 *first, vec2 *second)
+void			swap_vec2(t_vec2 *first, t_vec2 *second)
 {
 	double swap;
 
@@ -48,8 +48,8 @@ void			swap_vec2(vec2 *first, vec2 *second)
 
 int				inside_sector(t_game *game, double x, double y, t_sector sector)
 {
-	vec2	f_point;
-	vec2	s_point;
+	t_vec2	f_point;
+	t_vec2	s_point;
 	int		i;
 
 	i = 0;
@@ -73,7 +73,7 @@ int				inside_sector(t_game *game, double x, double y, t_sector sector)
 }
 
 //поварачивает точки в систему координат игрока
-void            give_points_cam(vec2 *points_cam, vec2 *points, t_player *player, int count_points)
+void            give_points_cam(t_vec2 *points_cam, t_vec2 *points, t_player *player, int count_points)
 {
     int        i;
     //ft_putendl("give_point_cam");
@@ -166,7 +166,7 @@ void    print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Co
 	TTF_CloseFont(fnt);
 }
 
-void    free_SDL(t_game *game)
+void    free_sdl(t_game *game)
 {
     Mix_FreeChunk(game->sounds.bang);
 	game->sounds.bang = NULL;

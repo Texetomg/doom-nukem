@@ -6,11 +6,11 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 16:20:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/16 16:25:46 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 16:58:02 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 static char	*processing_ip(char *ip)
 {

@@ -6,19 +6,19 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/24 15:55:00 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 17:00:32 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 #include <stdio.h>
 static void    move(t_game *game, double x, double y)
 {
 	double	new_x;
 	double	new_y;
 	int		i;
-	vec2	f_point;
-	vec2	s_point;
+	t_vec2	f_point;
+	t_vec2	s_point;
 	int		flag;
 	double  radius;
 	double  dx;
@@ -97,8 +97,8 @@ static void    move(t_game *game, double x, double y)
 int				one_sec_check(t_game *game, t_sprite *sprite, int num)
 {
 	int			i;
-	vec2		f_point;
-	vec2		s_point;
+	t_vec2		f_point;
+	t_vec2		s_point;
 	t_sector 	*cur_sec;
 	double 		cross;
 
@@ -127,8 +127,8 @@ int				sector_check(t_game *game, t_sprite *sprite)
 {
 	int			i;
 	int			j;
-	vec2		f_point;
-	vec2		s_point;
+	t_vec2		f_point;
+	t_vec2		s_point;
 	t_sector 	*cur_sec;
 	double 		cross;
 
@@ -259,8 +259,8 @@ void			resp_mobe(t_game *game, t_sprite *sprite)
 void	        player_move(t_game *game, int *loop)
 {
 	SDL_Event e;
-	vec2	direct;
-	vec2	curve;
+	t_vec2	direct;
+	t_vec2	curve;
 	double  dx;
 	double  dy;
 	double	px;

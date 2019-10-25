@@ -6,16 +6,16 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 13:37:49 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/17 15:39:58 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/25 16:59:16 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "doom-nukem.h"
+#include "doom_nukem.h"
 
 void	draw_player_icon(SDL_Surface *screen, SDL_Surface *img)
 {
-	vec2 start;
-	vec2 end;
+	t_vec2 start;
+	t_vec2 end;
 
 	start.x = 0;
 	start.y = screen->h / 100 * 85;
@@ -26,8 +26,8 @@ void	draw_player_icon(SDL_Surface *screen, SDL_Surface *img)
 
 void	draw_aim(SDL_Surface *screen, SDL_Surface *img)
 {
-	vec2 start;
-	vec2 end;
+	t_vec2 start;
+	t_vec2 end;
 
 	start.x = screen->w / 2 - screen->w / 50;
 	start.y = screen->h / 2 - screen->h / 50;
@@ -38,8 +38,8 @@ void	draw_aim(SDL_Surface *screen, SDL_Surface *img)
 
 void	draw_hp_bar(SDL_Surface *screen, SDL_Surface *img)
 {
-	vec2 start;
-	vec2 end;
+	t_vec2 start;
+	t_vec2 end;
 
 	start.x = screen->w / 100 * 15;
 	start.y = screen->h / 100 * 92;
@@ -50,8 +50,8 @@ void	draw_hp_bar(SDL_Surface *screen, SDL_Surface *img)
 
 void	draw_hands(SDL_Surface *screen, SDL_Surface *img)
 {
-	vec2 start;
-	vec2 end;
+	t_vec2 start;
+	t_vec2 end;
 
 	start.x = screen->w / 100 * 40;
 	start.y = screen->h / 100 * 50;
@@ -62,8 +62,8 @@ void	draw_hands(SDL_Surface *screen, SDL_Surface *img)
 
 void	draw_jetpack(SDL_Surface *screen, SDL_Surface *img)
 {
-	vec2 start;
-	vec2 end;
+	t_vec2 start;
+	t_vec2 end;
 
 	start.x = screen->w / 100 * 35;
 	start.y = screen->h / 100 * 91;
