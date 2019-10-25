@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bmp_info.c                                         :+:      :+:    :+:   */
+/*   my_doom.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htorp <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/30 12:50:18 by htorp             #+#    #+#             */
-/*   Updated: 2019/05/31 18:09:59 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/25 16:56:57 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MY_DOOM_MY_DOOM_H
 # define MY_DOOM_MY_DOOM_H
-
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
-// # include <mlx.h>
 # include <math.h>
 
 typedef struct			s_color
