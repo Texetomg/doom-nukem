@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/25 17:00:32 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/26 19:05:02 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,7 @@ static void    move(t_game *game, double x, double y)
 	    dy = new_y - sprite->pos.y;
 	    radius = pow(dx, 2) + pow(dy, 2);
 	    if (radius < (double)sprite->width * 0.0004)
-		{
 			flag = 1;
-			if (game->player.foots > sprite->pos.z)
-				flag = 0;
-		}
 	    sprite = sprite->next;
     }
 

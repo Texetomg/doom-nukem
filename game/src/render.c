@@ -239,7 +239,7 @@ static void    pre_draw_sector(SDL_Surface *screen,
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     (void)display_mode;
-    (void)grid; //остваил ребятам доделать решетку между секторами
+    //(void)grid; //остваил ребятам доделать решетку между секторами
     i = (int)for_draw.wall.x1;
     x_start = (int)for_draw.wall.x1;
     dx_left = 0;
@@ -274,8 +274,6 @@ static void    pre_draw_sector(SDL_Surface *screen,
         {
             if (k < yt_window || k > yb_window)
             {
-            	if (k < yb_window)
-				{
 					a = (double)(k - (int)yt_wall) / ((int)yb_wall - (int)yt_wall);
 					y = -((1 - a) * ceil + a * floor);
 					if (y > 0)
@@ -287,31 +285,29 @@ static void    pre_draw_sector(SDL_Surface *screen,
 						color = (game->texture->pixels)[(int)y * game->texture->w + (int)x];
 						((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
 					}
-				}
-            	else
-            		color = 0x1FFF;
                 ((int*)screen->pixels)[k * screen->w + i] = ft_bright(color, bright);
             }
-			else
-			{
-				a = (double)(i - (int)for_draw.wall.x1) / ((int)for_draw.wall.x2 - (int)for_draw.wall.x1);
-				x = ((1 - a) * x1 / y1 + a * x2 / y2) /((1 - a) / y1 + a / y2);
-				if (x > 0)
-					x = (x - (int)x) * bars->w;
-				else
-					x = (x - (int)x + 1) * bars->w;
-				a = (double)(k - (int)yt_wall) / ((int)yb_wall - (int)yt_wall);
-				y = -((1 - a) * ceil + a * floor);
-				if (y > 0)
-					y = (y - (int)y) * bars->h;
-				else
-					y = (y - (int)y + 1) * bars->h;
-				if (x >= 0 && x < bars->w && y >= 0 && y < bars->h)
-				{
-					color = (bars->pixels)[(int)y * bars->w + (int)x];
-					if (color != 0)
-						((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
-				}
+			else {
+                if (grid == 1)
+                {
+                a = (double) (i - (int) for_draw.wall.x1) / ((int) for_draw.wall.x2 - (int) for_draw.wall.x1);
+                x = ((1 - a) * x1 / y1 + a * x2 / y2) / ((1 - a) / y1 + a / y2);
+                if (x > 0)
+                    x = (x - (int) x) * bars->w;
+                else
+                    x = (x - (int) x + 1) * bars->w;
+                a = (double) (k - (int) yt_wall) / ((int) yb_wall - (int) yt_wall);
+                y = -((1 - a) * ceil + a * floor);
+                if (y > 0)
+                    y = (y - (int) y) * bars->h;
+                else
+                    y = (y - (int) y + 1) * bars->h;
+                if (x >= 0 && x < bars->w && y >= 0 && y < bars->h) {
+                    color = (bars->pixels)[(int) y * bars->w + (int) x];
+                    if (color != 0)
+                        ((int *) game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
+                }
+            }
 			}
             k++;
         }
