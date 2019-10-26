@@ -6,17 +6,17 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 14:15:18 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/25 16:58:30 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/26 03:33:56 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
 /*
- ** Дробная часть
- */
+**	Дробная часть
+*/
 
-double	fractial_part(double a)
+double			fractial_part(double a)
 {
 	if (a < 0)
 		return (a - (int)a + 1);
@@ -25,14 +25,12 @@ double	fractial_part(double a)
 }
 
 /*
- ** Заполнение пространства для текстуры
- */
+** Заполнение пространства для текстуры
+*/
 
-void	fill_texture(t_game *game, int start, int end,
-		t_vec3 first,
-		t_vec3 second,
-		double bright,
-		int i)
+void			fill_texture(t_game *game, int yt[3],
+		t_vec3 point[2],
+		double bright)
 {
 	int		k;
 	double	a;
@@ -40,21 +38,21 @@ void	fill_texture(t_game *game, int start, int end,
 	double	y;
 	int		color;
 
-	k = (start + abs(start)) / 2;
-	while (k < end && k < game->line_horiz)
+	k = (yt[0] + abs(yt[0])) / 2;
+	while (k < yt[1] && k < game->line_horiz)
 	{
-		a = (double)(k - start) / (end - start);
-		x = ((1 - a) * first.x / first.z + a * second.x / second.z) /
-			((1 - a) / first.z + a / second.z);
+		a = (double)(k - yt[0]) / (yt[1] - yt[0]);
+		x = ((1 - a) * point[0].x / point[0].z + a * point[1].x / point[1].z) /
+			((1 - a) / point[0].z + a / point[1].z);
 		x = fractial_part(x) * game->texture->w;
-		y = ((1 - a) * first.y / first.z + a * second.y / second.z) /
-			((1 - a) / first.z + a / second.z);
+		y = ((1 - a) * point[0].y / point[0].z + a * point[1].y / point[1].z) /
+			((1 - a) / point[0].z + a / point[1].z);
 		y = fractial_part(y) * game->texture->h;
 		if (x > 0 && x < game->texture->w && y > 0 && y < game->texture->h)
 		{
 			color = ((int*)game->texture->pixels)[((int)y) *
 				game->texture->w + ((int)x)];
-			((int*)game->screen->pixels)[k * game->screen->w + i] =
+			((int*)game->screen->pixels)[k * game->screen->w + yt[2]] =
 				ft_bright(color, bright);
 		}
 		k++;
@@ -62,56 +60,51 @@ void	fill_texture(t_game *game, int start, int end,
 }
 
 /*
- *	Костыль для нормы
- */
+**	Костыль для нормы
+*/
 
+static t_vec3	to_cruch(double a, t_vec3 first, t_vec3 second)
+{
+	t_vec3	re;
+
+	re.x = ((1 - a) * first.x / first.z + a * second.x
+			/ second.z) / ((1 - a) / first.z + a / second.z);
+	re.y = ((1 - a) * first.y / first.z + a * second.y
+			/ second.z) / ((1 - a) / first.z + a / second.z);
+	re.z = 1 / ((1 - a) / first.z + a / second.z);
+	return (re);
+}
 
 /*
- ** Отрисовывает потолок
- */
+** Отрисовывает потолок
+*/
 
-void	draw_ceil(t_game *game, t_draw for_draw, double dz, double bright)
+void			draw_ceil(t_game *game,
+		t_draw for_draw, double dz, double bright)
 {
-	int i;
-	t_vec3 first;
-	t_vec3 second;
-	int yt_window;
-	int yt_wall;
-	double a;
-	t_vec3 first_left;
-	t_vec3 first_right;
-	t_vec3 second_left;
-	t_vec3 second_right;
+	t_vec3	points[2];
+	int		yt[3];
+	double	a;
+	t_vec3	vec[4];
 
-	i = ((int)for_draw.wall.x1 + abs((int)for_draw.wall.x1)) / 2;
-	second_left = get_ceil(game, for_draw.wall.x1, for_draw.wall.y1t, dz);
-	first_left = get_ceil(game, for_draw.window.x1, for_draw.window.y1t, dz);
-	second_right = get_ceil(game, for_draw.wall.x2, for_draw.wall.y2t, dz);
-	first_right = get_ceil(game, for_draw.window.x2, for_draw.window.y2t, dz);
-	while (i < for_draw.wall.x2 && i < game->screen->w)
+	yt[2] = ((int)for_draw.wall.x1 + abs((int)for_draw.wall.x1)) / 2 - 1;
+	vec[0] = get_ceil(game, for_draw.wall.x1, for_draw.wall.y1t, dz);
+	vec[1] = get_ceil(game, for_draw.window.x1, for_draw.window.y1t, dz);
+	vec[2] = get_ceil(game, for_draw.wall.x2, for_draw.wall.y2t, dz);
+	vec[3] = get_ceil(game, for_draw.window.x2, for_draw.window.y2t, dz);
+	while (++yt[2] < for_draw.wall.x2 && yt[2] < game->screen->w)
 	{
-		a = (i - for_draw.window.x1) / (for_draw.window.x2 -
-				for_draw.window.x1);
-		first.x = ((1 - a) * first_left.x / first_left.z + a * first_right.x
-				/ first_right.z) / ((1 - a) / first_left.z + a / first_right.z);
-		first.y = ((1 - a) * first_left.y / first_left.z + a * first_right.y
-				/ first_right.z) / ((1 - a) / first_left.z + a / first_right.z);
-		first.z = 1 / ((1 - a) / first_left.z + a / first_right.z);
-		a = (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
-		second.x = ((1 - a) * second_left.x / second_left.z + a * second_right.x
-				/ second_right.z) / ((1 - a) / second_left.z + a /
-					second_right.z);
-		second.y = ((1 - a) * second_left.y / second_left.z + a * second_right.y
-				/ second_right.z) / ((1 - a) /
-					second_left.z + a / second_right.z);
-		second.z = 1 / ((1 - a) / second_left.z + a / second_right.z);
-		yt_wall = (int)(for_draw.wall.y1t + (for_draw.wall.y2t -
-					for_draw.wall.y1t) * (i - for_draw.wall.x1) /
+		a = (yt[2] - for_draw.window.x1) /
+			(for_draw.window.x2 - for_draw.window.x1);
+		points[0] = to_cruch(a, vec[1], vec[3]);
+		a = (yt[2] - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
+		points[1] = to_cruch(a, vec[0], vec[2]);
+		yt[1] = (int)(for_draw.wall.y1t + (for_draw.wall.y2t -
+					for_draw.wall.y1t) * (yt[2] - for_draw.wall.x1) /
 				(for_draw.wall.x2 - for_draw.wall.x1));
-		yt_window = (int)(for_draw.window.y1t + (for_draw.window.y2t -
-					for_draw.window.y1t) * (i - for_draw.window.x1) /
+		yt[0] = (int)(for_draw.window.y1t + (for_draw.window.y2t -
+					for_draw.window.y1t) * (yt[2] - for_draw.window.x1) /
 				(for_draw.window.x2 - for_draw.window.x1));
-		fill_texture(game, yt_window, yt_wall, first, second, bright, i);
-		i++;
+		fill_texture(game, yt, points, bright);
 	}
 }
