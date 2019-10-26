@@ -17,9 +17,13 @@ void	putvertstofile(t_edit *edit, int fd)
 	int	i;
 
 	i = -1;
+	ft_putnbr_fd(edit->glvertnum, fd);
+	ft_putchar_fd('\n', fd);
+	ft_putnbr_fd(edit->sectnum, fd);
+	ft_putstr_fd("\n\n", fd);
 	while (++i < edit->glvertnum)
 	{
-		ft_putstr_fd("vertex\t", fd);
+		ft_putstr_fd("v\t", fd);
 		ft_putnbr_fd(edit->verts[i].y, fd);
 		ft_putchar_fd('\t', fd);
 		ft_putnbr_fd(edit->verts[i].x, fd);
@@ -30,7 +34,7 @@ void	putvertstofile(t_edit *edit, int fd)
 
 void	sectinfotofile(t_edit *edit, int fd, int i)
 {
-	ft_putstr_fd("sector\t", fd);
+	ft_putstr_fd("s\t", fd);
 	ft_putnbr_fd(edit->sectors[i].floor, fd);
 	ft_putchar_fd(' ', fd);
 	ft_putnbr_fd(edit->sectors[i].ceiling, fd);
