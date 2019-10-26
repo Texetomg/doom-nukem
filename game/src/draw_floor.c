@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_ceil.c                                        :+:      :+:    :+:   */
+/*   draw_floor.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 14:15:18 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/26 05:20:18 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/26 05:21:40 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
 /*
-**	Дробная часть
-*/
-
-double			fractial_part(double a)
-{
-	if (a < 0)
-		return (a - (int)a + 1);
-	else
-		return (a - (int)a);
-}
-
-/*
 ** Заполнение пространства для текстуры
 */
 
-static void			fill_texture(t_game *game, int yt[3],
+static void		fill_texture(t_game *game, int yt[3],
 		t_vec3 point[2],
 		double bright)
 {
@@ -38,8 +26,8 @@ static void			fill_texture(t_game *game, int yt[3],
 	double	y;
 	int		color;
 
-	k = (yt[0] + abs(yt[0])) / 2;
-	while (k < yt[1] && k < game->line_horiz)
+	k = yt[0] < game->line_horiz ? game->line_horiz : yt[0];
+	while (k < yt[1] && k < game->screen->h)
 	{
 		a = (double)(k - yt[0]) / (yt[1] - yt[0]);
 		x = ((1 - a) * point[0].x / point[0].z + a * point[1].x / point[1].z) /
@@ -76,10 +64,10 @@ static t_vec3	to_cruch(double a, t_vec3 first, t_vec3 second)
 }
 
 /*
-** Отрисовывает потолок
+** Отрисовывает пол
 */
 
-void			draw_ceil(t_game *game,
+void			draw_floor(t_game *game,
 		t_draw for_draw, double dz, double bright)
 {
 	t_vec3	points[2];
@@ -88,22 +76,22 @@ void			draw_ceil(t_game *game,
 	t_vec3	vec[4];
 
 	yt[2] = ((int)for_draw.wall.x1 + abs((int)for_draw.wall.x1)) / 2 - 1;
-	vec[0] = get_ceil(game, for_draw.wall.x1, for_draw.wall.y1t, dz);
-	vec[1] = get_ceil(game, for_draw.window.x1, for_draw.window.y1t, dz);
-	vec[2] = get_ceil(game, for_draw.wall.x2, for_draw.wall.y2t, dz);
-	vec[3] = get_ceil(game, for_draw.window.x2, for_draw.window.y2t, dz);
+	vec[0] = get_floor(game, for_draw.wall.x1, for_draw.wall.y1b, dz);
+	vec[1] = get_floor(game, for_draw.window.x1, for_draw.window.y1b, dz);
+	vec[2] = get_floor(game, for_draw.wall.x2, for_draw.wall.y2b, dz);
+	vec[3] = get_floor(game, for_draw.window.x2, for_draw.window.y2b, dz);
 	while (++yt[2] < for_draw.wall.x2 && yt[2] < game->screen->w)
 	{
-		a = (yt[2] - for_draw.window.x1) /
-			(for_draw.window.x2 - for_draw.window.x1);
-		points[0] = to_cruch(a, vec[1], vec[3]);
 		a = (yt[2] - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
-		points[1] = to_cruch(a, vec[0], vec[2]);
-		yt[1] = (int)(for_draw.wall.y1t + (for_draw.wall.y2t -
-					for_draw.wall.y1t) * (yt[2] - for_draw.wall.x1) /
+		points[0] = to_cruch(a, vec[0], vec[2]);
+		a = (yt[2] - for_draw.window.x1) / (for_draw.window.x2 -
+				for_draw.window.x1);
+		points[1] = to_cruch(a, vec[1], vec[3]);
+		yt[0] = (int)(for_draw.wall.y1b + (for_draw.wall.y2b -
+					for_draw.wall.y1b) * (yt[2] - for_draw.wall.x1) /
 				(for_draw.wall.x2 - for_draw.wall.x1));
-		yt[0] = (int)(for_draw.window.y1t + (for_draw.window.y2t -
-					for_draw.window.y1t) * (yt[2] - for_draw.window.x1) /
+		yt[1] = (int)(for_draw.window.y1b + (for_draw.window.y2b -
+					for_draw.window.y1b) * (yt[2] - for_draw.window.x1) /
 				(for_draw.window.x2 - for_draw.window.x1));
 		fill_texture(game, yt, points, bright);
 	}

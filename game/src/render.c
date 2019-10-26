@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/26 03:56:10 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/26 04:47:46 by thorker          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,74 +27,6 @@ int	ft_bright(int color, double bright)
 	b = b * bright;
 	new_color = r * 256 * 256 + g * 256 + b;
 	return (new_color);
-}
-
-
-/*
- * Отрисовывает пол
- */
-void    draw_floor(t_game *game, t_draw for_draw, double dz, double bright)
-{
-    int i;
-    int k;
-    t_vec3 first;
-    t_vec3 second;
-    int yb_window;
-    int yb_wall;
-    int color;
-    double a;
-    double x;
-    double y;
-    t_vec3 first_left;
-    t_vec3 first_right;
-    t_vec3 second_left;
-    t_vec3 second_right;
-    
-    i = (int)for_draw.wall.x1;
-    if (i < 0)
-        i = 0;
-    first_left = get_floor(game, for_draw.wall.x1, for_draw.wall.y1b, dz);
-    second_left = get_floor(game, for_draw.window.x1, for_draw.window.y1b, dz);
-    first_right = get_floor(game, for_draw.wall.x2, for_draw.wall.y2b, dz);
-    second_right = get_floor(game, for_draw.window.x2, for_draw.window.y2b, dz);
-    while (i < for_draw.wall.x2 && i < game->screen->w)
-    {
-        a = (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1);
-        first.x = ((1 - a) * first_left.x / first_left.z + a * first_right.x / first_right.z) / ((1 - a) / first_left.z + a / first_right.z);
-        first.y = ((1 - a) * first_left.y / first_left.z + a * first_right.y / first_right.z) / ((1 - a) / first_left.z + a / first_right.z);
-        first.z = 1 / ((1 - a) / first_left.z + a / first_right.z);
-        a = (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1);
-        second.x = ((1 - a) * second_left.x / second_left.z + a * second_right.x / second_right.z) / ((1 - a) / second_left.z + a / second_right.z);
-        second.y = ((1 - a) * second_left.y / second_left.z + a * second_right.y / second_right.z) / ((1 - a) / second_left.z + a / second_right.z);
-        second.z = 1 / ((1 - a) / second_left.z + a / second_right.z);
-        yb_wall = (int)(for_draw.wall.y1b + (for_draw.wall.y2b - for_draw.wall.y1b) * (i - for_draw.wall.x1) / (for_draw.wall.x2 - for_draw.wall.x1));
-        yb_window = (int)(for_draw.window.y1b + (for_draw.window.y2b - for_draw.window.y1b) * (i - for_draw.window.x1) / (for_draw.window.x2 - for_draw.window.x1));
-        if (yb_wall < game->line_horiz)
-            k = game->line_horiz;
-        else
-            k = yb_wall;
-        while (k < yb_window && k < game->screen->h)
-        {
-            a = (double)(k - yb_wall) / (yb_window - yb_wall);
-            x = ((1 - a) * first.x / first.z + a * second.x / second.z) / ((1 - a) / first.z + a / second.z);
-            if (x < 0)
-                x = (x - (int)x + 1) * game->texture->w;
-            else
-                x = (x - (int)x) * game->texture->w;
-            y = ((1 - a) * first.y / first.z + a * second.y / second.z) / ((1 - a) / first.z + a / second.z);
-            if (y < 0)
-                y = (y - (int)y + 1) * game->texture->h;
-            else
-                y = (y - (int)y) * game->texture->h;
-            if (x >= 0 && x < game->texture->w && y >= 0 && y < game->texture->h)
-            {
-                color = ((int*)game->texture->pixels)[((int)y) * game->texture->w + ((int)x)];
-                ((int*)game->screen->pixels)[k * game->screen->w + i] = ft_bright(color, bright);
-            }
-            k++;
-        }
-        i++;
-    }
 }
 
 //отрисовывает стену
