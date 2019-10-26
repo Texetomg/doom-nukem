@@ -79,11 +79,7 @@ static void    move(t_game *game, double x, double y)
 	    dy = new_y - sprite->pos.y;
 	    radius = pow(dx, 2) + pow(dy, 2);
 	    if (radius < (double)sprite->width * 0.0004)
-		{
 			flag = 1;
-			if (game->player.foots > sprite->pos.z)
-				flag = 0;
-		}
 	    sprite = sprite->next;
     }
 
