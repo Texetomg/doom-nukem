@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   save.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twitting <twitting@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 21:38:17 by twitting          #+#    #+#             */
-/*   Updated: 2019/04/14 20:34:37 by twitting         ###   ########.fr       */
+/*   Updated: 2019/10/27 14:50:46 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	putsectstofile(t_edit *edit, int fd)
 
 void	putplayertofile(t_edit *edit, int fd)
 {
-	ft_putstr_fd("player\t", fd);
+	ft_putstr_fd("p\t", fd);
 	ft_putnbr_fd(edit->player.x, fd);
 	ft_putchar_fd(' ', fd);
 	ft_putnbr_fd(edit->player.y, fd);

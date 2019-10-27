@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/25 17:01:03 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/27 15:11:19 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,7 @@ int			main(void)
 	int		loop;
 	int		k;
 
-	system("make unzip");
+	//system("make unzip");
 	game = create_struct();
 	loop = 1;		
 	k = -3;
@@ -297,7 +297,7 @@ int			main(void)
 		SDL_UpdateWindowSurface(game->window);
 	}
 	/* закрытие sdl */
-	system("make zip");
+	//system("make zip");
 	close(game->socket_struct.sockfd);
 	free_sdl(game);
 	return (0);

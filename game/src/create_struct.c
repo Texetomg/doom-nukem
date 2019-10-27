@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/26 19:04:13 by thorker          ###   ########.fr       */
+/*   Updated: 2019/10/27 15:40:47 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,7 @@ void set_player(t_game *game)
 {
 	game->player.jetpack = 0;
 	game->player.key = 1;
-	game->player.curr_sector = 1;
-	game->player.pos.x = 0;
-	game->player.pos.y = -3;
 	game->player.z_accel = 0;
-	game->player.angle = 3.14;
 	game->player.foots = (game->sectors + game->player.curr_sector)->floor;
 	game->player.knees = game->player.foots + 0.2;
 	game->player.pos.z = game->player.foots + 0.5;

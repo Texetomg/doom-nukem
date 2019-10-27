@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 19:25:52 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/25 16:59:51 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/27 15:26:05 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ static void	define_sector(t_sector *sector, char **line)
 	i = 0;
 	/* считывание пола и потолка */
 	buffer = ft_strsplit(line[1], ' ');
-	sector->ceil = ft_atod(buffer[0]);
-	sector->floor = ft_atod(buffer[1]);
+	sector->ceil = ft_atod(buffer[1]);
+	sector->floor = ft_atod(buffer[0]);
 	clean_buffer(buffer);
 	/* кол-во стен (кол-во инексов векторов) */
-	while(line[2][i])
+	while(line[3][i])
 	{
-		if (line[2][i] == ' ')
+		if (line[3][i] == ' ')
 			counter++;
 		i++;
 	}
@@ -67,7 +67,7 @@ static void	define_sector(t_sector *sector, char **line)
 	sector->count_wall = counter + 1;
 	if ((sector->index_points = (int*)malloc(sizeof(int) * sector->count_wall)) == 0)
 		check_error_n_exit(1, "malloc error");
-	buffer = ft_strsplit(line[2], ' ');
+	buffer = ft_strsplit(line[3], ' ');
 	while(i < sector->count_wall)
 	{
 		*(sector->index_points + i) = ft_atoi(buffer[i]);
@@ -77,7 +77,7 @@ static void	define_sector(t_sector *sector, char **line)
 	i = 0;
 	if ((sector->neighbors = (int*)malloc(sizeof(int) *  sector->count_wall)) == 0)
 		check_error_n_exit(1, "malloc error");
-	buffer = ft_strsplit(line[3], ' ');
+	buffer = ft_strsplit(line[4], ' ');
 	while(i < sector->count_wall)
 	{
 		*(sector->neighbors + i) = ft_atoi(buffer[i]);
@@ -90,14 +90,28 @@ static void	define_sector(t_sector *sector, char **line)
 	if ((sector->grid = (int*)malloc(sizeof(int) *  sector->count_wall)) == 0)
 		check_error_n_exit(1, "malloc error");
 	i = 0;
-	buffer = ft_strsplit(line[4], ' ');
+	// buffer = ft_strsplit(line[4], ' ');
 	while(i < sector->count_wall)
 	{
-		*(sector->grid + i) = ft_atoi(buffer[i]);
+		*(sector->grid + i) = 0;
 		i++;
 	}
+	// clean_buffer(buffer);
+	sector->brightness = (double)ft_atoi(line[2]) / 100;
+}
+
+static void	read_player_pos(t_game *game, char **line)
+{
+	char	**buffer;
+	
+	buffer = ft_strsplit(line[1], ' ');
+	game->player.pos.x = ft_atoi(buffer[0]);
+	game->player.pos.y = ft_atoi(buffer[1]);
 	clean_buffer(buffer);
-	sector->brightness = (double)ft_atoi(line[5]) / 100;
+	buffer = ft_strsplit(line[2], ' ');
+	game->player.angle = ft_atoi(buffer[0]);
+	game->player.curr_sector = 1;
+	clean_buffer(buffer);
 }
 
 /* чтение карты */
@@ -136,6 +150,12 @@ void		read_map(char *name, t_game *game)
 			define_sector(game->sectors + j, buffer);
 			clean_buffer(buffer);
 			j++;
+		}
+		else if (line[0] == 'p')
+		{
+			buffer = ft_strsplit(line, '\t');
+			read_player_pos(game, buffer);
+			clean_buffer(buffer);
 		}
 		free(line);
 	}	
