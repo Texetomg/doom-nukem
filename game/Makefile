@@ -6,7 +6,7 @@
 #    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/10/26 04:11:06 by thorker          ###   ########.fr        #
+#    Updated: 2019/10/30 14:57:13 by thorker          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,3 +76,7 @@ zip:
 
 unzip:
 	unzip -q game.zip
+	
+my_zip:
+	zip -r -q game.zip imgs map2
+	rm -r imgs map2
