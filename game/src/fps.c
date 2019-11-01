@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:38:34 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/25 16:58:02 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/01 14:55:53 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ void		put_fps(SDL_Surface *screen, t_hud hud, struct timeval *time)
 	char	*fps;
 
 	fps = ft_itoa(count_fps(time));
-	print_text(screen, fps, "../font/font.otf", 46, hud.color, hud.fps_dest);
+	print_text(screen, fps, hud.color, hud.fps_dest);
 	free(fps);
 }

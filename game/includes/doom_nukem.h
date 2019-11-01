@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/26 04:56:51 by thorker          ###   ########.fr       */
+/*   Updated: 2019/11/01 16:50:51 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,7 +310,6 @@ void						apply_surface(int x, int y, SDL_Texture *tex,
 void						clean_buffer(char **buffer);
 void						free_sdl(t_game *game);
 void						print_text(SDL_Surface *screen, char *text,
-								char *font, int size,
 								SDL_Color color, SDL_Rect dest);
 void						set_color(SDL_Color *color, int r, int g, int b);
 void						draw_sector(t_game *game, t_draw for_draw);
@@ -350,4 +349,8 @@ void						swap_vec2(t_vec2 *first, t_vec2 *second);
 void						get_points(t_game *game, int curr_sector,
 								t_vec2 *first_point,
 								t_vec2 *second_point, int i);
+int							count_wall(char **line);
+void						fill_index_points(t_sector *sector, char **buffer);
+void						malloc_sector_values(t_sector *sector);
+int							count(int fd);
 #endif

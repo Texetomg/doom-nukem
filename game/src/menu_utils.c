@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:22:16 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/25 16:58:02 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/01 15:01:35 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,4 @@ void	menu_render(SDL_Surface *screen, t_menu *menu, SDL_Surface *image)
 	set_color(&menu->text_color, 255, 255, 0);
 	draw_full_screen_img(screen, image);
 	menu->dest.y = screen->h / 10;
-}
-
-void	print_menu_text(SDL_Surface *screen, t_menu *menu, int string_count)
-{
-	int i;
-	int new_str;
-
-	i = 0;
-	new_str = 15;
-	while (i < string_count)
-	{
-		if (menu->text_pos != i)
-			set_color(&menu->text_color, 255, 255, 0);
-		else
-			set_color(&menu->text_color, 0, 255, 0);
-		print_text(screen, menu->strings[i],
-					"../font/font.otf", 46, menu->text_color,
-					menu->dest);
-		menu->dest.y = screen->h / 100 * new_str;
-		new_str += 5;
-		i++;
-	}
 }

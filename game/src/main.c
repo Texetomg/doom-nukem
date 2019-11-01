@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/27 15:11:19 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/01 16:03:23 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,16 +199,12 @@ void			draw_skybox(t_game *game)
 	
 	a = fmod(fabs(game->player.angle + game->pre_calc.pi_div_4), game->pre_calc.pi_mult_2);
 	if (game->player.angle + game->pre_calc.pi_div_4 < 0)
-	{
 		left_border = a / (game->pre_calc.pi_mult_2);
-	}
 	else
 		left_border = (game->pre_calc.pi_mult_2 - a) / (game->pre_calc.pi_mult_2);
 	a = fmod(fabs(game->player.angle - game->pre_calc.pi_div_4), game->pre_calc.pi_mult_2);
 	if (game->player.angle - game->pre_calc.pi_div_4 < 0)
-	{
 		right_border = a / (game->pre_calc.pi_mult_2);
-	}
 	else
 		right_border = (game->pre_calc.pi_mult_2 - a) / (game->pre_calc.pi_mult_2);
 	if (left_border > right_border)
@@ -253,6 +249,7 @@ static void		gif_loop(t_gif *gif, t_keystate *keystate, int *k)
 	else
 		*k += 1;
 }
+
 void		check_rifle_state(t_game *game)
 {
 	if (game->rifle_state != 1)
@@ -282,21 +279,20 @@ int			main(void)
 			tab_menu_render(game, &loop);
 		if (game->menu_status.main == 1)
 		{	
-			check_rifle_state(game);/* усиление ружья при повороте на 360 */
+			check_rifle_state(game);
 			player_move(game, &loop);
-			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);/* центровка мыши */
-			get_pos_z(&game->player, game->sectors);/* определение коллизий м полом и потолком */
+			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);
+			get_pos_z(&game->player, game->sectors);
 			draw_skybox(game);
 			draw_3d_wall(game);
 			draw_hud(game);
 			/* запуск гифок */
-			gif_loop(game->gif, &game->keystate, &k);/* отвечает за анимировнные стены */
-			client(game);/* отвечает за сетевую игру */
+			gif_loop(game->gif, &game->keystate, &k);
+			client(game);
 		}
 		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);
 	}
-	/* закрытие sdl */
 	//system("make zip");
 	close(game->socket_struct.sockfd);
 	free_sdl(game);

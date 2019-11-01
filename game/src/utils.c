@@ -6,17 +6,15 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 17:54:54 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/25 17:00:48 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/01 15:56:54 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
 /*
-void			create_new_player(t_game *game, t_for_udp for_udp)
-{
-	//заполнить функцию
-}*/
-/*cмена координат двух точек*/
+** cмена координат двух точек
+*/
 
 void			get_points(t_game *game, int curr_sector,
 		t_vec2 *first_point, t_vec2 *second_point, int i)
@@ -34,9 +32,10 @@ void			get_points(t_game *game, int curr_sector,
 	second_point->x = second_point->x * 20 + game->pre_calc.screen_w_div_20;
 	second_point->y = -second_point->y * 20 + game->pre_calc.screen_h_div_20;
 }
+
 void			swap_vec2(t_vec2 *first, t_vec2 *second)
 {
-	double swap;
+	double	swap;
 
 	swap = first->x;
 	first->x = second->x;
@@ -60,7 +59,6 @@ int				inside_sector(t_game *game, double x, double y, t_sector sector)
 			s_point = *(game->points + *(sector.index_points));
 		else
 			s_point = *(game->points + *(sector.index_points + i + 1));
-
 		s_point.x = s_point.x - f_point.x;
 		s_point.y = s_point.y - f_point.y;
 		f_point.x = x - f_point.x;
@@ -72,129 +70,96 @@ int				inside_sector(t_game *game, double x, double y, t_sector sector)
 	return (1);
 }
 
-//поварачивает точки в систему координат игрока
-void            give_points_cam(t_vec2 *points_cam, t_vec2 *points, t_player *player, int count_points)
+/*
+** поварачивает точки в систему координат игрока
+*/
+
+void			give_points_cam(t_vec2 *points_cam, t_vec2 *points,
+	t_player *player, int count_points)
 {
-    int        i;
-    //ft_putendl("give_point_cam");
-    i = 0;
-    while (i < count_points)
-    {
-        (points_cam + i)->x = ((points + i)->y - player->pos.y) * sin(player->angle) + ((points + i)->x - player->pos.x) * cos(player->angle);
-        (points_cam + i)->y = ((points + i)->y - player->pos.y) * cos(player->angle) - ((points + i)->x - player->pos.x) * sin(player->angle);
-        i++;
-    }
+	int		i;
+	double	points_x;
+	double	points_y;
+	t_vec2	*points_i;
+
+	i = 0;
+	while (i < count_points)
+	{
+		points_i = points + i;
+		points_y = points_i->y - player->pos.y;
+		points_x = points_i->x - player->pos.x;
+		(points_cam + i)->x = points_y * sin(player->angle) + points_x *
+			cos(player->angle);
+		(points_cam + i)->y = points_y * cos(player->angle) - points_x *
+			sin(player->angle);
+		i++;
+	}
+}
+
+double			calc(char word, t_player player, t_sprite *sprite)
+{
+	double pos_y;
+	double pos_x;
+
+	pos_y = (sprite)->pos.y - player.pos.y;
+	pos_x = (sprite)->pos.x - player.pos.x;
+	if (word == 'x')
+		return (pos_y * sin(player.angle) + pos_x * cos(player.angle));
+	return (pos_y * cos(player.angle) - pos_x * sin(player.angle));
 }
 
 void			give_sprites_cam(t_game *game)
 {
-	double angle;
-	double tangens;
-	double x;
-	double y;
-	t_sprite *sprite;
+	double		angle;
+	double		x;
+	double		y;
+	t_sprite	*sprite;
+
 	sprite = game->sprites;
 	while (sprite != 0)
 	{
-		(sprite)->pos_in_cam.x = ((sprite)->pos.y - game->player.pos.y) * sin(game->player.angle) + ((sprite)->pos.x - game->player.pos.x) * cos(game->player.angle);
-		(sprite)->pos_in_cam.y = ((sprite)->pos.y - game->player.pos.y) * cos(game->player.angle) - ((sprite)->pos.x - game->player.pos.x) * sin(game->player.angle);
+		(sprite)->pos_in_cam.x = calc('x', game->player, sprite);
+		(sprite)->pos_in_cam.y = calc('y', game->player, sprite);
 		(sprite)->pos_in_cam.z = (sprite)->pos.z - game->player.pos.z;
 		y = -(sprite)->pos.y + game->player.pos.y;
 		x = -(sprite)->pos.x + game->player.pos.x;
-		tangens = y / x;
-		angle = atan(tangens);
-		if (x < 0)
-			angle = angle - 3.14;
+		angle = atan(y / x);
+		x < 0 ? angle = angle - 3.14 : 0;
 		angle = angle - (sprite)->angle;
 		while (angle < 0)
-			angle = angle + 3.14 * 2;
-		while (angle > 3.14 * 2)
-			angle = angle - 3.14 * 2;
+			angle = angle + 6.28;
+		while (angle > 6.28)
+			angle = angle - 6.28;
 		(sprite)->angle_in_cam = angle;
 		sprite = sprite->next;
 	}
 }
 
-void    get_pos_z(t_player *player, t_sector *sectors )
-{	
-    if (player->z_accel > 0)
-    {
-        if (player->pos.z + player->z_accel  >= (sectors + player->curr_sector)->ceil)
+void			get_pos_z(t_player *player, t_sector *sectors)
+{
+	t_sector *sum;
+
+	sum = sectors + player->curr_sector;
+	if (player->z_accel > 0)
+	{
+		player->pos.z + player->z_accel >= sum->ceil ? player->z_accel = 0 : 0;
+		player->pos.z += player->z_accel;
+		player->z_accel -= ACCEL;
+	}
+	else if (player->z_accel == 0)
+	{
+		player->foots > sum->floor ? player->z_accel -= ACCEL : 0;
+	}
+	else if (player->z_accel < 0)
+	{
+		if (player->foots + player->z_accel < sum->floor)
 		{
-            player->z_accel = 0;
+			player->z_accel = 0;
+			player->pos.z = sum->floor + player->b_foots;
 		}
-        else
-        {
-            player->pos.z += player->z_accel;
-            player->z_accel -= ACCEL;
-        }
-        
-    }
-    else if (player->z_accel == 0)
-	{
-			if (player->foots > (sectors + player->curr_sector)->floor)
-        		player->z_accel -= ACCEL;
+		player->pos.z += player->z_accel;
+		player->z_accel -= ACCEL;
 	}
-    else if (player->z_accel < 0)
-    {
-        	if (player->foots + player->z_accel < (sectors + player->curr_sector)->floor)
-        	{
-        	    player->z_accel = 0;
-        	    player->pos.z = (sectors + player->curr_sector)->floor + player->b_foots;
-        	}
-        	else
-        	{
-        	    player->pos.z += player->z_accel;
-        	    player->z_accel -= ACCEL;   
-        	}
-    }
-    player->foots = player->pos.z - 0.5;
-    player->knees = player->pos.z - player->b_knees;
-}
-
-void    print_text(SDL_Surface *screen, char *text, char *font, int size, SDL_Color color, SDL_Rect dest)
-{
-	TTF_Font *fnt;
-    SDL_Surface *sText;
-
-	if ((fnt = TTF_OpenFont(font, size)) == NULL)
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if ((sText = TTF_RenderText_Blended(fnt, text, color)) == NULL)
-        check_error_n_exit(1,(char*)SDL_GetError());
-	SDL_BlitSurface(sText, NULL, screen, &dest);
-	SDL_FreeSurface(sText);
-	TTF_CloseFont(fnt);
-}
-
-void    free_sdl(t_game *game)
-{
-    Mix_FreeChunk(game->sounds.bang);
-	game->sounds.bang = NULL;
-	Mix_FreeMusic(game->sounds.music);
-	game->sounds.music = NULL;
-	Mix_Quit();
-	SDL_FreeSurface(game->screen);
-	game->screen = NULL;
-	free(game->texture);
-	game->texture = NULL;
-	/*
-	while (game->texture_arr[i])
-	{
-		SDL_FreeSurface(game->texture_arr[i]);
-		game->texture_arr[i] = NULL;
-		i++;
-	}
-	i = 0;
-	
-	while (game->gif->array[i])
-	{
-		SDL_FreeSurface(game->gif->array[i]);
-		game->gif->array[i] = NULL;
-		i++;
-	}
-	*/
-    atexit(TTF_Quit);
-	SDL_DestroyWindow(game->window);
-	game->window = NULL;
-	SDL_Quit();
+	player->foots = player->pos.z - 0.5;
+	player->knees = player->pos.z - player->b_knees;
 }
