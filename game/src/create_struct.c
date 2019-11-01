@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/30 15:49:38 by thorker          ###   ########.fr       */
+/*   Updated: 2019/11/01 17:25:17 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void read_gif(t_gif *gif, char *str, int index, int frame, char* extensio
 
 void	texture_cut(t_texture *texture, unsigned int st_color, unsigned int end_color)
 {
-	int i;
+	int				i;
 	unsigned int	red;
 	unsigned int	green;
 	unsigned int	blue;
@@ -70,7 +70,7 @@ void	texture_cut(t_texture *texture, unsigned int st_color, unsigned int end_col
 
 void	texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int end_color)
 {
-    int i;
+    int				i;
     unsigned int	red;
     unsigned int	green;
     unsigned int	blue;
@@ -91,17 +91,18 @@ void	texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int e
     }
 }
 
-//инициализация sdl
+/*
+** инициализация sdl
+*/
+
 static void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
+		check_error_n_exit(1,(char*)SDL_GetError());
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
-	//game->window = SDL_CreateWindow(0, 0, 0, 0, 0,
-	//		SDL_WINDOW_FULLSCREEN_DESKTOP);
 	game->window = SDL_CreateWindow("Doom-Nukem", 0, 0, 1400, 1000, SDL_WINDOW_SHOWN);
 	if (game->window == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
@@ -361,40 +362,6 @@ static void load_sounds(t_game *game)
 	if (!(game->start_menu.clap[4] = Mix_LoadWAV( "sounds/gay.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if (!(game->sounds.step = Mix_LoadWAV( "sounds/step.mp3" )))
-		check_error_n_exit(1,(char*)SDL_GetError());
-}
-
-static void load_images(t_game *game)
-{
-	read_gif(game->gif, "imgs/gif1/", 0, 40, ".bmp");
-	read_gif(game->gif, "imgs/rifle/", 1, 2, ".bmp");
-	if (!(game->start_menu.image[0] = IMG_Load("imgs/start_menu/0.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[1] = IMG_Load("imgs/start_menu/1.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[2] = IMG_Load("imgs/start_menu/2.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[3] = IMG_Load("imgs/start_menu/3.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[4] = IMG_Load("imgs/start_menu/4.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->start_menu.image[5] = IMG_Load("imgs/start_menu/4.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->multi_menu.image[0] = IMG_Load("imgs/tab_menu/1.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.face[2] = IMG_Load("imgs/hud/doom.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->skybox = IMG_Load("imgs/textures/space.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.aim = IMG_Load("imgs/hud/cross_aim.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.hp_bar = IMG_Load("imgs/hud/hp_bar.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.jetpack = IMG_Load("imgs/hud/jetpack.bmp")))
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (!(game->hud.key = IMG_Load("imgs/hud/key.bmp")))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
 

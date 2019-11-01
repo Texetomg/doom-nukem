@@ -6,12 +6,13 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/10/26 19:05:02 by thorker          ###   ########.fr       */
+/*   Updated: 2019/11/01 17:16:14 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 #include <stdio.h>
+
 static void    move(t_game *game, double x, double y)
 {
 	double	new_x;

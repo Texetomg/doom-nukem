@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/01 16:50:51 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/01 17:22:47 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,4 +353,5 @@ int							count_wall(char **line);
 void						fill_index_points(t_sector *sector, char **buffer);
 void						malloc_sector_values(t_sector *sector);
 int							count(int fd);
+void						load_images(t_game *game);
 #endif
