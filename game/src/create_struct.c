@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/11/01 17:25:17 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/10/27 15:40:47 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void		set_color(SDL_Color *color, int r, int g, int b)
 	color->b = b;
 }
 
-static void read_gif(t_gif *gif, char *str, int index, int frame, char* extension)
+/*
+void read_gif(t_gif *gif, char *str, int index, int frame, char* extension)
 {
 	char *folder;
 	char *i;
@@ -46,6 +47,7 @@ static void read_gif(t_gif *gif, char *str, int index, int frame, char* extensio
 	}
 	free(folder);
 }
+ */
 
 void	texture_cut(t_texture *texture, unsigned int st_color, unsigned int end_color)
 {
@@ -98,11 +100,13 @@ void	texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int e
 static void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
+		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
+	//game->window = SDL_CreateWindow(0, 0, 0, 0, 0,
+	//		SDL_WINDOW_FULLSCREEN_DESKTOP);
 	game->window = SDL_CreateWindow("Doom-Nukem", 0, 0, 1400, 1000, SDL_WINDOW_SHOWN);
 	if (game->window == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
@@ -254,9 +258,17 @@ static void	set_sprites(t_game *game)
 	add_angle_sprites_end(&(game->sprites), 10 * 3.14 / 9, 12 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/6.bmp"), 25, 10, IMG_Load("imgs/sprites/doomguy/1/2/5.bmp"));
 	//------------------------------------------------------------------------------------------------------------------
 	add_angle_sprites_end(&(game->sprites), 12 * 3.14 / 9, 14 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/7.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
-	
+
 	add_angle_sprites_end(&(game->sprites), 14 * 3.14 / 9, 16 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/8.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
 	add_angle_sprites_end(&(game->sprites), 16 * 3.14 / 9, 18 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/1.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
+	add_angle_sprites_end(&(game->sprites), 12 * 3.14 / 9, 14 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/7.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
+	//------------------------------------------------------------------------------------------------------------------
+    add_angle_sprites_end(&(game->sprites), 14 * 3.14 / 9, 16 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/8.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
+	//------------------------------------------------------------------------------------------------------------------
+    add_angle_sprites_end(&(game->sprites), 16 * 3.14 / 9, 2 * 3.14, IMG_Load("imgs/sprites/doomguy/1/1/1.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
+    printf("18\n");
+	//------------------------------------------------------------------------------------------------------------------
+	(game->sprites)->angle_sprite->next->next->next->next->next->next->next->next->next = 0;
     //##################################################################################################################
 	game->sprites->next = (t_sprite*)malloc(sizeof(t_sprite));
 	(game->sprites)->next->id = 1;
@@ -364,6 +376,42 @@ static void load_sounds(t_game *game)
 	if (!(game->sounds.step = Mix_LoadWAV( "sounds/step.mp3" )))
 		check_error_n_exit(1,(char*)SDL_GetError());
 }
+
+/*
+void load_images(t_game *game)
+{
+	read_gif(game->gif, "imgs/gif1/", 0, 40, ".bmp");
+	read_gif(game->gif, "imgs/rifle/", 1, 2, ".bmp");
+	if (!(game->start_menu.image[0] = IMG_Load("imgs/start_menu/0.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->start_menu.image[1] = IMG_Load("imgs/start_menu/1.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->start_menu.image[2] = IMG_Load("imgs/start_menu/2.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->start_menu.image[3] = IMG_Load("imgs/start_menu/3.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->start_menu.image[4] = IMG_Load("imgs/start_menu/4.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->start_menu.image[5] = IMG_Load("imgs/start_menu/4.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->tab_menu.image[0] = IMG_Load("imgs/tab_menu/1.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->multi_menu.image[0] = IMG_Load("imgs/tab_menu/1.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.face[2] = IMG_Load("imgs/hud/doom.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->skybox = IMG_Load("imgs/textures/space.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.aim = IMG_Load("imgs/hud/cross_aim.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.hp_bar = IMG_Load("imgs/hud/hp_bar.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.jetpack = IMG_Load("imgs/hud/jetpack.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+	if (!(game->hud.key = IMG_Load("imgs/hud/key.bmp")))
+		check_error_n_exit(1,(char*)SDL_GetError());
+}
+*/
 
 static void pre_calc_screen(t_pre_calc *pre_calc, SDL_Surface  screen)
 {

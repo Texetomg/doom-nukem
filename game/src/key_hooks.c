@@ -235,18 +235,21 @@ void			resp_mobe(t_game *game, t_sprite *sprite)
 	{
 		sprite->pos.x = game->spaw1.x;
 		sprite->pos.y = game->spaw1.y;
+		sprite->pos.z = sprite->heigth + (game->sectors + 1)->floor;
 		sprite->sector = 1;
 	}
 	else if (game->player.curr_sector == 1)
 	{
 		sprite->pos.x = game->spaw2.x;
 		sprite->pos.y = game->spaw2.y;
+        sprite->pos.z = sprite->heigth + (game->sectors + 2)->floor;
 		sprite->sector = 2;
 	}
 	else if (game->player.curr_sector == 2)
 	{
 		sprite->pos.x = game->spaw3.x;
 		sprite->pos.y = game->spaw3.y;
+        sprite->pos.z = sprite->heigth + (game->sectors + 4)->floor;
 		sprite->sector = 4;
 	}
 	sprite->health = 100;
@@ -277,6 +280,8 @@ void	        player_move(t_game *game, int *loop)
 	direct.y = STEP * sin(game->player.angle);
 	curve.x = STEP * (cos(game->player.angle) * 0.7 - sin(game->player.angle) * 0.7);
 	curve.y = STEP * (sin(game->player.angle) * 0.7 + cos(game->player.angle) * 0.7);
+    if (game->cross_flag != NULL)
+        printf("Health: %d\n", game->cross_flag->health);
 	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
 	{
 		if (game->cross_flag != NULL)
@@ -286,8 +291,10 @@ void	        player_move(t_game *game, int *loop)
 			if (game->cross_flag->health <= 10)
 			{
 				game->cross_flag->health = 100;
+				resp_mobe(game, game->cross_flag);
 				game->cross_flag->move = 0;
 			}
+			printf("Health: %d\n", game->cross_flag->health);
 		}
 		Mix_HaltChannel(-1);
 		if (game->rifle_state == 0)
