@@ -6,14 +6,14 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/29 15:29:01 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/01 17:16:14 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 11:30:39 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 #include <stdio.h>
 
-static void    move(t_game *game, double x, double y)
+void    move(t_game *game, double x, double y)
 {
 	double	new_x;
 	double	new_y;
@@ -259,8 +259,6 @@ void			resp_mobe(t_game *game, t_sprite *sprite)
 void	        player_move(t_game *game, int *loop)
 {
 	SDL_Event e;
-	t_vec2	direct;
-	t_vec2	curve;
 	double  dx;
 	double  dy;
 	double	px;
@@ -276,10 +274,6 @@ void	        player_move(t_game *game, int *loop)
 
 	e = key_hooks(game);
 	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
-	direct.x = STEP * cos(game->player.angle);
-	direct.y = STEP * sin(game->player.angle);
-	curve.x = STEP * (cos(game->player.angle) * 0.7 - sin(game->player.angle) * 0.7);
-	curve.y = STEP * (sin(game->player.angle) * 0.7 + cos(game->player.angle) * 0.7);
     if (game->cross_flag != NULL)
         printf("Health: %d\n", game->cross_flag->health);
 	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
@@ -320,48 +314,7 @@ void	        player_move(t_game *game, int *loop)
 	}
 	if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_q)
 		game->player.jetpack = (game->player.jetpack == 0 ? 1 : 0);
-	if (game->keystate.forward && (!game->keystate.right && !game->keystate.left))
-	{
-		game->for_udp.sound = STEP_SOUND;
-		move(game, direct.x, direct.y);
-	}
-	else if (game->keystate.back && (!game->keystate.right && !game->keystate.left))
-	{
-		game->for_udp.sound = STEP_SOUND;
-		move(game, -direct.x, -direct.y);
-	}
-	else if (game->keystate.right && (!game->keystate.forward && !game->keystate.back))
-	{
-		game->for_udp.sound = STEP_SOUND;
-		move(game, direct.y, -direct.x);
-	}
-	else if (game->keystate.left && (!game->keystate.forward && !game->keystate.back))
-	{
-		game->for_udp.sound = STEP_SOUND;
-		move(game, -direct.y, direct.x);
-	}
-	else if (game->keystate.forward && game->keystate.right)
-	{
-		game->for_udp.sound = STEP_SOUND;
-		move(game, curve.y, -curve.x);
-	}
-	else if (game->keystate.forward && game->keystate.left)
-	{
-		game->for_udp.sound = STEP_SOUND;
-		move(game, curve.x, curve.y);
-	}
-	else if (game->keystate.back && game->keystate.right)
-	{
-		game->for_udp.sound = STEP_SOUND;
-		move(game, -curve.x, -curve.y);
-	}
-	else if (game->keystate.back && game->keystate.left)
-	{
-		game->for_udp.sound = STEP_SOUND;
-		move(game, -curve.y, curve.x);
-	}
-	else
-		game->for_udp.sound = 0;
+	player_positioning(game);
 	if (game->keystate.jump && ((fabs(game->player.foots - (game->sectors + game->player.curr_sector)->floor)) < 0.000001 || game->player.jetpack == 1))
 	{
 		game->player.z_accel = 0.05;
