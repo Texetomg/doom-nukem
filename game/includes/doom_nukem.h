@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 11:30:48 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 11:46:40 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,4 +361,7 @@ void						get_second_point(t_game *game, int curr_sector,
 void						swap_vec2(t_vec2 *first, t_vec2 *second);
 void						player_positioning(t_game *game);
 void						move(t_game *game, double x, double y);
+void						sprites_move(t_game *game);
+void						resp_mobe(t_game *game, t_sprite *sprite);
+SDL_Event					key_hooks(t_game *game);
 #endif

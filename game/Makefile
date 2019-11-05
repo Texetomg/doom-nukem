@@ -6,7 +6,7 @@
 #    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/11/05 11:26:15 by bfalmer-         ###   ########.fr        #
+#    Updated: 2019/11/05 11:45:59 by bfalmer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ BMP_DIR = bmp_reader
 FLAG = -Wall -Wextra -Werror -g -O3
 SRC = draw_floor.c draw_ceil.c sound.c main.c draw_minimap.c fps.c create_struct.c \
 read_map.c key_hooks.c render.c start_menu.c tab_menu.c hud.c  multiplayer_menu.c \
-load_images.c draw_img.c init_client.c print_text.c player_positioning.c\
+load_images.c draw_img.c init_client.c print_text.c player_positioning.c \
+sprites_move.c player_move.c\
 $(UTILS_DIR)/utils.c $(UTILS_DIR)/sdl_utils.c $(UTILS_DIR)/math_utils.c \
 $(UTILS_DIR)/hud_utils.c $(UTILS_DIR)/menu_utils.c $(UTILS_DIR)/read_map_utils.c \
 $(UTILS_DIR)/draw_minimap_utils.c \
