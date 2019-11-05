@@ -1,86 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_move.c                                      :+:      :+:    :+:   */
+/*   player_hooks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:44:11 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 11:45:48 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 12:26:00 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+#include <stdio.h>
 
-void	        player_move(t_game *game, int *loop)
+void	        player_hooks(t_game *game, int *loop)
 {
 	SDL_Event e;
 
 	e = key_hooks(game);
-	SDL_GetMouseState(&game->mouse.x, &game->mouse.y);
-    if (game->cross_flag != NULL)
-        printf("Health: %d\n", game->cross_flag->health);
-	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
-	{
-		if (game->cross_flag != NULL)
-		{
-			if (game->cross_flag->health > 10)
-				game->cross_flag->health -= 10;
-			if (game->cross_flag->health <= 10)
-			{
-				game->cross_flag->health = 100;
-				resp_mobe(game, game->cross_flag);
-				game->cross_flag->move = 0;
-			}
-			printf("Health: %d\n", game->cross_flag->health);
-		}
-		Mix_HaltChannel(-1);
-		if (game->rifle_state == 0)
-			Mix_PlayChannel( -1, game->sounds.bang, 0);
-		else
-			Mix_PlayChannel( -1, game->sounds.bang1, 0);
-		game->rifle_angle = game->player.angle;
-		game->rifle_state = 0;
-		if (game->gif[1].curr_frame == 0)
-			game->keystate.mouse_l = 1;
-	}
+	shoot_hook(game, e);
+	tab_hook(&game->keystate, &game->menu_status, e);
+	jetpack_hook(&game->player, e);
+	player_positioning(game);
+	jump_hook(game);
+	ctrl_hook(&game->keystate, &game->player, game->sectors);
+	sprites_move(game);
 	if (e.key.keysym.sym == SDLK_ESCAPE || e.type == SDL_QUIT)
 		*loop = 0;
-	if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_TAB)
-	{
-		game->menu_status.tab = 1;
-		game->menu_status.main = 0;
-		game->keystate.left = 0;
-		game->keystate.right = 0;
-		game->keystate.forward = 0;
-		game->keystate.back = 0;
-
-	}
-	if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_q)
-		game->player.jetpack = (game->player.jetpack == 0 ? 1 : 0);
-	player_positioning(game);
-	if (game->keystate.jump && ((fabs(game->player.foots - (game->sectors + game->player.curr_sector)->floor)) < 0.000001 || game->player.jetpack == 1))
-	{
-		game->player.z_accel = 0.05;
-		move(game, 0, 0);
-	}
-	if (game->keystate.ctrl)
-	{
-		if (game->keystate.ctrl_flag == 0)
-			game->player.pos.z -= 0.2;
-		game->keystate.ctrl_flag = 1;
-		game->player.b_foots = 0.3;
-		game->player.b_knees = 0.1;
-	}
-	if (!game->keystate.ctrl)
-	{
-		if (game->keystate.ctrl_flag == 1 && game->player.pos.z + 0.2 <  ((game->sectors + game->player.curr_sector)->ceil))
-			game->player.pos.z += 0.2;
-		game->keystate.ctrl_flag = 0;
-		game->player.b_foots = 0.5;
-		game->player.b_knees = 0.3;
-	}
-	sprites_move(game);
 }
 
 void    move(t_game *game, double x, double y)

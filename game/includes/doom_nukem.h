@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 11:46:40 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 12:38:30 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,7 @@ void						draw_minimap(t_game *game);
 void						put_fps(SDL_Surface *screen, t_hud hud,
 								struct timeval *time);
 void						read_map(char *name, t_game *game);
-void						player_move(t_game *game, int *loop);
+void						player_hooks(t_game *game, int *loop);
 void						change_wall(t_wall *cam_wall);
 void						get_pos_z(t_player *player, t_sector *sectors);
 SDL_Texture					*load_image(char *file, SDL_Renderer *ren);
@@ -364,4 +364,9 @@ void						move(t_game *game, double x, double y);
 void						sprites_move(t_game *game);
 void						resp_mobe(t_game *game, t_sprite *sprite);
 SDL_Event					key_hooks(t_game *game);
+void						shoot_hook(t_game *game, SDL_Event e);
+void						tab_hook(t_keystate *keystate, t_menu_status *menu_status, SDL_Event e);
+void						ctrl_hook(t_keystate *keystate, t_player *player, t_sector *sectors);
+void						jump_hook(t_game *game);
+void						jetpack_hook(t_player *player, SDL_Event e);
 #endif

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/01 16:03:23 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 11:59:39 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,7 @@ int			main(void)
 		if (game->menu_status.main == 1)
 		{	
 			check_rifle_state(game);
-			player_move(game, &loop);
+			player_hooks(game, &loop);
 			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);
 			get_pos_z(&game->player, game->sectors);
 			draw_skybox(game);
