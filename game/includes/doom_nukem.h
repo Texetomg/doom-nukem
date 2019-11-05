@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 12:38:30 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 14:03:47 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,4 +369,7 @@ void						tab_hook(t_keystate *keystate, t_menu_status *menu_status, SDL_Event e
 void						ctrl_hook(t_keystate *keystate, t_player *player, t_sector *sectors);
 void						jump_hook(t_game *game);
 void						jetpack_hook(t_player *player, SDL_Event e);
+void						appoint_points(t_game *game, t_vec2 *f_point, t_vec2 *s_point, int i);
+void						player_position(t_game *game, double new_x, double new_y, int i);
+void						count_points(t_vec2 *f_point, t_vec2 *s_point, double new_x, double new_y);
 #endif
