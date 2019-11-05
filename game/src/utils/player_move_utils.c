@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 14:02:46 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 14:06:17 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 14:31:49 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	player_position(t_game *game, double new_x, double new_y, int i)
 	}
 }
 
-void	ount_points(t_vec2 *f_point, t_vec2 *s_point, double new_x,
+void	count_points(t_vec2 *f_point, t_vec2 *s_point, double new_x,
 	double new_y)
 {
 	s_point->x = s_point->x - f_point->x;

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 12:41:40 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 14:14:31 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 14:54:19 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,30 @@ static void	sprite_rotation(t_game *game, double new_x, double new_y, int *flag)
 	}
 }
 
+static int	condition(t_game *game, int i)
+{
+	return (game->player.knees >
+		(game->sectors +
+		*((game->sectors +
+		game->player.curr_sector)->neighbors +
+		i))->floor &&
+		game->player.pos.z <
+		(game->sectors +
+		*((game->sectors +
+		game->player.curr_sector)->neighbors +
+		i))->ceil);
+}
+
+static int	mega_condition(t_game *game, double new_x, double new_y, int i)
+{
+	return (condition(game, i) &&
+		(inside_sector(game,
+			new_x,
+			new_y,
+			*(game->sectors + *((game->sectors +
+				game->player.curr_sector)->neighbors + i))) != 0));
+}
+
 static void	main_cycle(t_game *game, double new_x, double new_y, int *flag)
 {
 	t_vec2	f_point;
@@ -44,24 +68,16 @@ static void	main_cycle(t_game *game, double new_x, double new_y, int *flag)
 		count_points(&f_point, &s_point, new_x, new_y);
 		if (cross_product(f_point, s_point) < 0)
 		{
-			if (*((game->sectors + game->player.curr_sector)->neighbors + i) == -1)
-				*flag = 1;
-			else
+			if (*((game->sectors +
+				game->player.curr_sector)->neighbors + i) != -1)
 			{
-				if (game->player.knees > (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->floor &&
-					game->player.pos.z < (game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))->ceil)
+				if (mega_condition(game, new_x, new_x, i))
 				{
-					if (inside_sector(game, new_x, new_y, *(game->sectors + *((game->sectors + game->player.curr_sector)->neighbors + i))) != 0)
-					{
-						player_position(game, new_x, new_y, i);
-						return ;
-					}
-					else
-						*flag = 1;
+					player_position(game, new_x, new_y, i);
+					return ;
 				}
-				else
-					*flag = 1;
 			}
+			*flag = 1;
 		}
 		i++;
 	}
