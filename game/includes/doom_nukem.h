@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/01 17:22:47 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 10:56:36 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,4 +354,9 @@ void						fill_index_points(t_sector *sector, char **buffer);
 void						malloc_sector_values(t_sector *sector);
 int							count(int fd);
 void						load_images(t_game *game);
+void						get_first_point(t_game *game, int curr_sector,
+								t_vec2 *first_point, int i);
+void						get_second_point(t_game *game, int curr_sector,
+								t_vec2 *second_point, int i);
+void						swap_vec2(t_vec2 *first, t_vec2 *second);
 #endif

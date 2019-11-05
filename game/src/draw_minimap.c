@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/25 16:59:17 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/05 10:52:25 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static void		draw_2dsector(t_game *game, int curr_sector)
 	i = -1;
 	while (++i < (game->sectors + curr_sector)->count_wall)
 	{
-		get_points(game, curr_sector, &first_point, &second_point, i);
+		get_first_point(game, curr_sector, &first_point, i);
+		get_second_point(game, curr_sector, &second_point, i);
 		if (fabs(first_point.x - second_point.x) >
 				fabs(first_point.y - second_point.y))
 		{
