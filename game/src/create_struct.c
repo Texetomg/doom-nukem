@@ -6,26 +6,20 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/11/06 11:03:45 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/07 21:57:49 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-/*
-** инициализация sdl
-*/
-
 static void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());//закрывать sdl:
+		check_error_n_exit(1,(char*)SDL_GetError());
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
-	//game->window = SDL_CreateWindow(0, 0, 0, 0, 0,
-	//		SDL_WINDOW_FULLSCREEN_DESKTOP);
 	game->window = SDL_CreateWindow("Doom-Nukem", 0, 0, 1400, 1000, SDL_WINDOW_SHOWN);
 	if (game->window == 0)
 		check_error_n_exit(1,(char*)SDL_GetError());
@@ -41,13 +35,7 @@ static void	init_sdl(t_game *game)
 	texture_cut(game->texture1, 0, 0x303030);
 }
 
-void		add_angle_sprites_end(t_sprite **begin,
-		double start_angle,
-		double end_angle,
-		SDL_Surface *texture,
-		double up_health,
-		double down_health,
-		SDL_Surface *texture2)
+void		add_angle_sprites_end(t_sprite **begin, t_angle_sprite sprite)
 {
 	t_angle_sprite	*curr;
 	t_angle_sprite	*last;
@@ -60,12 +48,12 @@ void		add_angle_sprites_end(t_sprite **begin,
 	}
 	last = curr;
 	curr = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	curr->start_angle = start_angle;
-	curr->end_angle = end_angle;
-	curr->texture = texture;
-	curr->up_health = up_health;
-	curr->down_health = down_health;
-	curr->texture2 = texture2;
+	curr->start_angle = sprite.start_angle;
+	curr->end_angle = sprite.end_angle;
+	curr->texture = sprite.texture;
+	curr->up_health = sprite.up_health;
+	curr->down_health = sprite.down_health;
+	curr->texture2 = sprite.texture2;
 	curr->next = 0;
 	if (last != 0)
 		last->next = curr;

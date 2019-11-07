@@ -6,16 +6,14 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 11:01:31 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/06 11:01:44 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/07 22:16:46 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void	set_sprites(t_game *game)
+static void	init_sprites1(t_game *game, TAS *temp)
 {
-    t_angle_sprite *start_sprite;
-
 	game->sprites = (t_sprite*)malloc(sizeof(t_sprite));
 	(game->sprites)->id = 0;
 	(game->sprites)->pos.x = 0;
@@ -27,98 +25,104 @@ void	set_sprites(t_game *game)
 	(game->sprites)->angle = 0;
 	(game->sprites)->health = 100;
 	(game->sprites)->angle_sprite = 0;
-	add_angle_sprites_end(&(game->sprites), 0, 2 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/1.bmp"), 100, 85, IMG_Load("imgs/sprites/doomguy/1/1/1.bmp"));
-	//------------------------------------------------------------------------------------------------------------------
-	add_angle_sprites_end(&(game->sprites), 2 * 3.14 / 9, 4 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/2.bmp"), 85, 70, IMG_Load("imgs/sprites/doomguy/1/2/1.bmp"));
-	//------------------------------------------------------------------------------------------------------------------
-	add_angle_sprites_end(&(game->sprites), 4 * 3.14 / 9, 6 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/3.bmp"), 70, 55, IMG_Load("imgs/sprites/doomguy/1/2/2.bmp"));
-	//------------------------------------------------------------------------------------------------------------------
-	add_angle_sprites_end(&(game->sprites), 6 * 3.14 / 9, 8 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/4.bmp"), 55, 40, IMG_Load("imgs/sprites/doomguy/1/2/3.bmp"));
-	//------------------------------------------------------------------------------------------------------------------
-	add_angle_sprites_end(&(game->sprites), 8 * 3.14 / 9, 10 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/5.bmp"), 40, 25, IMG_Load("imgs/sprites/doomguy/1/2/4.bmp"));
-	//------------------------------------------------------------------------------------------------------------------
-	add_angle_sprites_end(&(game->sprites), 10 * 3.14 / 9, 12 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/6.bmp"), 25, 10, IMG_Load("imgs/sprites/doomguy/1/2/5.bmp"));
-	//------------------------------------------------------------------------------------------------------------------
-	add_angle_sprites_end(&(game->sprites), 12 * 3.14 / 9, 14 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/7.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
+	change_temp1(temp);
+	change_temp2(temp);
+	change_temp3(temp);
+	change_temp4(temp);
+	add_angle_sprites_end(&(game->sprites), temp[0]);
+	add_angle_sprites_end(&(game->sprites), temp[1]);
+	add_angle_sprites_end(&(game->sprites), temp[2]);
+	add_angle_sprites_end(&(game->sprites), temp[3]);
+	add_angle_sprites_end(&(game->sprites), temp[4]);
+	add_angle_sprites_end(&(game->sprites), temp[5]);
+	add_angle_sprites_end(&(game->sprites), temp[6]);
+	add_angle_sprites_end(&(game->sprites), temp[7]);
+	add_angle_sprites_end(&(game->sprites), temp[8]);
+	add_angle_sprites_end(&(game->sprites), temp[9]);
+}
 
-	add_angle_sprites_end(&(game->sprites), 14 * 3.14 / 9, 16 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/8.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
-	add_angle_sprites_end(&(game->sprites), 16 * 3.14 / 9, 18 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/1.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
-	add_angle_sprites_end(&(game->sprites), 12 * 3.14 / 9, 14 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/7.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
-	//------------------------------------------------------------------------------------------------------------------
-    add_angle_sprites_end(&(game->sprites), 14 * 3.14 / 9, 16 * 3.14 / 9, IMG_Load("imgs/sprites/doomguy/1/1/8.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
-	//------------------------------------------------------------------------------------------------------------------
-    add_angle_sprites_end(&(game->sprites), 16 * 3.14 / 9, 2 * 3.14, IMG_Load("imgs/sprites/doomguy/1/1/1.bmp"), 10, 0, IMG_Load("imgs/sprites/doomguy/1/2/6.bmp"));
-    printf("18\n");
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->angle_sprite->next->next->next->next->next->next->next->next->next = 0;
-    //##################################################################################################################
-	game->sprites->next = (t_sprite*)malloc(sizeof(t_sprite));
-	(game->sprites)->next->id = 1;
-	(game->sprites)->next->pos.x = 1;
-	(game->sprites)->next->pos.y = -2;
-	(game->sprites)->next->heigth = 0.5;
-	(game->sprites)->next->width = game->screen->w / 10;
-	(game->sprites)->next->pos.z = 0.5;
-	(game->sprites)->next->sector = 1;
-	(game->sprites)->next->angle = 3.14 / 2;
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->next->angle_sprite = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->next->angle_sprite->start_angle = -3.14;
-	(game->sprites)->next->angle_sprite->end_angle = 3.14;
-	(game->sprites)->next->angle_sprite->texture = *((game->gif)->array + 10);
-	(game->sprites)->next->angle_sprite->texture2 = *((game->gif)->array + 10);
-	(game->sprites)->next->angle_sprite->up_health = 100;
-	(game->sprites)->next->angle_sprite->down_health = 85;
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->next->angle_sprite->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->next->angle_sprite->next->start_angle = -3.14;
-	(game->sprites)->next->angle_sprite->next->end_angle = 3.14;
-	(game->sprites)->next->angle_sprite->next->texture = *((game->gif)->array + 11);
-	(game->sprites)->next->angle_sprite->next->texture2 = *((game->gif)->array + 11);
-	(game->sprites)->next->angle_sprite->next->up_health = 85;
-	(game->sprites)->next->angle_sprite->next->down_health = 70;
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->next->angle_sprite->next->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->next->angle_sprite->next->next->start_angle = -3.14;
-	(game->sprites)->next->angle_sprite->next->next->end_angle = 3.14;
-	(game->sprites)->next->angle_sprite->next->next->texture = *((game->gif)->array + 12);
-	(game->sprites)->next->angle_sprite->next->next->texture2 = *((game->gif)->array + 12);
-	(game->sprites)->next->angle_sprite->next->next->up_health = 70;
-	(game->sprites)->next->angle_sprite->next->next->down_health = 55;
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->next->angle_sprite->next->next->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->next->angle_sprite->next->next->next->start_angle = -3.14;
-	(game->sprites)->next->angle_sprite->next->next->next->end_angle = 3.14;
-	(game->sprites)->next->angle_sprite->next->next->next->texture = *((game->gif)->array + 13);
-	(game->sprites)->next->angle_sprite->next->next->next->texture2 = *((game->gif)->array + 13);
-	(game->sprites)->next->angle_sprite->next->next->next->up_health = 55;
-	(game->sprites)->next->angle_sprite->next->next->next->down_health = 40;
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->next->angle_sprite->next->next->next->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->next->angle_sprite->next->next->next->next->start_angle = -3.14;
-	(game->sprites)->next->angle_sprite->next->next->next->next->end_angle = 3.14;
-	(game->sprites)->next->angle_sprite->next->next->next->next->texture = *((game->gif)->array + 14);
-	(game->sprites)->next->angle_sprite->next->next->next->next->texture2 = *((game->gif)->array + 14);
-	(game->sprites)->next->angle_sprite->next->next->next->next->up_health = 40;
-	(game->sprites)->next->angle_sprite->next->next->next->next->down_health = 25;
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->next->angle_sprite->next->next->next->next->next = (t_angle_sprite*)malloc(sizeof(t_angle_sprite));
-	(game->sprites)->next->angle_sprite->next->next->next->next->next->start_angle = -3.14;
-	(game->sprites)->next->angle_sprite->next->next->next->next->next->end_angle = 3.14;
-	(game->sprites)->next->angle_sprite->next->next->next->next->next->texture = *((game->gif)->array + 15);
-	(game->sprites)->next->angle_sprite->next->next->next->next->next->texture2 = *((game->gif)->array + 15);
-	(game->sprites)->next->angle_sprite->next->next->next->next->next->up_health = 25;
-	(game->sprites)->next->angle_sprite->next->next->next->next->next->down_health = 0;
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->next->angle_sprite->next->next->next->next->next->next = 0;
-	//------------------------------------------------------------------------------------------------------------------
-	(game->sprites)->next->health = 100;
-	(game->sprites)->next->next = 0;
-	//##################################################################################################################
-	start_sprite = (game->sprites)->angle_sprite;
+static void	init_sprites2(t_game *game)
+{
+	game->sprites->N = (t_sprite*)malloc(sizeof(t_sprite));
+	(game->sprites)->N->id = 1;
+	(game->sprites)->N->pos.x = 1;
+	(game->sprites)->N->pos.y = -2;
+	(game->sprites)->N->heigth = 0.5;
+	(game->sprites)->N->width = game->screen->w / 10;
+	(game->sprites)->N->pos.z = 0.5;
+	(game->sprites)->N->sector = 1;
+	(game->sprites)->N->angle = 3.14 / 2;
+	(game->sprites)->N->AS = (TAS*)malloc(sizeof(TAS));
+	(game->sprites)->N->AS->start_angle = -3.14;
+	(game->sprites)->N->AS->end_angle = 3.14;
+	(game->sprites)->N->AS->texture = *((game->gif)->array + 10);
+	(game->sprites)->N->AS->texture2 = *((game->gif)->array + 10);
+	(game->sprites)->N->AS->up_health = 100;
+	(game->sprites)->N->AS->down_health = 85;
+}
+
+static void init_sprites3(t_game *game)
+{
+	(game->sprites)->N->AS->N = (TAS*)malloc(sizeof(TAS));
+	(game->sprites)->N->AS->N->start_angle = -3.14;
+	(game->sprites)->N->AS->N->end_angle = 3.14;
+	(game->sprites)->N->AS->N->texture = *((game->gif)->array + 11);
+	(game->sprites)->N->AS->N->texture2 = *((game->gif)->array + 11);
+	(game->sprites)->N->AS->N->up_health = 85;
+	(game->sprites)->N->AS->N->down_health = 70;
+	(game->sprites)->N->AS->N->N = (TAS*)malloc(sizeof(TAS));
+	(game->sprites)->N->AS->N->N->start_angle = -3.14;
+	(game->sprites)->N->AS->N->N->end_angle = 3.14;
+	(game->sprites)->N->AS->N->N->texture = *((game->gif)->array + 12);
+	(game->sprites)->N->AS->N->N->texture2 = *((game->gif)->array + 12);
+	(game->sprites)->N->AS->N->N->up_health = 70;
+	(game->sprites)->N->AS->N->N->down_health = 55;
+	(game->sprites)->N->AS->N->N->N = (TAS*)malloc(sizeof(TAS));
+	(game->sprites)->N->AS->N->N->N->start_angle = -3.14;
+	(game->sprites)->N->AS->N->N->N->end_angle = 3.14;
+	(game->sprites)->N->AS->N->N->N->texture = *((game->gif)->array + 13);
+	(game->sprites)->N->AS->N->N->N->texture2 = *((game->gif)->array + 13);
+	(game->sprites)->N->AS->N->N->N->up_health = 55;
+	(game->sprites)->N->AS->N->N->N->down_health = 40;
+}
+
+static void init_sprites4(t_game *game)
+{
+	(game->sprites)->N->AS->N->N->N->N = (TAS*)malloc(sizeof(TAS));
+	(game->sprites)->N->AS->N->N->N->N->start_angle = -3.14;
+	(game->sprites)->N->AS->N->N->N->N->end_angle = 3.14;
+	(game->sprites)->N->AS->N->N->N->N->texture = *((game->gif)->array + 14);
+	(game->sprites)->N->AS->N->N->N->N->texture2 = *((game->gif)->array + 14);
+	(game->sprites)->N->AS->N->N->N->N->up_health = 40;
+	(game->sprites)->N->AS->N->N->N->N->down_health = 25;
+	(game->sprites)->N->AS->N->N->N->N->N = (TAS*)malloc(sizeof(TAS));
+	(game->sprites)->N->AS->N->N->N->N->N->start_angle = -3.14;
+	(game->sprites)->N->AS->N->N->N->N->N->end_angle = 3.14;
+	(game->sprites)->N->AS->N->N->N->N->N->texture = *((game->gif)->array + 15);
+	(game->sprites)->N->AS->N->N->N->N->N->texture2 = *((game->gif)->array + 15);
+	(game->sprites)->N->AS->N->N->N->N->N->up_health = 25;
+	(game->sprites)->N->AS->N->N->N->N->N->down_health = 0;
+}
+
+void		set_sprites(t_game *game)
+{
+	TAS temp[12];
+    TAS *start_sprite;
+
+	init_sprites1(game, temp);
+    add_angle_sprites_end(&(game->sprites), temp[10]);
+    add_angle_sprites_end(&(game->sprites), temp[11]);
+	(game->sprites)->AS->N->N->N->N->N->N->N->N->N = 0;
+	init_sprites2(game);
+	init_sprites3(game);
+	init_sprites4(game);
+	(game->sprites)->N->AS->N->N->N->N->N->N = 0;
+	(game->sprites)->N->health = 100;
+	(game->sprites)->N->N = 0;
+	start_sprite = (game->sprites)->AS;
 	while (start_sprite != NULL)
     {
 	    texture_cut_sdl(start_sprite->texture, 0x71FAFC, 0x73FCFE);
-	    start_sprite = start_sprite->next;
+	    start_sprite = start_sprite->N;
     }
 }

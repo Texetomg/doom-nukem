@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/06 11:13:20 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/07 22:16:16 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@
 # define COLOR_BETW 0xAA0000
 # define STEP 0.05
 # define STEP_SOUND 1
+# define next N
+# define angle_sprite AS
+# define t_angle_sprite TAS
 
 typedef struct				s_gif
 {
@@ -374,15 +377,12 @@ void						player_position(t_game *game, double new_x, double new_y, int i);
 void						count_points(t_vec2 *f_point, t_vec2 *s_point, double new_x, double new_y);
 void						load_sounds(t_game *game);
 void						set_initial_values(t_game *game);
-void		add_angle_sprites_end(t_sprite **begin,
-		double start_angle,
-		double end_angle,
-		SDL_Surface *texture,
-		double up_health,
-		double down_health,
-		SDL_Surface *texture2);
-
-void	set_sprites(t_game *game);
-void	texture_cut(t_texture *texture, unsigned int st_color, unsigned int end_color);
-void	texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int end_color);
+void						add_angle_sprites_end(t_sprite **begin, t_angle_sprite sprite);
+void						set_sprites(t_game *game);
+void						texture_cut(t_texture *texture, unsigned int st_color, unsigned int end_color);
+void						texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int end_color);
+void						change_temp1(t_angle_sprite *temp);
+void						change_temp2(t_angle_sprite *temp);
+void						change_temp3(t_angle_sprite *temp);
+void						change_temp4(t_angle_sprite *temp);
 #endif

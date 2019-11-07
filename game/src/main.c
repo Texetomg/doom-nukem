@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 11:59:39 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/07 19:53:28 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static void	draw_3d_wall(t_game *game)
 {
 	t_draw	for_draw;
 
-    game->sprite_wall = NULL;
-    game->cross_flag = NULL;
+	game->sprite_wall = NULL;
+	game->cross_flag = NULL;
 	for_draw.fov_left.x = 5;
 	for_draw.fov_left.y = 5;
 	for_draw.fov_right.x = 5;
@@ -38,17 +38,8 @@ static void	draw_3d_wall(t_game *game)
 	give_sprites_cam(game);
 	draw_sector(game, for_draw);
 	draw_minimap(game);
-	/* if (game->cross_flag != NULL)
-	{
-		printf("Headshort!!\n");
-		printf("Health: %d\n", game->cross_flag->health);
-	}
-    else
-        printf("Looser!!\n"); */
-    if (game->sprite_wall != NULL)
-        printf("Find a picture!!\n");
-    /* else
-        printf("Don't find!!\n"); */
+	if (game->sprite_wall != NULL)
+		printf("Find a picture!!\n");
 }
 
 SDL_Surface		*check_sprite(t_sprite *sprite)
@@ -278,7 +269,7 @@ int			main(void)
 		if(game->menu_status.tab == 1)
 			tab_menu_render(game, &loop);
 		if (game->menu_status.main == 1)
-		{	
+		{
 			check_rifle_state(game);
 			player_hooks(game, &loop);
 			SDL_WarpMouseInWindow(game->window, game->pre_calc.screen_w_div_2, game->pre_calc.screen_h_div_2);
