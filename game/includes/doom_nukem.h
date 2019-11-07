@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/07 22:16:16 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/07 23:26:26 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,39 @@ typedef struct				s_game
 	char					*server_ip;
 }							t_game;
 
+typedef struct				s_draw_sprites
+{
+	int						y;
+	int						x;
+	int						x_start;
+	int						x_end;
+	int						new_x;
+	int						new_y;
+	int						color;
+	int						bot;
+	int						top;
+	int						t_window;
+	int						b_window;
+	SDL_Surface				*texture;
+	int						cross_flag;
+	int						cross_x;
+	int						cross_y;
+}							t_draw_sprites;
+
+typedef struct				s_draw_skybox
+{
+	double					left_border;
+	double					right_border;
+	double					a;
+	int						x;
+	int						y;
+	int						x_texture;
+	int						y_texture;
+	int						color;
+	double					top;
+	double					bot;
+}							t_draw_skybox;
+
 void						draw_floor(t_game *game, t_draw for_draw, double dz,
 		double bright);
 double						fractial_part(double a);
@@ -385,4 +418,7 @@ void						change_temp1(t_angle_sprite *temp);
 void						change_temp2(t_angle_sprite *temp);
 void						change_temp3(t_angle_sprite *temp);
 void						change_temp4(t_angle_sprite *temp);
+SDL_Surface					*check_sprite(t_sprite *sprite);
+void						draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double bright);
+void						draw_skybox(t_game *game);
 #endif
