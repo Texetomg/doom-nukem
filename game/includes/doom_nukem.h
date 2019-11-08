@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/07 23:26:26 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/08 16:40:50 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,6 +317,113 @@ typedef struct				s_draw_skybox
 	double					bot;
 }							t_draw_skybox;
 
+typedef struct				s_dw_a
+{
+	t_draw					for_draw;
+	double					x1;
+	double					x2;
+	double					y1;
+	double					y2;
+	double					ceil;
+	double					floor;
+	double					bright;
+	double					perc1;
+	double					perc2;
+	t_sprite_wall			*sprite_wall;
+}							t_dw_a;
+
+typedef struct				s_dw
+{
+	int						i;
+	int						k;
+	int						yb_wall;
+	int						yt_wall;
+	int						color;
+	double					x;
+	double					y;
+	double					a;
+	int						right_border;
+	int						top_border;
+	int						bot_border;
+	int						left_border;
+	double					new_y1, new_y2;
+	double					left_img;
+	double					right_img;
+	int						green_flag;
+}							t_dw;
+
+typedef struct				s_pds_a
+{
+	SDL_Surface				*screen;
+	SDL_DisplayMode			display_mode;
+	t_draw					for_draw;
+	double					bright;
+	int						grid;
+	t_game					*game;
+	double					x1;
+	double					x2;
+	double					y1;
+	double					y2;
+	double					ceil;
+	double					floor;
+	t_texture				*bars;
+}							t_pds_a;
+
+typedef struct				s_pds
+{
+	int						i;
+	int						k;
+	double					yb_wall;
+	double					yt_wall;
+	double					yb_window;
+	double					yt_window;
+	int						color;
+	double					wall_max_x;
+	double					x_start;
+	double					dx_left;
+	double					dx_right;
+	double					x;
+	double					y;
+	double					a;
+}							t_pds;
+
+typedef struct				s_ds
+{
+	int						i;
+	t_draw					for_next_draw;
+	t_vec2					first_point;
+	t_vec2					second_point;
+	double					yscale1;
+	double					yscale2;
+	double					yceil;
+	double					yfloor;
+	double					y2ceil;
+	double					y2floor;
+	double					x1;
+	double					x2;
+	double					x1a;
+	double					x2a;
+	double					y1;
+	double					y2;
+	double					y1a;
+	double					y2a;
+	double					x1_b4;
+	double					x2_b4;
+	double					perc1;
+	double					perc2;
+	t_sprite				*sprite;
+}							t_ds;
+
+typedef struct				s_inter
+{
+	t_ds					*ds;
+	t_dw_a					*dw_a;
+	t_game					*game;
+	t_pds_a					*pds_a;
+	t_draw					*for_draw;
+}							t_inter;
+
+
 void						draw_floor(t_game *game, t_draw for_draw, double dz,
 		double bright);
 double						fractial_part(double a);
@@ -421,4 +528,12 @@ void						change_temp4(t_angle_sprite *temp);
 SDL_Surface					*check_sprite(t_sprite *sprite);
 void						draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double bright);
 void						draw_skybox(t_game *game);
+void						draw_wall(t_game *game, t_dw_a dw_a);
+void						loop2(t_game *game, t_dw *dw, t_dw_a *dw_a);
+void						loop3(t_game *game, t_dw *dw, t_dw_a *dw_a);
+void						pre_draw_sector(t_pds_a *pds_a);
+void						pre_draw_sec_loop(t_pds_a *pds_a, t_pds *pds);
+void						init_intersections(int i, t_inter *inter);
+void						check_inter(t_inter *inter);
+void						intersections(t_inter *inter);
 #endif
