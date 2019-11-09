@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 14:15:18 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/26 05:20:18 by thorker          ###   ########.fr       */
+/*   Updated: 2019/11/09 16:59:36 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ double			fractial_part(double a)
 ** Заполнение пространства для текстуры
 */
 
-static void			fill_texture(t_game *game, int yt[3],
+static void		fill_texture(t_game *game, int yt[3],
 		t_vec3 point[2],
 		double bright)
 {
