@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 11:33:51 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 11:43:26 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/09 15:15:15 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void			resp_mobe(t_game *game, t_sprite *sprite)
 	{
 		sprite->pos.x = game->spaw2.x;
 		sprite->pos.y = game->spaw2.y;
-        sprite->pos.z = sprite->heigth + (game->sectors + 2)->floor;
+		sprite->pos.z = sprite->heigth + (game->sectors + 2)->floor;
 		sprite->sector = 2;
 	}
 	else if (game->player.curr_sector == 2)

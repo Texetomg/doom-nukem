@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   check_sprite.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 22:26:46 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/07 22:49:17 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 15:13:37 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-
-static void		sprite_id(t_sprite *sprite, TAS *angle_sprite, SDL_Surface *texture)
+static void		sprite_id(t_sprite *sprite, TAS *angle_sprite,
+	SDL_Surface *texture)
 {
 	texture = angle_sprite->texture2;
 	angle_sprite = sprite->angle_sprite;
@@ -24,9 +24,11 @@ static void		sprite_id(t_sprite *sprite, TAS *angle_sprite, SDL_Surface *texture
 	}
 }
 
-static void		sprite_move(t_sprite *sprite, TAS *angle_sprite, SDL_Surface *texture, int *k)
+static void		sprite_move(t_sprite *sprite, TAS *angle_sprite,
+	SDL_Surface *texture, int *k)
 {
-	if (sprite->health <= angle_sprite->up_health && sprite->health > angle_sprite->down_health)
+	if (sprite->health <= angle_sprite->up_health &&
+		sprite->health > angle_sprite->down_health)
 	{
 		if (sprite->id == 0)
 			sprite_id(sprite, angle_sprite, texture);
@@ -36,7 +38,8 @@ static void		sprite_move(t_sprite *sprite, TAS *angle_sprite, SDL_Surface *textu
 	}
 }
 
-static void		sprite_angle(t_sprite *sprite, TAS *angle_sprite, SDL_Surface *texture, int *k)
+static void		sprite_angle(t_sprite *sprite, TAS *angle_sprite,
+	SDL_Surface *texture, int *k)
 {
 	if (sprite->angle_in_cam >= angle_sprite->start_angle &&
 		sprite->angle_in_cam < angle_sprite->end_angle &&

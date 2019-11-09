@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 16:12:49 by thorker           #+#    #+#             */
-/*   Updated: 2019/11/08 16:25:38 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 15:44:36 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-int	ft_bright(int color, double bright)
+int			ft_bright(int color, double bright)
 {
 	int r;
 	int g;
@@ -33,35 +33,31 @@ int	ft_bright(int color, double bright)
 ** рекурсивная функция, которая отрисовывает сектор;
 */
 
-static void init(t_ds *ds, t_game *game, t_draw *for_draw)
+static void	init(t_ds *ds, t_game *game, t_draw *for_draw)
 {
-	ds->first_point = *(game->points_cam +
-	*((game->sectors + for_draw->curr_sector)->index_points + ds->i));
-	ds->x1 = (game->points +
-	*((game->sectors + for_draw->curr_sector)->index_points + ds->i))->x;
-	ds->y1 = (game->points +
-	*((game->sectors + for_draw->curr_sector)->index_points + ds->i))->y;
-	if (ds->i == (game->sectors + for_draw->curr_sector)->count_wall - 1)
+	t_sector	*sector;
+	int			*sector_dsi;
+
+	sector = (game->sectors + for_draw->curr_sector);
+	sector_dsi = sector->index_points + ds->i;
+	ds->first_point = *(game->points_cam + *(sector_dsi));
+	ds->x1 = (game->points + *(sector_dsi))->x;
+	ds->y1 = (game->points + *(sector_dsi))->y;
+	if (ds->i == sector->count_wall - 1)
 	{
-		ds->x2 = (game->points +
-		*((game->sectors + for_draw->curr_sector)->index_points))->x;
-		ds->y2 = (game->points +
-		*((game->sectors + for_draw->curr_sector)->index_points))->y;
-		ds->second_point = *(game->points_cam +
-		*((game->sectors + for_draw->curr_sector)->index_points));
+		ds->x2 = (game->points + *(sector->index_points))->x;
+		ds->y2 = (game->points + *(sector->index_points))->y;
+		ds->second_point = *(game->points_cam + *(sector->index_points));
 	}
 	else
 	{
-		ds->x2 = (game->points +
-		*((game->sectors + for_draw->curr_sector)->index_points + ds->i + 1))->x;
-		ds->y2 = (game->points +
-		*((game->sectors + for_draw->curr_sector)->index_points + ds->i + 1))->y;
-		ds->second_point = *(game->points_cam +
-		*((game->sectors + for_draw->curr_sector)->index_points + ds->i + 1));
+		ds->x2 = (game->points + *(sector_dsi + 1))->x;
+		ds->y2 = (game->points + *(sector_dsi + 1))->y;
+		ds->second_point = *(game->points_cam + *(sector_dsi + 1));
 	}
 }
 
-static void draw_sprites_loop(t_ds *ds, t_game *game, t_draw *for_draw)
+static void	draw_sprites_loop(t_ds *ds, t_game *game, t_draw *for_draw)
 {
 	ds->sprite = game->sprites;
 	while (ds->sprite != 0)
@@ -75,13 +71,13 @@ static void draw_sprites_loop(t_ds *ds, t_game *game, t_draw *for_draw)
 	}
 }
 
-void    draw_sector(t_game *game, t_draw for_draw)
+void		draw_sector(t_game *game, t_draw for_draw)
 {
-	t_ds		ds;
-	t_dw_a      dw_a;
-	t_pds_a		pds_a;
-	t_inter		inter;
-	
+	t_ds	ds;
+	t_dw_a	dw_a;
+	t_pds_a	pds_a;
+	t_inter	inter;
+
 	ds.i = 0;
 	inter.ds = &ds;
 	inter.dw_a = &dw_a;
