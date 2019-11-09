@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/08 16:40:50 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 16:31:58 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -508,25 +508,34 @@ void						sprites_move(t_game *game);
 void						resp_mobe(t_game *game, t_sprite *sprite);
 SDL_Event					key_hooks(t_game *game);
 void						shoot_hook(t_game *game, SDL_Event e);
-void						tab_hook(t_keystate *keystate, t_menu_status *menu_status, SDL_Event e);
-void						ctrl_hook(t_keystate *keystate, t_player *player, t_sector *sectors);
+void						tab_hook(t_keystate *keystate,
+								t_menu_status *menu_status, SDL_Event e);
+void						ctrl_hook(t_keystate *keystate, t_player *player,
+								t_sector *sectors);
 void						jump_hook(t_game *game);
 void						jetpack_hook(t_player *player, SDL_Event e);
-void						appoint_points(t_game *game, t_vec2 *f_point, t_vec2 *s_point, int i);
-void						player_position(t_game *game, double new_x, double new_y, int i);
-void						count_points(t_vec2 *f_point, t_vec2 *s_point, double new_x, double new_y);
+void						appoint_points(t_game *game, t_vec2 *f_point,
+								t_vec2 *s_point, int i);
+void						player_position(t_game *game, double new_x,
+								double new_y, int i);
+void						count_points(t_vec2 *f_point, t_vec2 *s_point,
+								double new_x, double new_y);
 void						load_sounds(t_game *game);
 void						set_initial_values(t_game *game);
-void						add_angle_sprites_end(t_sprite **begin, t_angle_sprite sprite);
+void						add_angle_sprites_end(t_sprite **begin,
+								t_angle_sprite sprite);
 void						set_sprites(t_game *game);
-void						texture_cut(t_texture *texture, unsigned int st_color, unsigned int end_color);
-void						texture_cut_sdl(SDL_Surface *texture, unsigned int st_color, unsigned int end_color);
+void						texture_cut(t_texture *texture, unsigned int st_color,
+							unsigned int end_color);
+void						texture_cut_sdl(SDL_Surface *texture,
+								unsigned int st_color, unsigned int end_color);
 void						change_temp1(t_angle_sprite *temp);
 void						change_temp2(t_angle_sprite *temp);
 void						change_temp3(t_angle_sprite *temp);
 void						change_temp4(t_angle_sprite *temp);
 SDL_Surface					*check_sprite(t_sprite *sprite);
-void						draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double bright);
+void						draw_sprites(t_game *game, t_draw for_draw,
+								t_sprite *sprite, double bright);
 void						draw_skybox(t_game *game);
 void						draw_wall(t_game *game, t_dw_a dw_a);
 void						loop2(t_game *game, t_dw *dw, t_dw_a *dw_a);
@@ -536,4 +545,7 @@ void						pre_draw_sec_loop(t_pds_a *pds_a, t_pds *pds);
 void						init_intersections(int i, t_inter *inter);
 void						check_inter(t_inter *inter);
 void						intersections(t_inter *inter);
+void						sprite_wall2_sup(t_dw_a *dw_a, t_dw *dw,
+								double *dw_new, int *dw_border);
+void    					sprite_wall3_sup(t_game *game, t_dw_a *dw_a, t_dw *dw);
 #endif

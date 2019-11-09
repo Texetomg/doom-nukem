@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+         #
+#    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/11/08 16:39:39 by ramory-l         ###   ########.fr        #
+#    Updated: 2019/11/09 16:27:50 by bfalmer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ pre_draw_sector_loop.c intersections.c init_intersections.c \
 $(UTILS_DIR)/utils.c $(UTILS_DIR)/sdl_utils.c $(UTILS_DIR)/math_utils.c \
 $(UTILS_DIR)/hud_utils.c $(UTILS_DIR)/menu_utils.c $(UTILS_DIR)/read_map_utils.c \
 $(UTILS_DIR)/draw_minimap_utils.c $(UTILS_DIR)/player_hooks_utils.c \
-$(UTILS_DIR)/player_move_utils.c \
+$(UTILS_DIR)/player_move_utils.c $(UTILS_DIR)/draw_wall_utils.c\
 $(BMP_DIR)/array_file_type.c $(BMP_DIR)/bmp_info.c \
 $(BMP_DIR)/get_blocks.c $(BMP_DIR)/glob_texture_funks.c $(BMP_DIR)/rle_file_type.c \
 $(BMP_DIR)/texture_add_funks.c 
