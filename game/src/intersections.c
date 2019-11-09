@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 15:43:56 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/08 16:43:58 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 17:01:05 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void check_inter(t_inter *inter)
+void	check_inter(t_inter *inter)
 {
 	if (fabs(inter->ds->x1 - inter->ds->x2) >
 		fabs(inter->ds->y1 - inter->ds->y2))
 	{
-		inter->ds->x1a = inter->ds->x1 +(inter->ds->x2 - inter->ds->x1) *
+		inter->ds->x1a = inter->ds->x1 + (inter->ds->x2 - inter->ds->x1) *
 		(-inter->ds->first_point.y - inter->ds->x1_b4) /
 		(inter->ds->x2_b4 - inter->ds->x1_b4);
 		inter->ds->x2a = inter->ds->x1 + (inter->ds->x2 - inter->ds->x1) *
@@ -40,7 +40,7 @@ void check_inter(t_inter *inter)
 	}
 }
 
-void intersections(t_inter *inter)
+void	intersections(t_inter *inter)
 {
 	if (intersection(&inter->ds->first_point, &inter->ds->second_point,
 		inter->for_draw->fov_left, inter->for_draw->fov_right) > 0)
