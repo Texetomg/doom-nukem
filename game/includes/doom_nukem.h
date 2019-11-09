@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doom_nukem.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/09 16:45:43 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/09 19:32:00 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,6 +423,31 @@ typedef struct				s_inter
 	t_draw					*for_draw;
 }							t_inter;
 
+typedef struct				s_sc
+{
+	int						i;
+	int						j;
+	t_vec2					f_point;
+	t_vec2					s_point;
+	t_sector 				*cur_sec;
+	double 					cross;
+}							t_sc;
+
+typedef struct				s_sm
+{
+	t_sprite				*sprite;
+	t_sprite				*index;
+	t_sprite				*start_sprite;
+	double					dx;
+	double					dy;
+	double					px;
+	double					py;
+	double					cx;
+	double					cy;
+	double					new_x;
+	double					new_y;
+	double					radius;
+}							t_sm;
 
 void						draw_floor(t_game *game, t_draw for_draw, double dz,
 		double bright);
@@ -547,6 +572,7 @@ void						check_inter(t_inter *inter);
 void						intersections(t_inter *inter);
 void						sprite_wall2_sup(t_dw_a *dw_a, t_dw *dw,
 								double *dw_new, int *dw_border);
-void    					sprite_wall3_sup(t_game *game, t_dw_a *dw_a, t_dw *dw);
+void 						sprite_wall3_sup(t_game *game, t_dw_a *dw_a, t_dw *dw);
 void						init1_sup(t_inter *inter);
+int							sector_check(t_game *game, t_sprite *sprite);
 #endif

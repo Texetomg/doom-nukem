@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+         #
+#    By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/14 14:37:36 by bfalmer-          #+#    #+#              #
-#    Updated: 2019/11/09 16:47:47 by bfalmer-         ###   ########.fr        #
+#    Updated: 2019/11/09 19:08:53 by ramory-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ read_map.c key_hooks.c render.c start_menu.c tab_menu.c hud.c  multiplayer_menu.
 load_images.c draw_img.c init_client.c print_text.c player_positioning.c \
 sprites_move.c player_hooks.c player_move.c load_sounds.c set_initial_values.c set_sprites.c texture_cut.c \
 change_temp.c check_sprite.c draw_sprites.c draw_skybox.c draw_wall.c draw_wall_loops.c pre_draw_sector.c \
-pre_draw_sector_loop.c intersections.c init_intersections.c \
+pre_draw_sector_loop.c intersections.c init_intersections.c sector_check.c \
 $(UTILS_DIR)/utils.c $(UTILS_DIR)/sdl_utils.c $(UTILS_DIR)/math_utils.c \
 $(UTILS_DIR)/hud_utils.c $(UTILS_DIR)/menu_utils.c $(UTILS_DIR)/read_map_utils.c \
 $(UTILS_DIR)/draw_minimap_utils.c $(UTILS_DIR)/player_hooks_utils.c \
