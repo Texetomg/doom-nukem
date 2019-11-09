@@ -6,11 +6,20 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/25 16:58:02 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/09 17:39:44 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
+
+static void	new_game(t_game *game)
+{
+	set_player(game);
+	game->tab_menu.text_pos = 0;
+	game->start_menu.text_pos = 0;
+	switch_menu(&game->menu_status.start, &game->menu_status.tab);
+	Mix_HaltMusic();
+}
 
 static void	key_hook(t_game *game, int *loop)
 {
@@ -29,14 +38,7 @@ static void	key_hook(t_game *game, int *loop)
 			if (e.key.keysym.sym == SDLK_RETURN && game->tab_menu.text_pos == 0)
 				switch_menu(&game->menu_status.main, &game->menu_status.tab);
 			if (e.key.keysym.sym == SDLK_RETURN && game->tab_menu.text_pos == 1)
-			{
-				// game start again
-				set_player(game);
-				game->tab_menu.text_pos = 0;
-				game->start_menu.text_pos = 0;
-				switch_menu(&game->menu_status.start, &game->menu_status.tab);
-				Mix_HaltMusic();
-			}
+				new_game(game);
 			if (e.key.keysym.sym == SDLK_UP && game->tab_menu.text_pos > 0)
 				game->tab_menu.text_pos--;
 			if (e.key.keysym.sym == SDLK_DOWN && game->tab_menu.text_pos < 2)
