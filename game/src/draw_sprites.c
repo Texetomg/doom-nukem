@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_sprites.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 22:53:05 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/07 23:24:04 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 15:58:39 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_game *game, t_draw *for_draw)
 	sprite->width / sprite->pos_in_cam.x;
 	draw_sprites->top = -sprite->pos_in_cam.z *
 	game->pre_calc.screen_h_div_2 / sprite->pos_in_cam.x + game->line_horiz;
-    draw_sprites->bot = draw_sprites->top + sprite->heigth *
+	draw_sprites->bot = draw_sprites->top + sprite->heigth *
 	game->pre_calc.screen_h_div_2 / sprite->pos_in_cam.x;
 	if (draw_sprites->x_start < 0)
 		draw_sprites->x = 0;
@@ -32,13 +32,14 @@ t_game *game, t_draw *for_draw)
 		draw_sprites->x = for_draw->window.x1;
 	else
 		draw_sprites->x = draw_sprites->x_start;
-	draw_sprites->cross_x = (double)(game->screen->w / 2 - draw_sprites->x_start) /
+	draw_sprites->cross_x = (double)
+	(game->screen->w / 2 - draw_sprites->x_start) /
 	(draw_sprites->x_end - draw_sprites->x_start) * draw_sprites->texture->w;
 	draw_sprites->cross_y = (double)(game->screen->h / 2 - draw_sprites->top) /
 	(draw_sprites->bot - draw_sprites->top) * draw_sprites->texture->h;
 }
 
-static void loop(t_game *game, t_draw_sprites *draw_sprites, double bright)
+static void	loop(t_game *game, t_draw_sprites *draw_sprites, double bright)
 {
 	while (draw_sprites->y < draw_sprites->bot &&
 			draw_sprites->y < draw_sprites->b_window &&
@@ -63,7 +64,7 @@ static void loop(t_game *game, t_draw_sprites *draw_sprites, double bright)
 	}
 }
 
-static void main_loop(t_game *game, t_draw_sprites *draw_sprites,
+static void	main_loop(t_game *game, t_draw_sprites *draw_sprites,
 t_draw *for_draw, double bright)
 {
 	while (draw_sprites->x < draw_sprites->x_end &&
@@ -78,8 +79,10 @@ t_draw *for_draw, double bright)
 		(for_draw->window.y2b - for_draw->window.y1b) *
 		((double)draw_sprites->x - for_draw->window.x1) /
 		(for_draw->window.x2 - for_draw->window.x1));
-		draw_sprites->new_x = (double)(draw_sprites->x - draw_sprites->x_start) /
-		(draw_sprites->x_end - draw_sprites->x_start) * draw_sprites->texture->w;
+		draw_sprites->new_x = (double)
+		(draw_sprites->x - draw_sprites->x_start) /
+		(draw_sprites->x_end - draw_sprites->x_start) *
+		draw_sprites->texture->w;
 		if (draw_sprites->top < 0)
 			draw_sprites->y = 0;
 		else if (draw_sprites->top < draw_sprites->t_window)
@@ -91,19 +94,21 @@ t_draw *for_draw, double bright)
 	}
 }
 
-void		draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite, double bright)
+void		draw_sprites(t_game *game, t_draw for_draw, t_sprite *sprite,
+	double bright)
 {
 	t_draw_sprites draw_sprites;
 
 	init(&draw_sprites, sprite, game, &for_draw);
 	if ((draw_sprites.cross_x > 0) &&
-		(draw_sprites.cross_x < draw_sprites.texture->w) && (draw_sprites.cross_y > 0) &&
+		(draw_sprites.cross_x < draw_sprites.texture->w) &&
+		(draw_sprites.cross_y > 0) &&
 		(draw_sprites.cross_y < draw_sprites.texture->h))
-	    if (((int*)draw_sprites.texture->pixels)[draw_sprites.cross_y *
+		if (((int*)draw_sprites.texture->pixels)[draw_sprites.cross_y *
 			draw_sprites.texture->w + draw_sprites.cross_x])
-        {
-            draw_sprites.cross_flag = 1;
-            game->cross_flag = sprite;
-        }
+		{
+			draw_sprites.cross_flag = 1;
+			game->cross_flag = sprite;
+		}
 	main_loop(game, &draw_sprites, &for_draw, bright);
 }
