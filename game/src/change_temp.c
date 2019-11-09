@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_temp.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 21:48:49 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/07 21:58:39 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 15:53:37 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	change_temp3(t_angle_sprite *temp)
 	temp[8].down_health = 0;
 	temp[8].texture2 = IMG_Load("imgs/sprites/doomguy/1/2/6.bmp");
 }
+
 void	change_temp4(t_angle_sprite *temp)
 {
 	temp[9].start_angle = 12 * 3.14 / 9;
