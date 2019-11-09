@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_initial_values.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 10:52:01 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/06 11:39:52 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 17:16:58 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		set_color(SDL_Color *color, int r, int g, int b)
 	color->b = b;
 }
 
-static void	pre_calc_screen(t_pre_calc *pre_calc, SDL_Surface  screen)
+static void	pre_calc_screen(t_pre_calc *pre_calc, SDL_Surface screen)
 {
 	pre_calc->screen_h_div_2 = screen.h / 2;
 	pre_calc->screen_w_div_2 = screen.w / 2;
