@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_wall_loops.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 10:29:30 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/08 12:52:41 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 17:04:10 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		loop2(t_game *game, t_dw *dw, t_dw_a *dw_a)
 		dw->a = (double)(dw->i - (int)dw_a->for_draw.wall.x1) /
 		((int)dw_a->for_draw.wall.x2 - (int)dw_a->for_draw.wall.x1);
 		dw->x = ((1 - dw->a) * dw_a->x1 / dw_a->y1 + dw->a *
-		dw_a->x2 / dw_a->y2) /((1 - dw->a) / dw_a->y1 + dw->a / dw_a->y2);
+		dw_a->x2 / dw_a->y2) / ((1 - dw->a) / dw_a->y1 + dw->a / dw_a->y2);
 		if (dw->x > 0)
 			dw->x = (dw->x - (int)dw->x) * game->texture->w;
 		else
@@ -97,14 +97,12 @@ void		loop3(t_game *game, t_dw *dw, t_dw_a *dw_a)
 		dw->yt_wall) * dw_a->sprite_wall->top;
 		dw->bot_border = dw->yt_wall + (dw->yb_wall -
 		dw->yt_wall) * dw_a->sprite_wall->bot;
-		if (dw->top_border < 0)
-			dw->k = 0;
-		else
-			dw->k = dw->top_border;
-		dw->a = ((double)dw->i - dw->left_border) / (dw->right_border - dw->left_border);
+		dw->top_border < 0 ? dw->k = 0 : dw->top_border;
+		dw->a = ((double)dw->i - dw->left_border) /
+			(dw->right_border - dw->left_border);
 		dw->x = (((1 - dw->a) * dw->left_img /
-		dw->new_y1 + dw->a * dw->right_img / dw->new_y2 ) /
-		((1 - dw->a) / dw->new_y1 + dw->a / dw->new_y2) ) *
+		dw->new_y1 + dw->a * dw->right_img / dw->new_y2) /
+		((1 - dw->a) / dw->new_y1 + dw->a / dw->new_y2)) *
 		dw_a->sprite_wall->texture->w;
 		loop4(game, dw, dw_a);
 		dw->i++;
