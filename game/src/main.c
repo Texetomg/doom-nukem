@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/07 23:36:44 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 17:07:47 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ static void	draw_3d_wall(t_game *game)
 	for_draw.window.y2t = 0;
 	for_draw.last_sector = -2;
 	for_draw.curr_sector = game->player.curr_sector;
-	give_points_cam(game->points_cam, game->points, &game->player, game->count_points);
+	give_points_cam(game->points_cam, game->points, &game->player,
+		game->count_points);
 	give_sprites_cam(game);
 	draw_sector(game, for_draw);
 	draw_minimap(game);
@@ -38,9 +39,9 @@ static void	draw_3d_wall(t_game *game)
 		printf("Find a picture!!\n");
 }
 
-static void		gif_loop(t_gif *gif, t_keystate *keystate, int *k)
+static void	gif_loop(t_gif *gif, t_keystate *keystate, int *k)
 {
-	if(keystate->mouse_l == 1)
+	if (keystate->mouse_l == 1)
 	{
 		gif[1].curr_frame++;
 		if (gif[1].curr_frame == gif[1].frame)
@@ -64,12 +65,13 @@ void		check_rifle_state(t_game *game)
 {
 	if (game->rifle_state != 1)
 	{
-		if (fabs(game->rifle_angle - game->player.angle) > game->pre_calc.pi_mult_2)
+		if (fabs(game->rifle_angle - game->player.angle) >
+			game->pre_calc.pi_mult_2)
 			game->rifle_state = 1;
 	}
 }
 
-static void start_game(t_game *game, int *loop, int *k)
+static void	start_game(t_game *game, int *loop, int *k)
 {
 	check_rifle_state(game);
 	player_hooks(game, loop);
@@ -79,7 +81,6 @@ static void start_game(t_game *game, int *loop, int *k)
 	draw_skybox(game);
 	draw_3d_wall(game);
 	draw_hud(game);
-	/* запуск гифок */
 	gif_loop(game->gif, &game->keystate, k);
 	client(game);
 }
@@ -92,15 +93,15 @@ int			main(void)
 
 	//system("make unzip");
 	game = create_struct();
-	loop = 1;		
+	loop = 1;
 	k = -3;
 	while (loop)
 	{
-		if(game->menu_status.multi == 1)
+		if (game->menu_status.multi == 1)
 			multiplayer_menu_render(game, &loop);
 		if (game->menu_status.start == 1)
 			start_menu_render(game, &loop);
-		if(game->menu_status.tab == 1)
+		if (game->menu_status.tab == 1)
 			tab_menu_render(game, &loop);
 		if (game->menu_status.main == 1)
 			start_game(game, &loop, &k);
