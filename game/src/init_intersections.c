@@ -3,45 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   init_intersections.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 16:36:29 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/08 16:42:40 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 16:45:04 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-static void init1(t_inter *inter)
+static void	init1(t_inter *inter)
 {
 	inter->ds->perc1 = (-inter->ds->first_point.y - inter->ds->x1_b4) /
 	(inter->ds->x2_b4 - inter->ds->x1_b4);
 	inter->ds->perc2 = (-inter->ds->second_point.y - inter->ds->x1_b4) /
 	(inter->ds->x2_b4 - inter->ds->x1_b4);
 	inter->ds->y1a = inter->ds->first_point.x;
-	inter->ds->y2a =inter-> ds->second_point.x;
+	inter->ds->y2a = inter->ds->second_point.x;
 	check_inter(inter);
-	inter->ds->yceil = (inter->game->sectors +
-	inter->for_draw->curr_sector)->ceil - inter->game->player.pos.z;
-	inter->ds->yfloor = (inter->game->sectors +
-	inter->for_draw->curr_sector)->floor - inter->game->player.pos.z;
-	inter->ds->yscale1 =  inter->game->pre_calc.screen_h_div_2 /
-	inter->ds->first_point.x;
-	inter->ds->yscale2 =  inter->game->pre_calc.screen_h_div_2 /
-	inter->ds->second_point.x;
-	inter->for_draw->wall.x1 = -inter->ds->first_point.y *
-	(inter->game->pre_calc.screen_w_div_2) / inter->ds->first_point.x +
-	inter->game->pre_calc.screen_w_div_2;
-	inter->for_draw->wall.x2 = -inter->ds->second_point.y *
-	(inter->game->pre_calc.screen_w_div_2) / inter->ds->second_point.x +
-	inter->game->pre_calc.screen_w_div_2;
-	inter->for_draw->wall.y2t = -inter->ds->yscale2 * inter->ds->yceil + inter->game->line_horiz;
-	inter->for_draw->wall.y1t = -inter->ds->yscale1 * inter->ds->yceil + inter->game->line_horiz;
-	inter->for_draw->wall.y2b = -inter->ds->yscale2 * inter->ds->yfloor + inter->game->line_horiz;
-	inter->for_draw->wall.y1b = -inter->ds->yscale1 * inter->ds->yfloor + inter->game->line_horiz;
+	init1_sup(inter);
 }
 
-static void init2(t_inter *inter)
+static void	init2(t_inter *inter)
 {
 	inter->ds->for_next_draw.wall = inter->for_draw->wall;
 	inter->ds->y2ceil = (inter->game->sectors + *((inter->game->sectors +
@@ -68,7 +51,7 @@ static void init2(t_inter *inter)
 	draw_sector(inter->game, inter->ds->for_next_draw);
 }
 
-static void init3(t_inter *inter)
+static void	init3(t_inter *inter)
 {
 	inter->pds_a->screen = inter->game->screen;
 	inter->pds_a->display_mode = inter->game->display_mode;
@@ -90,7 +73,7 @@ static void init3(t_inter *inter)
 	pre_draw_sector(inter->pds_a);
 }
 
-static void init4(t_inter *inter)
+static void	init4(t_inter *inter)
 {
 	inter->dw_a->for_draw = *inter->for_draw;
 	inter->dw_a->x1 = inter->ds->x1a;
@@ -115,7 +98,7 @@ static void init4(t_inter *inter)
 	}
 }
 
-void init_intersections(int i, t_inter *inter)
+void		init_intersections(int i, t_inter *inter)
 {
 	if (i == 1)
 		init1(inter);

@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:56:03 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/09 16:31:58 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/09 16:45:43 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -548,4 +548,5 @@ void						intersections(t_inter *inter);
 void						sprite_wall2_sup(t_dw_a *dw_a, t_dw *dw,
 								double *dw_new, int *dw_border);
 void    					sprite_wall3_sup(t_game *game, t_dw_a *dw_a, t_dw *dw);
+void						init1_sup(t_inter *inter);
 #endif
