@@ -6,13 +6,14 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 16:57:31 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/25 16:59:18 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/09 16:56:06 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom_nukem.h"
 
-void	draw_img(SDL_Surface *screen, SDL_Surface *img, t_vec2 start, t_vec2 end)
+void	draw_img(SDL_Surface *screen, SDL_Surface *img, t_vec2 start,
+	t_vec2 end)
 {
 	int		new_x;
 	int		new_y;
