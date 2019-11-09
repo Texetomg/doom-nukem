@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_sprites.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 11:01:31 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/07 22:16:46 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 15:48:58 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	init_sprites2(t_game *game)
 	(game->sprites)->N->AS->down_health = 85;
 }
 
-static void init_sprites3(t_game *game)
+static void	init_sprites3(t_game *game)
 {
 	(game->sprites)->N->AS->N = (TAS*)malloc(sizeof(TAS));
 	(game->sprites)->N->AS->N->start_angle = -3.14;
@@ -86,7 +86,7 @@ static void init_sprites3(t_game *game)
 	(game->sprites)->N->AS->N->N->N->down_health = 40;
 }
 
-static void init_sprites4(t_game *game)
+static void	init_sprites4(t_game *game)
 {
 	(game->sprites)->N->AS->N->N->N->N = (TAS*)malloc(sizeof(TAS));
 	(game->sprites)->N->AS->N->N->N->N->start_angle = -3.14;
@@ -99,19 +99,20 @@ static void init_sprites4(t_game *game)
 	(game->sprites)->N->AS->N->N->N->N->N->start_angle = -3.14;
 	(game->sprites)->N->AS->N->N->N->N->N->end_angle = 3.14;
 	(game->sprites)->N->AS->N->N->N->N->N->texture = *((game->gif)->array + 15);
-	(game->sprites)->N->AS->N->N->N->N->N->texture2 = *((game->gif)->array + 15);
+	(game->sprites)->N->AS->N->N->N->N->N->texture2 =
+		*((game->gif)->array + 15);
 	(game->sprites)->N->AS->N->N->N->N->N->up_health = 25;
 	(game->sprites)->N->AS->N->N->N->N->N->down_health = 0;
 }
 
 void		set_sprites(t_game *game)
 {
-	TAS temp[12];
-    TAS *start_sprite;
+	TAS	temp[12];
+	TAS	*start_sprite;
 
 	init_sprites1(game, temp);
-    add_angle_sprites_end(&(game->sprites), temp[10]);
-    add_angle_sprites_end(&(game->sprites), temp[11]);
+	add_angle_sprites_end(&(game->sprites), temp[10]);
+	add_angle_sprites_end(&(game->sprites), temp[11]);
 	(game->sprites)->AS->N->N->N->N->N->N->N->N->N = 0;
 	init_sprites2(game);
 	init_sprites3(game);
@@ -121,8 +122,8 @@ void		set_sprites(t_game *game)
 	(game->sprites)->N->N = 0;
 	start_sprite = (game->sprites)->AS;
 	while (start_sprite != NULL)
-    {
-	    texture_cut_sdl(start_sprite->texture, 0x71FAFC, 0x73FCFE);
-	    start_sprite = start_sprite->N;
-    }
+	{
+		texture_cut_sdl(start_sprite->texture, 0x71FAFC, 0x73FCFE);
+		start_sprite = start_sprite->N;
+	}
 }

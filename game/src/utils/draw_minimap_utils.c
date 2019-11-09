@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 10:52:09 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/05 10:56:18 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/09 15:46:10 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	get_second_point(t_game *game, int curr_sector,
 	second_point->y = -second_point->y * 20 + game->pre_calc.screen_h_div_20;
 }
 
-void			swap_vec2(t_vec2 *first, t_vec2 *second)
+void	swap_vec2(t_vec2 *first, t_vec2 *second)
 {
 	double	swap;
 
