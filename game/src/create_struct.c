@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_struct.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:10:38 by thorker           #+#    #+#             */
-/*   Updated: 2019/11/07 21:57:49 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 15:51:43 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 static void	init_sdl(t_game *game)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
+		check_error_n_exit(1, (char*)SDL_GetError());
 	if (SDL_ShowCursor(SDL_DISABLE) < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
+		check_error_n_exit(1, (char*)SDL_GetError());
 	if ((SDL_GetDesktopDisplayMode(0, &game->display_mode)) != 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
-	game->window = SDL_CreateWindow("Doom-Nukem", 0, 0, 1400, 1000, SDL_WINDOW_SHOWN);
+		check_error_n_exit(1, (char*)SDL_GetError());
+	game->window = SDL_CreateWindow("Doom-Nukem", 0, 0, 1400, 1000,
+		SDL_WINDOW_SHOWN);
 	if (game->window == 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
+		check_error_n_exit(1, (char*)SDL_GetError());
 	if ((game->screen = SDL_GetWindowSurface(game->window)) == 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
+		check_error_n_exit(1, (char*)SDL_GetError());
 	if (TTF_Init() < 0)
-		check_error_n_exit(1,(char*)SDL_GetError());
-	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
-        check_error_n_exit(1,(char*)SDL_GetError());
-    }
+		check_error_n_exit(1, (char*)SDL_GetError());
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		check_error_n_exit(1, (char*)SDL_GetError());
 	game->texture = get_texture("imgs/textures/cat.bmp");
 	game->texture1 = get_texture("imgs/gif1/13.bmp");
 	texture_cut(game->texture1, 0, 0x303030);
@@ -61,7 +61,7 @@ void		add_angle_sprites_end(t_sprite **begin, t_angle_sprite sprite)
 		(*begin)->angle_sprite = curr;
 }
 
-void	add_sprites_wall(t_game *game)
+void		add_sprites_wall(t_game *game)
 {
 	game->sectors->sprite_wall = (t_sprite_wall*)malloc(sizeof(t_sprite_wall));
 	game->sectors->sprite_wall->top = 0.5;
@@ -73,12 +73,12 @@ void	add_sprites_wall(t_game *game)
 	game->sectors->sprite_wall->next = 0;
 }
 
-t_game	*create_struct(void)
+t_game		*create_struct(void)
 {
 	t_game	*game;
 
 	if ((game = (t_game*)malloc(sizeof(t_game))) == 0)
-		check_error_n_exit(1,"malloc error");
+		check_error_n_exit(1, "malloc error");
 	init_sdl(game);
 	gettimeofday(&game->time, NULL);
 	read_map("map2", game);
