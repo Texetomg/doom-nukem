@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_skybox.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/07 23:24:46 by ramory-l          #+#    #+#             */
-/*   Updated: 2019/11/07 23:33:30 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/09 16:57:21 by bfalmer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static void		init_skybox(t_game *game, t_draw_skybox *draw_skybox)
 	if (game->player.angle - game->pre_calc.pi_div_4 < 0)
 		draw_skybox->right_border = draw_skybox->a / (game->pre_calc.pi_mult_2);
 	else
-		draw_skybox->right_border = (game->pre_calc.pi_mult_2 - draw_skybox->a) /
+		draw_skybox->right_border =
+		(game->pre_calc.pi_mult_2 - draw_skybox->a) /
 		(game->pre_calc.pi_mult_2);
 	if (draw_skybox->left_border > draw_skybox->right_border)
 		draw_skybox->right_border = draw_skybox->right_border + 1;
