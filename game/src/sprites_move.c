@@ -32,7 +32,7 @@ void			resp_mobe(t_game *game, t_sprite *sprite)
 	{
 		sprite->pos.x = game->spaw3.x;
 		sprite->pos.y = game->spaw3.y;
-        sprite->pos.z = sprite->heigth + (game->sectors + 4)->floor;
+		sprite->pos.z = sprite->heigth + (game->sectors + 4)->floor;
 		sprite->sector = 4;
 	}
 	sprite->health = 100;
@@ -41,11 +41,14 @@ void			resp_mobe(t_game *game, t_sprite *sprite)
 
 static t_sprite	*sort(t_sprite *sortlist)
 {
-	t_sprite *new_list = NULL;
+	t_sprite *new_list;
+	t_sprite *node;
+	t_sprite *current;
 
+	new_list = NULL;
 	while (sortlist != NULL)
 	{
-		t_sprite *node = sortlist;
+		node = sortlist;
 		sortlist = sortlist->next;
 		if (new_list == NULL || node->pos_in_cam.x > new_list->pos_in_cam.x)
 		{
@@ -54,7 +57,7 @@ static t_sprite	*sort(t_sprite *sortlist)
 		}
 		else
 		{
-			t_sprite *current = new_list;
+			current = new_list;
 			while (current->next != NULL &&
 				!(node->pos_in_cam.x > current->next->pos_in_cam.x))
 				current = current->next;
@@ -90,7 +93,7 @@ static void		loop(t_sm *sm)
 	}
 }
 
-static void check_radius(t_game *game, t_sm *sm)
+static void		check_radius(t_game *game, t_sm *sm)
 {
 	if (sm->radius > (double)sm->sprite->width * 0.0004)
 	{

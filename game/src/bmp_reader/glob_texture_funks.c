@@ -97,7 +97,6 @@ t_texture1		*get_texture1(char *file_name)
 	fd = open(file_name, O_RDONLY);
 	bmp->bmphead = get_headblock(fd, file_name);
 	inf_type = get_inf_type(fd);
-	printf("Inf_type: %d\n", inf_type);
 	bmp->bmpinfo_v5 = get_infoblock(fd, inf_type);
 	bmp->color = get_c_map(fd, bmp->bmpinfo_v5, &raw_col_array, inf_type);
 	texture->image = get_image(bmp, inf_type, fd);
@@ -124,8 +123,8 @@ t_texture		*get_texture(char *file_name)
 	image = (unsigned int*)malloc(sizeof(int) * texture1->height *
 			texture1->width);
 	texture = (t_texture*)malloc(sizeof(t_texture));
-	i = 0;
-	while (i < texture1->height)
+	i = -1;
+	while (++i < texture1->height)
 	{
 		j = -1;
 		while (++j < texture1->width)
@@ -133,7 +132,6 @@ t_texture		*get_texture(char *file_name)
 			image[i * texture1->width + j] =
 					texture1->image[texture1->height - 1 - i][j];
 		}
-		i++;
 	}
 	texture->w = texture1->width;
 	texture->h = texture1->height;

@@ -91,7 +91,6 @@ int			main(void)
 	int		loop;
 	int		k;
 
-	//system("make unzip");
 	game = create_struct();
 	loop = 1;
 	k = -3;
@@ -108,7 +107,6 @@ int			main(void)
 		put_fps(game->screen, game->hud, &game->time);
 		SDL_UpdateWindowSurface(game->window);
 	}
-	//system("make zip");
 	close(game->socket_struct.sockfd);
 	free_sdl(game);
 	return (0);

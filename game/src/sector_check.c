@@ -12,13 +12,13 @@
 
 #include "doom_nukem.h"
 
-static int		one_sec_check(t_game *game, t_sprite *sprite, int num)
+static int	one_sec_check(t_game *game, t_sprite *sprite, int num)
 {
 	int			i;
 	t_vec2		f_point;
 	t_vec2		s_point;
-	t_sector 	*cur_sec;
-	double 		cross;
+	t_sector	*cur_sec;
+	double		cross;
 
 	cur_sec = game->sectors + num;
 	i = 0;
@@ -41,7 +41,7 @@ static int		one_sec_check(t_game *game, t_sprite *sprite, int num)
 	return (1);
 }
 
-static int check_cross(t_game *game, t_sprite *sprite, t_sc *sc)
+static int	check_cross(t_game *game, t_sprite *sprite, t_sc *sc)
 {
 	if (sc->cross < -0.0001)
 	{
@@ -66,7 +66,7 @@ static int check_cross(t_game *game, t_sprite *sprite, t_sc *sc)
 	return (1);
 }
 
-int		sector_check(t_game *game, t_sprite *sprite)
+int			sector_check(t_game *game, t_sprite *sprite)
 {
 	t_sc sc;
 

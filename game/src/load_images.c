@@ -12,8 +12,7 @@
 
 #include "doom_nukem.h"
 
-static void	read_gif(t_gif *gif, char *str, int index, int frame,
-	char *extension)
+static void	read_gif(t_gif *gif, char *str, int index, int frame)
 {
 	char	*folder;
 	char	*i;
@@ -31,7 +30,7 @@ static void	read_gif(t_gif *gif, char *str, int index, int frame,
 	{
 		i = ft_itoa(k);
 		tmp = ft_strjoin(folder, i);
-		path = ft_strjoin(tmp, extension);
+		path = ft_strjoin(tmp, ".bmp");
 		if (!(*(gif[index].array + k) = IMG_Load(path)))
 			check_error_n_exit(1, (char*)SDL_GetError());
 		free(path);
@@ -80,8 +79,8 @@ static void	load_hud_images(t_game *game)
 
 void		load_images(t_game *game)
 {
-	read_gif(game->gif, "imgs/gif1/", 0, 40, ".bmp");
-	read_gif(game->gif, "imgs/rifle/", 1, 2, ".bmp");
+	read_gif(game->gif, "imgs/gif1/", 0, 40);
+	read_gif(game->gif, "imgs/rifle/", 1, 2);
 	load_menu_images(game);
 	load_hud_images(game);
 }
