@@ -6,13 +6,13 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 18:19:18 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/04/16 18:19:32 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/23 16:53:53 by htorp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void clean_buffer(char **buffer)
+void	clean_buffer(char **buffer)
 {
 	int i;
 

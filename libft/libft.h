@@ -6,7 +6,7 @@
 /*   By: ramory-l <ramory-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 18:25:21 by thorker           #+#    #+#             */
-/*   Updated: 2019/10/15 15:12:24 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/11/23 16:59:03 by htorp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void					ft_putchar(char c);
 void					ft_putstr(char const *c);
 void					ft_putnbr(int c);
 void					put_sdl_error(char *str);
-double  				ft_atod(const char *c);
+double					ft_atod(const char *c);
 void					clean_buffer(char **buffer);
 char					*ft_strjoinfree_right(char const *s1, char const *s2);
 #endif

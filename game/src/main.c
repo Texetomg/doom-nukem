@@ -6,7 +6,7 @@
 /*   By: bfalmer- <bfalmer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 14:38:27 by bfalmer-          #+#    #+#             */
-/*   Updated: 2019/11/09 17:07:47 by bfalmer-         ###   ########.fr       */
+/*   Updated: 2019/11/23 18:34:36 by htorp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int			main(void)
 	int		loop;
 	int		k;
 
+	system("make unzip");
 	game = create_struct();
 	loop = 1;
 	k = -3;
@@ -109,5 +110,6 @@ int			main(void)
 	}
 	close(game->socket_struct.sockfd);
 	free_sdl(game);
+	system("make zip");
 	return (0);
 }
